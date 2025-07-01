@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAWO - Bodybuilding Database | 89,000+ Custom Workouts</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0a2342;
+            --accent: #2196f3;
+            --accent2: #1565c0;
+            --bg: #f4f8fb;
+            --white: #fff;
+            --gray: #888;
+            --steel: #e0e7ef;
+            --text: #111;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+        .header {
+            background: var(--primary);
+            padding: 4rem 0 2rem 0;
+            text-align: center;
+            color: var(--white);
+        }
+        .header h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+        .header p {
+            font-size: 1.3rem;
+            color: var(--accent);
+            font-weight: 400;
+        }
+        .stats-bar {
+            background: var(--steel);
+            padding: 2.5rem 0 1.5rem 0;
+            border-bottom: 1px solid var(--primary);
+        }
+        .stats-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2.5rem;
+            text-align: center;
+        }
+        .stat-item {
+            color: var(--primary);
+            transition: transform 0.3s;
+        }
+        .stat-item:hover { transform: translateY(-5px); }
+        .stat-number {
+            font-size: 2.3rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.3rem;
+        }
+        .stat-label {
+            font-size: 1rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+        .main-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        .filters-section {
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            background: var(--primary);
+            padding: 2rem 0 1.5rem 0;
+            margin-bottom: 2.5rem;
+            border-radius: 0;
+            box-shadow: 0 2px 12px rgba(10,35,66,0.08);
+            border-bottom: 2px solid var(--accent);
+        }
+        .filters-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        .filter-group { display: flex; flex-direction: column; }
+        .filter-label {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--accent);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .filter-select, .filter-input {
+            padding: 0.75rem;
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            font-size: 1rem;
+            background: var(--white);
+            color: var(--primary);
+            transition: all 0.3s;
+        }
+        .filter-select:focus, .filter-input:focus {
+            outline: none;
+            border-color: var(--accent2);
+            box-shadow: 0 0 0 3px rgba(33,150,243,0.08);
+        }
+        .search-section {
+            max-width: 1100px;
+            margin: 0 auto 2rem auto;
+            display: flex;
+            gap: 1rem;
+        }
+        .search-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            font-size: 1rem;
+            background: var(--white);
+            color: var(--primary);
+            transition: all 0.3s;
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent2);
+            box-shadow: 0 0 0 3px rgba(33,150,243,0.08);
+        }
+        .search-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--accent);
+            color: var(--white);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(33,150,243,0.15);
+        }
+        .workouts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        .workout-card {
+            background: var(--white);
+            border: 2px solid var(--accent);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(33,150,243,0.10);
+        }
+        .workout-card:hover {
+            border-color: var(--accent2);
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(33,150,243,0.10);
+        }
+        .workout-header {
+            background: var(--accent);
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--accent2);
+        }
+        .workout-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--white);
+        }
+        .workout-category {
+            font-size: 0.9rem;
+            color: var(--accent2);
+            font-weight: 500;
+        }
+        .workout-body { padding: 1.5rem; }
+        .workout-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--accent2);
+        }
+        .workout-description {
+            color: var(--gray);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        .workout-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .tag {
+            background: var(--accent2);
+            color: var(--white);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1px solid var(--accent2);
+            transition: all 0.3s;
+        }
+        .tag:hover {
+            background: var(--accent);
+            color: var(--white);
+        }
+        .workout-actions {
+            background: none !important;
+            box-shadow: none !important;
+            border: none !important;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-start;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 1rem;
+            outline: none;
+            box-shadow: none;
+            margin: 0;
+            background: none;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #1565c0 0%, #2196f3 100%);
+            color: #fff;
+        }
+        .btn-primary:hover, .btn-primary:focus {
+            background: linear-gradient(135deg, #2196f3 0%, #1565c0 100%);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.15);
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #f4f8fb;
+            color: #1565c0;
+            border: 1px solid #bbdefb;
+        }
+        .btn-secondary:hover, .btn-secondary:focus {
+            background: #e3f2fd;
+            color: #1565c0;
+            box-shadow: 0 2px 8px rgba(33, 150, 243, 0.08);
+            transform: translateY(-2px);
+        }
+        .download-options {
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+        }
+        .page-btn {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--accent2);
+            background: var(--white);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            color: var(--primary);
+        }
+        .page-btn:hover {
+            background: var(--accent2);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+        .page-btn.active {
+            background: var(--accent2);
+            color: var(--white);
+            border-color: var(--accent2);
+        }
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(10,35,66,0.85);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .modal-content {
+            background-color: var(--white);
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 16px;
+            width: 95%;
+            max-width: 1400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1.5px solid var(--accent2);
+            box-shadow: 0 20px 60px rgba(10,35,66,0.2);
+            animation: slideIn 0.3s ease;
+            position: relative;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .modal-header {
+            background: var(--accent2);
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 16px 16px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--accent2);
+        }
+        .modal-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--white);
+            margin: 0;
+            letter-spacing: -0.01em;
+        }
+        .close {
+            font-size: 2.5rem;
+            cursor: pointer;
+            color: var(--white);
+            line-height: 1;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            margin-left: 1.5rem;
+        }
+        .close:hover {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+        #modalContent {
+            padding: 2rem;
+        }
+        @media (max-width: 900px) {
+            .calendar-container { grid-template-columns: 1fr !important; }
+            .calendar-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (max-width: 600px) {
+            .calendar-grid { grid-template-columns: 1fr !important; }
+            .modal-header { padding: 1rem; }
+            .modal-title { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="fitprep-header" style="position:sticky;top:0;width:100%;background:linear-gradient(90deg,#1565c0 0%,#2196f3 100%);padding:1.1rem 0;z-index:1000;text-align:left;box-shadow:0 2px 10px rgba(33,150,243,0.08);">
+        <a href="landing.html" class="fitprep-back-btn" style="color:#fff;font-weight:700;font-size:1.1rem;text-decoration:none;margin-left:2rem;transition:color 0.2s;">&larr; Back to FitPrep Home</a>
+    </div>
+    <div class="header">
+        <h1>Bodybuilding Database</h1>
+        <p>89,000+ custom bodybuilding workouts for every age, accessibility, disability, and goal</p>
+    </div>
+    <div class="stats-bar">
+        <div class="stats-container">
+            <div class="stat-item"><span class="stat-number">89,000+</span><span class="stat-label">Workouts</span></div>
+            <div class="stat-item"><span class="stat-number">All Goals</span><span class="stat-label">Goals</span></div>
+            <div class="stat-item"><span class="stat-number">7</span><span class="stat-label">Days/Week</span></div>
+        </div>
+    </div>
+    <div class="main-container">
+        <!-- Filters Section -->
+        <div class="filters-section" style="background:#fff;padding:2rem 0 1.5rem 0;margin-bottom:2rem;border-bottom:1px solid #e0e7ef;">
+            <div class="search-section" style="display:flex;gap:1rem;margin-bottom:1.5rem;">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search workouts..." style="flex:1;padding:0.75rem;border:1px solid #e0e7ef;border-radius:6px;font-size:1rem;background:#fff;">
+                <button onclick="searchWorkouts()" class="search-btn" style="padding:0.75rem 1.5rem;background:linear-gradient(135deg,#1565c0 0%,#2196f3 100%);color:white;border:none;border-radius:6px;cursor:pointer;font-weight:500;transition:all 0.3s;">Search</button>
+            </div>
+            <div class="filters-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.2rem;">
+                <div class="filter-group" style="display:flex;flex-direction:column;">
+                    <label class="filter-label" style="font-weight:600;margin-bottom:0.5rem;color:#1565c0;font-size:0.9rem;text-transform:uppercase;letter-spacing:0.05em;">Goal</label>
+                    <select id="goalFilter" class="filter-select" onchange="filterWorkouts()" style="padding:0.7rem;border:1px solid #e0e7ef;border-radius:6px;font-size:1rem;background:#fff;">
+                        <option value="">All Goals</option>
+                        <option value="Hypertrophy">Hypertrophy</option>
+                        <option value="Strength">Strength</option>
+                        <option value="Powerbuilding">Powerbuilding</option>
+                        <option value="Classic">Classic</option>
+                        <option value="Physique">Physique</option>
+                        <option value="Fat Loss">Fat Loss</option>
+                        <option value="Rehabilitation">Rehabilitation</option>
+                        <option value="Adaptive">Adaptive</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Age Group</label>
+                    <select id="ageFilter" class="filter-select" onchange="filterWorkouts()">
+                        <option value="">All Ages</option>
+                        <option value="Teens (13-17)">Teens (13-17)</option>
+                        <option value="Young Adults (18-25)">Young Adults (18-25)</option>
+                        <option value="Adults (26-35)">Adults (26-35)</option>
+                        <option value="Adults (36-45)">Adults (36-45)</option>
+                        <option value="Adults (46-55)">Adults (46-55)</option>
+                        <option value="Seniors (56-65)">Seniors (56-65)</option>
+                        <option value="Seniors (66+)">Seniors (66+)</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Disability</label>
+                    <select id="disabilityFilter" class="filter-select" onchange="filterWorkouts()">
+                        <option value="">All Accessibility</option>
+                        <option value="None">No Special Needs</option>
+                        <option value="Visual Impairment">Visual Impairment</option>
+                        <option value="Hearing Impairment">Hearing Impairment</option>
+                        <option value="Mobility Impairment">Mobility Impairment</option>
+                        <option value="Cognitive Impairment">Cognitive Impairment</option>
+                        <option value="Amputee">Amputee</option>
+                        <option value="Wheelchair User">Wheelchair User</option>
+                        <option value="Chronic Illness">Chronic Illness</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Split</label>
+                    <select id="splitFilter" class="filter-select" onchange="filterWorkouts()">
+                        <option value="">All Splits</option>
+                        <option value="Full Body">Full Body</option>
+                        <option value="Upper/Lower">Upper/Lower</option>
+                        <option value="Push/Pull/Legs">Push/Pull/Legs</option>
+                        <option value="Bro Split">Bro Split</option>
+                        <option value="PHUL">PHUL</option>
+                        <option value="PHAT">PHAT</option>
+                        <option value="Custom">Custom</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Muscle Group</label>
+                    <select id="muscleGroupFilter" class="filter-select" onchange="filterWorkouts()">
+                        <option value="">All Muscle Groups</option>
+                        <option value="Chest">Chest</option>
+                        <option value="Back">Back</option>
+                        <option value="Legs">Legs</option>
+                        <option value="Shoulders">Shoulders</option>
+                        <option value="Arms">Arms</option>
+                        <option value="Core">Core</option>
+                        <option value="Glutes">Glutes</option>
+                        <option value="Full Body">Full Body</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Duration</label>
+                    <select id="durationFilter" class="filter-select" onchange="filterWorkouts()">
+                        <option value="">All Durations</option>
+                        <option value="30-45 min">30-45 min</option>
+                        <option value="45-60 min">45-60 min</option>
+                        <option value="60-75 min">60-75 min</option>
+                        <option value="75+ min">75+ min</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Equipment</label>
+                    <select id="equipmentFilter" class="filter-select" onchange="filterWorkouts()">
+                        <option value="">All Equipment</option>
+                        <option value="Gym">Gym</option>
+                        <option value="Home">Home</option>
+                        <option value="Dumbbells">Dumbbells</option>
+                        <option value="Barbell">Barbell</option>
+                        <option value="Machines">Machines</option>
+                        <option value="Bands">Bands</option>
+                        <option value="Bodyweight">Bodyweight</option>
+                        <option value="Adaptive">Adaptive</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="workoutsGrid" class="workouts-grid">
+            <!-- Workouts will be populated here -->
+        </div>
+        <div style="display:flex;justify-content:center;margin:2rem 0;">
+            <button id="loadMoreBtn" class="btn btn-primary">Load More</button>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="workoutModal" class="modal" style="display:none;position:fixed;z-index:2000;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.8);backdrop-filter:blur(5px);">
+        <div class="modal-content" style="background-color:#fff;margin:2% auto;padding:0;border-radius:16px;width:95%;max-width:1400px;max-height:90vh;overflow-y:auto;border:1px solid #e0e7ef;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+            <div class="modal-header" style="background:#1565c0;color:white;padding:2rem;border-radius:16px 16px 0 0;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e0e7ef;">
+                <h2 class="modal-title" id="modalTitle" style="font-size:2rem;font-weight:600;color:white;margin:0;">Workout Plan</h2>
+                <span class="close" onclick="closeModal()" style="font-size:2.5rem;cursor:pointer;color:white;line-height:1;transition:all 0.3s;">&times;</span>
+            </div>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+    <script>
+        let allWorkouts = [];
+        let filteredWorkouts = [];
+        let displayedWorkouts = [];
+        const batchSize = 12;
+        let nextWorkoutId = 1;
+        let hasMore = true;
+        // Helper data
+        const goals = [
+            'Hypertrophy', 'Strength', 'Powerbuilding', 'Classic', 'Physique', 'Fat Loss', 'Rehabilitation', 'Adaptive'
+        ];
+        const ageGroups = [
+            'Teens (13-17)', 'Young Adults (18-25)', 'Adults (26-35)', 'Adults (36-45)', 'Adults (46-55)', 'Seniors (56-65)', 'Seniors (66+)'
+        ];
+        const disabilities = [
+            'None', 'Visual Impairment', 'Hearing Impairment', 'Mobility Impairment', 'Cognitive Impairment', 'Amputee', 'Wheelchair User', 'Chronic Illness'
+        ];
+        const splits = [
+            'Full Body', 'Upper/Lower', 'Push/Pull/Legs', 'Bro Split', 'PHUL', 'PHAT', 'Custom'
+        ];
+        const durations = ['30-45 min', '45-60 min', '60-75 min', '75+ min'];
+        const equipmentList = ['Gym', 'Home', 'Dumbbells', 'Barbell', 'Machines', 'Bands', 'Bodyweight', 'Adaptive'];
+        const muscleGroups = [
+            'Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core', 'Glutes', 'Full Body'
+        ];
+        const intensities = ['Low', 'Moderate', 'High'];
+        // Bodybuilding exercise library
+        const exerciseLibrary = {
+            'Chest': ['Bench Press', 'Incline Dumbbell Press', 'Chest Fly', 'Push-up', 'Cable Crossover', 'Machine Press'],
+            'Back': ['Pull-up', 'Lat Pulldown', 'Barbell Row', 'Seated Row', 'Face Pull', 'Deadlift'],
+            'Legs': ['Squat', 'Leg Press', 'Lunge', 'Leg Extension', 'Leg Curl', 'Calf Raise'],
+            'Shoulders': ['Overhead Press', 'Lateral Raise', 'Front Raise', 'Rear Delt Fly', 'Arnold Press'],
+            'Arms': ['Bicep Curl', 'Tricep Extension', 'Hammer Curl', 'Skullcrusher', 'Preacher Curl', 'Tricep Pushdown'],
+            'Core': ['Plank', 'Crunch', 'Hanging Leg Raise', 'Russian Twist', 'Cable Crunch'],
+            'Glutes': ['Hip Thrust', 'Glute Bridge', 'Cable Kickback', 'Bulgarian Split Squat'],
+            'Full Body': ['Clean & Press', 'Burpee', 'Farmer Carry', 'Kettlebell Swing', 'Sled Push']
+        };
+        // Generate a single workout
+        function generateWorkout(id) {
+            const goal = goals[Math.floor(Math.random() * goals.length)];
+            const ageGroup = ageGroups[Math.floor(Math.random() * ageGroups.length)];
+            const disability = disabilities[Math.floor(Math.random() * disabilities.length)];
+            const split = splits[Math.floor(Math.random() * splits.length)];
+            const duration = durations[Math.floor(Math.random() * durations.length)];
+            const equipment = equipmentList[Math.floor(Math.random() * equipmentList.length)];
+            const intensity = intensities[Math.floor(Math.random() * intensities.length)];
+            const muscleGroup = muscleGroups[Math.floor(Math.random() * muscleGroups.length)];
+            const calories = 200 + Math.floor(Math.random() * 350);
+            const title = `${goal} ${muscleGroup} (${split}) #${id}`;
+            const description = `A ${duration} ${goal.toLowerCase()} bodybuilding workout for ${ageGroup.toLowerCase()}${disability !== 'None' ? ' (adapted for ' + disability.toLowerCase() + ')' : ''}. Focus: ${muscleGroup}. Equipment: ${equipment}.`;
+            // Pick 4-7 exercises
+            let exLib = exerciseLibrary[muscleGroup] || exerciseLibrary['Full Body'];
+            let exercises = [];
+            for (let i = 0; i < 4 + Math.floor(Math.random() * 4); i++) {
+                const exName = exLib[i % exLib.length];
+                exercises.push({
+                    name: exName,
+                    sets: 3 + Math.floor(Math.random() * 2),
+                    reps: intensity === 'High' ? 6 + Math.floor(Math.random() * 4) : 10 + Math.floor(Math.random() * 6),
+                    duration: 5 + Math.floor(Math.random() * 6),
+                    intensity: intensity,
+                    description: `${exName} for ${muscleGroup.toLowerCase()} development.`
+                });
+            }
+            // Simple weekly plan: 5 workout, 2 rest
+            const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+            let weeklyPlan = days.map((day, idx) => {
+                if (idx === 2 || idx === 5) {
+                    return { day, type: 'rest', description: 'Active recovery, stretching, or mobility.' };
+                } else {
+                    return { day, type: 'workout', description: `${goal} ${muscleGroup} session`, exercises };
+                }
+            });
+            return {
+                id, title, goal, ageGroup, disability, split, duration, equipment, muscleGroup, intensity, calories, description, weeklyPlan
+            };
+        }
+        // Generate a batch of workouts
+        function generateBatch(count) {
+            let batch = [];
+            for (let i = 0; i < count; i++) {
+                batch.push(generateWorkout(nextWorkoutId++));
+            }
+            allWorkouts = allWorkouts.concat(batch);
+        }
+        // Initial load
+        generateBatch(batchSize);
+        filteredWorkouts = allWorkouts;
+        displayedWorkouts = filteredWorkouts.slice(0, batchSize);
+        // Display workouts in grid
+        function displayWorkouts() {
+            const grid = document.getElementById('workoutsGrid');
+            const workouts = displayedWorkouts;
+            if (workouts.length === 0) {
+                grid.innerHTML = '<div style="text-align:center;color:#2196f3;font-size:1.2rem;">No workouts found. Try adjusting filters.</div>';
+                document.getElementById('loadMoreBtn').style.display = 'none';
+                return;
+            }
+            grid.innerHTML = workouts.map(w => `
+                <div class="workout-card" style="background:#fff;border:1.5px solid #e0e7ef;border-radius:14px;overflow:hidden;transition:all 0.3s;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+                    <div class="workout-header" style="background:linear-gradient(135deg,#e3f2fd 0%,#bbdefb 100%);padding:1.5rem;border-bottom:1px solid #e0e7ef;">
+                        <div class="workout-title" style="font-size:1.25rem;font-weight:600;margin-bottom:0.5rem;color:#1565c0;">${w.title}</div>
+                        <div class="workout-category" style="font-size:0.9rem;color:#2196f3;font-weight:500;">${w.goal}</div>
+                    </div>
+                    <div class="workout-body" style="padding:1.5rem;">
+                        <div class="workout-stats" style="display:flex;justify-content:space-between;margin-bottom:1rem;font-size:0.9rem;color:#666;">
+                            <span>Duration: ${w.duration}</span>
+                            <span>Calories: ${w.calories}</span>
+                        </div>
+                        <div class="workout-description" style="color:#666;margin-bottom:1rem;line-height:1.6;">${w.description}</div>
+                        <div class="workout-tags" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.5rem;">
+                            <span class="tag" style="background:#e3f2fd;color:#1565c0;padding:0.25rem 0.75rem;border-radius:20px;font-size:0.8rem;font-weight:500;border:1px solid #bbdefb;">${w.equipment}</span>
+                            <span class="tag" style="background:#e3f2fd;color:#1565c0;padding:0.25rem 0.75rem;border-radius:20px;font-size:0.8rem;font-weight:500;border:1px solid #bbdefb;">${w.goal}</span>
+                            <span class="tag" style="background:#e3f2fd;color:#1565c0;padding:0.25rem 0.75rem;border-radius:20px;font-size:0.8rem;font-weight:500;border:1px solid #bbdefb;">${w.split}</span>
+                            <span class="tag" style="background:#e3f2fd;color:#1565c0;padding:0.25rem 0.75rem;border-radius:20px;font-size:0.8rem;font-weight:500;border:1px solid #bbdefb;">${w.ageGroup}</span>
+                            ${w.disability !== 'None' ? `<span class="tag" style="background:#e3f2fd;color:#1565c0;padding:0.25rem 0.75rem;border-radius:20px;font-size:0.8rem;font-weight:500;border:1px solid #bbdefb;">${w.disability}</span>` : ''}
+                        </div>
+                        <div class="workout-actions">
+                            <button class="btn btn-primary" onclick="event.stopPropagation(); openWorkoutModal(${w.id})">View Plan</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            // Show/hide Load More button
+            if (displayedWorkouts.length < filteredWorkouts.length) {
+                document.getElementById('loadMoreBtn').style.display = 'inline-block';
+            } else {
+                document.getElementById('loadMoreBtn').style.display = 'none';
+            }
+        }
+        // Load More button logic
+        document.getElementById('loadMoreBtn').onclick = function() {
+            // If we need more workouts, generate them
+            if (allWorkouts.length < nextWorkoutId - 1 + batchSize) {
+                generateBatch(batchSize);
+            }
+            // Add next batch from filteredWorkouts
+            const currentCount = displayedWorkouts.length;
+            const nextBatch = filteredWorkouts.slice(currentCount, currentCount + batchSize);
+            displayedWorkouts = displayedWorkouts.concat(nextBatch);
+            displayWorkouts();
+        };
+        // Filtering logic
+        function filterWorkouts() {
+            const goalFilter = document.getElementById('goalFilter').value;
+            const ageFilter = document.getElementById('ageFilter').value;
+            const disabilityFilter = document.getElementById('disabilityFilter').value;
+            const splitFilter = document.getElementById('splitFilter').value;
+            const muscleGroupFilter = document.getElementById('muscleGroupFilter').value;
+            const durationFilter = document.getElementById('durationFilter').value;
+            const equipmentFilter = document.getElementById('equipmentFilter').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            filteredWorkouts = allWorkouts.filter(w => {
+                const matchesGoal = !goalFilter || w.goal === goalFilter;
+                const matchesAge = !ageFilter || w.ageGroup === ageFilter;
+                const matchesDisability = !disabilityFilter || w.disability === disabilityFilter;
+                const matchesSplit = !splitFilter || w.split === splitFilter;
+                const matchesMuscle = !muscleGroupFilter || w.muscleGroup === muscleGroupFilter;
+                const matchesDuration = !durationFilter || w.duration === durationFilter;
+                const matchesEquipment = !equipmentFilter || w.equipment === equipmentFilter;
+                const matchesSearch = !searchTerm || w.title.toLowerCase().includes(searchTerm) || w.description.toLowerCase().includes(searchTerm);
+                return matchesGoal && matchesAge && matchesDisability && matchesSplit && matchesMuscle && matchesDuration && matchesEquipment && matchesSearch;
+            });
+            displayedWorkouts = filteredWorkouts.slice(0, batchSize);
+            displayWorkouts();
+        }
+        function searchWorkouts() { filterWorkouts(); }
+        // Modal logic
+        function openWorkoutModal(workoutId) {
+            const w = (displayedWorkouts || filteredWorkouts || allWorkouts).find(x => x.id === workoutId);
+            if (!w) return;
+            document.getElementById('modalTitle').textContent = w.title;
+            const modalContent = document.getElementById('modalContent');
+            modalContent.innerHTML = `
+                <div class="calendar-container" style="display:grid;grid-template-columns:1fr 2fr;gap:2rem;margin-bottom:2rem;min-height:500px;">
+                    <div class="workout-overview" style="background:#f7fafd;padding:2rem;border-radius:12px;border:1.5px solid #e0e7ef;height:fit-content;">
+                        <h3 style="color:#1565c0;margin-bottom:1.2rem;">Workout Overview</h3>
+                        <div class="overview-item" style="margin-bottom:1rem;padding:0.75rem;background:white;border-radius:8px;border-left:4px solid #2196f3;"><strong>Goal:</strong> ${w.goal}</div>
+                        <div class="overview-item"><strong>Muscle Group:</strong> ${w.muscleGroup}</div>
+                        <div class="overview-item"><strong>Split:</strong> ${w.split}</div>
+                        <div class="overview-item"><strong>Age Group:</strong> ${w.ageGroup}</div>
+                        <div class="overview-item"><strong>Duration:</strong> ${w.duration}</div>
+                        <div class="overview-item"><strong>Intensity:</strong> ${w.intensity}</div>
+                        <div class="overview-item"><strong>Equipment:</strong> ${w.equipment}</div>
+                        <div class="overview-item"><strong>Calories:</strong> ${w.calories}</div>
+                        <div class="overview-item"><strong>Description:</strong> ${w.description}</div>
+                        ${w.disability !== 'None' ? `<div class="overview-item"><strong>Accessibility:</strong> ${w.disability}</div>` : ''}
+                    </div>
+                    <div class="calendar-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:1rem;height:100%;">
+                        ${w.weeklyPlan.map(day => `
+                            <div class="calendar-day ${day.type}" style="background:white;border:2px solid #e0e7ef;border-radius:12px;padding:1rem;min-height:140px;transition:all 0.3s;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-start;overflow:hidden;position:relative;" onclick="showDayDetails('${day.day}', ${w.id})">
+                                <div class="day-header" style="font-weight:600;color:#1565c0;margin-bottom:0.5rem;font-size:0.9rem;text-align:center;padding-bottom:0.5rem;border-bottom:1px solid #e0e7ef;">${day.day}</div>
+                                <div class="day-type" style="font-size:0.75rem;color:#666;margin-bottom:0.75rem;text-align:center;font-weight:500;text-transform:uppercase;letter-spacing:0.5px;">${day.type === 'workout' ? 'Training' : 'Rest'}</div>
+                                <div class="day-exercises" style="font-size:0.7rem;color:#666;overflow:hidden;flex:1;display:flex;flex-direction:column;gap:0.4rem;">
+                                    ${day.type === 'workout' && day.exercises ? 
+                                        day.exercises.slice(0, 3).map(exercise => `
+                                            <div class="exercise-item" style="background:white;padding:0.5rem 0.6rem;margin:0;border-radius:6px;border-left:3px solid #2196f3;font-size:0.65rem;line-height:1.3;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+                                                <strong style="font-size:0.7rem;display:block;margin-bottom:0.2rem;color:#1565c0;">${exercise.name}</strong>
+                                                ${exercise.duration} min • ${exercise.sets} sets
+                                            </div>
+                                        `).join('') : 
+                                        `<div class="rest-day-text" style="background:#f4f8fb;color:#1565c0;padding:0.6rem;border-radius:6px;font-size:0.65rem;text-align:center;font-style:italic;border-left:3px solid #1565c0;box-shadow:0 1px 3px rgba(0,0,0,0.1);">Active Recovery<br>Mobility, stretching, or rest</div>`
+                                    }
+                                    ${day.type === 'workout' && day.exercises && day.exercises.length > 3 ? 
+                                        `<div class="exercise-item more-exercises" style="background:#f4f8fb;color:#1565c0;font-style:italic;text-align:center;border-left:3px solid #1565c0;font-weight:500;">+${day.exercises.length - 3} more</div>` : ''
+                                    }
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <div style="display:flex;justify-content:center;margin:2rem 0 0 0;">
+                    <button class="btn btn-primary" id="toggleDetailsBtn" onclick="toggleDetails()">Show Complete Workout Information</button>
+                </div>
+                <div id="detailsSection" style="display:none;">
+                    <div class="workout-details" style="background:white;border-radius:12px;padding:2rem;margin-top:2rem;border:1.5px solid #e0e7ef;">
+                        <h3 style="color:#1565c0;margin-bottom:1.5rem;font-size:1.5rem;">Complete Workout Information</h3>
+                        <div class="detail-section" style="margin-bottom:2rem;">
+                            <h4 style="color:#2196f3;margin-bottom:1rem;font-size:1.2rem;">Equipment & Setup</h4>
+                            <div class="detail-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;">
+                                <div class="detail-item" style="background:#f7fafd;padding:1rem;border-radius:8px;border-left:3px solid #1565c0;"><strong>Required Equipment:</strong><span> ${w.equipment}</span></div>
+                                <div class="detail-item" style="background:#f7fafd;padding:1rem;border-radius:8px;border-left:3px solid #1565c0;"><strong>Space Requirements:</strong><span> Open area, safe for bodybuilding</span></div>
+                                <div class="detail-item" style="background:#f7fafd;padding:1rem;border-radius:8px;border-left:3px solid #1565c0;"><strong>Environment:</strong><span> Indoor/covered area recommended</span></div>
+                                <div class="detail-item" style="background:#f7fafd;padding:1rem;border-radius:8px;border-left:3px solid #1565c0;"><strong>Safety Considerations:</strong><span> Spotter, proper form, warm-up</span></div>
+                            </div>
+                        </div>
+                        <div class="detail-section" style="margin-bottom:2rem;">
+                            <h4 style="color:#2196f3;margin-bottom:1rem;font-size:1.2rem;">Preparation & Recovery</h4>
+                            <div class="detail-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;">
+                                <div class="detail-item" style="background:#f7fafd;padding:1rem;border-radius:8px;border-left:3px solid #1565c0;"><strong>Pre-Workout (10-15 min):</strong><span> Dynamic warm-up, joint mobility, light cardio</span></div>
+                                <div class="detail-item" style="background:#f7fafd;padding:1rem;border-radius:8px;border-left:3px solid #1565c0;"><strong>During Workout:</strong><span> Hydrate, focus on form, rest as needed</span></div>
+                                <div class="detail-item" style="background:#f7fafd;padding:1rem;border-radius:8px;border-left:3px solid #1565c0;"><strong>Post-Workout (5-10 min):</strong><span> Static stretching, foam rolling, deep breathing</span></div>
+                                <div class="detail-item" style="background:#f7fafd;padding:1rem;border-radius:8px;border-left:3px solid #1565c0;"><strong>Hydration:</strong><span> Water before, during, and after session</span></div>
+                            </div>
+                        </div>
+                        <div class="detail-section" style="margin-bottom:2rem;">
+                            <h4 style="color:#2196f3;margin-bottom:1rem;font-size:1.2rem;">Progress Tracking</h4>
+                            <div class="detail-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;">
+                                <div class="detail-item" style="background:#f7fafd;padding:1rem;border-radius:8px;border-left:3px solid #1565c0;"><strong>Weekly Goals:</strong><span> Complete ${w.weeklyPlan.filter(d => d.type === 'workout').length} training sessions</span></div>
+                                <div class="detail-item" style="background:#f7fafd;padding:1rem;border-radius:8px;border-left:3px solid #1565c0;"><strong>Monthly Milestones:</strong><span> Increase weight or reps every 4 weeks</span></div>
+                                <div class="detail-item" style="background:#f7fafd;padding:1rem;border-radius:8px;border-left:3px solid #1565c0;"><strong>Performance Metrics:</strong><span> Track weight, sets, reps, and muscle growth</span></div>
+                                <div class="detail-item" style="background:#f7fafd;padding:1rem;border-radius:8px;border-left:3px solid #1565c0;"><strong>Recovery Indicators:</strong><span> Monitor soreness, sleep, and joint health</span></div>
+                            </div>
+                        </div>
+                        <div class="detail-section">
+                            <h4 style="color:#2196f3;margin-bottom:1rem;font-size:1.2rem;">Weekly Exercise Breakdown</h4>
+                            ${w.weeklyPlan.map((day, index) => `
+                                <div class="exercise-detail" style="background:#f7fafd;padding:1.5rem;margin:1rem 0;border-radius:12px;border-left:4px solid #1565c0;">
+                                    <h5 style="color:#1565c0;margin-bottom:1rem;font-size:1.1rem;">${day.day} - ${day.type === 'workout' ? 'Bodybuilding Session' : 'Rest Day'}</h5>
+                                    <p><strong>Focus:</strong> ${day.description}</p>
+                                    ${day.type === 'workout' && day.exercises ? `
+                                        <div class="exercise-stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:1rem;">
+                                            <div class="exercise-stat" style="background:white;padding:0.75rem;border-radius:6px;text-align:center;"><strong style="color:#1565c0;">Total Time</strong><span style="color:#1565c0;display:block;font-size:0.9rem;">${day.exercises.reduce((total, ex) => total + parseInt(ex.duration), 0)} min</span></div>
+                                            <div class="exercise-stat" style="background:white;padding:0.75rem;border-radius:6px;text-align:center;"><strong style="color:#1565c0;">Exercises</strong><span style="color:#1565c0;display:block;font-size:0.9rem;">${day.exercises.length}</span></div>
+                                            <div class="exercise-stat" style="background:white;padding:0.75rem;border-radius:6px;text-align:center;"><strong style="color:#1565c0;">Intensity</strong><span style="color:#1565c0;display:block;font-size:0.9rem;">${day.exercises[0]?.intensity || w.intensity}</span></div>
+                                            <div class="exercise-stat" style="background:white;padding:0.75rem;border-radius:6px;text-align:center;"><strong style="color:#1565c0;">Calories</strong><span style="color:#1565c0;display:block;font-size:0.9rem;">~${Math.round(w.calories / 5)} kcal</span></div>
+                                        </div>
+                                        <div style="margin-top:1rem;">
+                                            <strong>Exercise Sequence:</strong>
+                                            <ol style="margin-top:0.5rem;padding-left:1.5rem;">
+                                                ${day.exercises.map((exercise, exIndex) => `
+                                                    <li style="margin-bottom:0.5rem;"><strong style="color:#1565c0;">${exercise.name}</strong><br><span style="font-size:0.9rem;color:#666;">${exercise.duration} min • ${exercise.sets} sets • ${exercise.reps} reps • ${exercise.intensity} intensity</span></li>
+                                                `).join('')}
+                                            </ol>
+                                        </div>
+                                    ` : `
+                                        <div class="exercise-stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:1rem;">
+                                            <div class="exercise-stat" style="background:white;padding:0.75rem;border-radius:6px;text-align:center;"><strong style="color:#1565c0;">Rest Type</strong><span style="color:#1565c0;display:block;font-size:0.9rem;">Active Recovery</span></div>
+                                            <div class="exercise-stat" style="background:white;padding:0.75rem;border-radius:6px;text-align:center;"><strong style="color:#1565c0;">Duration</strong><span style="color:#1565c0;display:block;font-size:0.9rem;">20-30 min</span></div>
+                                            <div class="exercise-stat" style="background:white;padding:0.75rem;border-radius:6px;text-align:center;"><strong style="color:#1565c0;">Calories</strong><span style="color:#1565c0;display:block;font-size:0.9rem;">~50 kcal</span></div>
+                                        </div>
+                                        <p style="margin-top:1rem;"><strong>Rest Activities:</strong> Mobility, stretching, or rest</p>
+                                    `}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+                <div class="download-options">
+                    <button class="btn btn-primary" onclick="downloadWorkout(${w.id})">Download Complete Plan</button>
+                    <button class="btn btn-secondary" onclick="downloadAllWorkouts()">Download All</button>
+                </div>
+            `;
+            document.getElementById('workoutModal').style.display = 'block';
+        }
+        function showDayDetails(dayName, workoutId) {
+            const w = allWorkouts.find(x => x.id === workoutId);
+            const day = w.weeklyPlan.find(d => d.day === dayName);
+            if (!day) return;
+            // (Optional: Add a similar boxed, detailed breakdown for day details if needed)
+        }
+        function closeModal() {
+            document.getElementById('workoutModal').style.display = 'none';
+        }
+        // Download
+        function downloadWorkout(workoutId) {
+            const w = (displayedWorkouts || filteredWorkouts || allWorkouts).find(x => x.id === workoutId);
+            if (!w) return;
+            const content = `Bodybuilding Workout Plan\n====================\n\nTitle: ${w.title}\nGoal: ${w.goal}\nMuscle Group: ${w.muscleGroup}\nSplit: ${w.split}\nAge Group: ${w.ageGroup}\nDuration: ${w.duration}\nIntensity: ${w.intensity}\nEquipment: ${w.equipment}\nCalories: ${w.calories}\n\nDescription: ${w.description}\n\n7-DAY WEEKLY PLAN\n=================\n\n${w.weeklyPlan.map(day => `\n${day.day.toUpperCase()}\nType: ${day.type === 'workout' ? 'Bodybuilding Session' : 'Rest Day'}\nDescription: ${day.description}\n${day.type === 'workout' && day.exercises ? `Exercises:\n${day.exercises.map(ex => `- ${ex.name}: ${ex.duration} min, ${ex.sets} sets x ${ex.reps} reps (${ex.intensity} intensity)`).join('\n')}` : ''}\n`).join('')}\nNotes:\n- Focus on form and progressive overload\n- Maintain good nutrition and hydration\n- Listen to your body and adjust intensity as needed\n- Consult a professional if new to bodybuilding`;
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${w.title.replace(/\s+/g, '_')}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        function downloadAllWorkouts() {
+            const csvContent = [
+                ['ID','Title','Goal','Muscle Group','Split','Age Group','Duration','Intensity','Equipment','Calories','Description'],
+                ...displayedWorkouts.map(w => [w.id,w.title,w.goal,w.muscleGroup,w.split,w.ageGroup,w.duration,w.intensity,w.equipment,w.calories,w.description])
+            ].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'bodybuilding_workouts.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        // Add toggleDetails function
+        function toggleDetails() {
+            const details = document.getElementById('detailsSection');
+            const btn = document.getElementById('toggleDetailsBtn');
+            if (details.style.display === 'none') {
+                details.style.display = 'block';
+                btn.textContent = 'Hide Complete Workout Information';
+            } else {
+                details.style.display = 'none';
+                btn.textContent = 'Show Complete Workout Information';
+            }
+        }
+        displayWorkouts();
+    </script>
+</body>
+</html> 

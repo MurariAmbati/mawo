@@ -1,0 +1,2197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAWO - Yoga & Flexibility Database | 10,000+ Mindful Sessions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+            color: #2e7d32;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background Elements */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-leaf {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(45deg, #4caf50, #8bc34a);
+            border-radius: 50% 0 50% 50%;
+            opacity: 0.3;
+            animation: floatLeaf 15s infinite linear;
+        }
+
+        .floating-leaf:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .floating-leaf:nth-child(2) { left: 20%; animation-delay: 2s; }
+        .floating-leaf:nth-child(3) { left: 30%; animation-delay: 4s; }
+        .floating-leaf:nth-child(4) { left: 40%; animation-delay: 6s; }
+        .floating-leaf:nth-child(5) { left: 50%; animation-delay: 8s; }
+        .floating-leaf:nth-child(6) { left: 60%; animation-delay: 10s; }
+        .floating-leaf:nth-child(7) { left: 70%; animation-delay: 12s; }
+        .floating-leaf:nth-child(8) { left: 80%; animation-delay: 14s; }
+
+        @keyframes floatLeaf {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Growing Trees Animation */
+        .tree-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .tree {
+            position: absolute;
+            bottom: 0;
+            width: 40px;
+            height: 0;
+            background: linear-gradient(to top, #8d6e63, #6d4c41);
+            border-radius: 20px 20px 0 0;
+            animation: growTree 8s ease-out forwards;
+        }
+
+        .tree:nth-child(1) { left: 5%; animation-delay: 0s; }
+        .tree:nth-child(2) { left: 15%; animation-delay: 1s; }
+        .tree:nth-child(3) { left: 25%; animation-delay: 2s; }
+        .tree:nth-child(4) { left: 35%; animation-delay: 3s; }
+        .tree:nth-child(5) { left: 45%; animation-delay: 4s; }
+        .tree:nth-child(6) { left: 55%; animation-delay: 5s; }
+        .tree:nth-child(7) { left: 65%; animation-delay: 6s; }
+        .tree:nth-child(8) { left: 75%; animation-delay: 7s; }
+        .tree:nth-child(9) { left: 85%; animation-delay: 8s; }
+        .tree:nth-child(10) { left: 95%; animation-delay: 9s; }
+
+        .tree::after {
+            content: '';
+            position: absolute;
+            top: -60px;
+            left: -10px;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, #4caf50 30%, #8bc34a 70%);
+            border-radius: 50%;
+            opacity: 0;
+            animation: growLeaves 3s ease-out forwards;
+            animation-delay: 6s;
+        }
+
+        @keyframes growTree {
+            0% {
+                height: 0;
+            }
+            100% {
+                height: 120px;
+            }
+        }
+
+        @keyframes growLeaves {
+            0% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Pulsing Energy Orbs */
+        .energy-orb {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(76, 175, 80, 0.3) 0%, rgba(139, 195, 74, 0.1) 70%);
+            pointer-events: none;
+            z-index: 1;
+            animation: pulseOrb 4s ease-in-out infinite;
+        }
+
+        .energy-orb:nth-child(1) { top: 20%; right: 10%; animation-delay: 0s; }
+        .energy-orb:nth-child(2) { top: 60%; left: 5%; animation-delay: 2s; }
+        .energy-orb:nth-child(3) { top: 80%; right: 20%; animation-delay: 4s; }
+
+        @keyframes pulseOrb {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.6;
+            }
+        }
+
+        /* Main Content Container */
+        .main-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+            padding: 4rem 0 2rem 0;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            animation: float 20s infinite linear;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% {
+                transform: translateX(-100%);
+            }
+            50% {
+                transform: translateX(100%);
+            }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin: 0;
+            color: white;
+            letter-spacing: -0.02em;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            50% {
+                text-shadow: 0 2px 20px rgba(255,255,255,0.3);
+            }
+        }
+
+        .header p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            margin: 1rem 0 0 0;
+            color: rgba(255,255,255,0.9);
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Normal Calendar Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.9) 0%, rgba(46, 125, 50, 0.9) 100%);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: rgba(255,255,255,0.95);
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 30px;
+            width: 95%;
+            max-width: 1400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(76, 175, 80, 0.2);
+            box-shadow: 0 25px 70px rgba(0,0,0,0.3);
+            animation: slideIn 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1" fill="rgba(76,175,80,0.05)"/><circle cx="80" cy="40" r="1" fill="rgba(76,175,80,0.05)"/><circle cx="40" cy="80" r="1" fill="rgba(76,175,80,0.05)"/></svg>') repeat;
+            animation: modalParticles 20s infinite linear;
+            pointer-events: none;
+        }
+
+        @keyframes modalParticles {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-50px) rotate(360deg); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 30px 30px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(76, 175, 80, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            animation: modalShimmer 4s ease-in-out infinite;
+        }
+
+        @keyframes modalShimmer {
+            0%, 100% {
+                transform: translateX(-100%);
+            }
+            50% {
+                transform: translateX(100%);
+            }
+        }
+
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: white;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+            animation: titlePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            50% {
+                text-shadow: 0 2px 20px rgba(255,255,255,0.4);
+            }
+        }
+
+        .close {
+            font-size: 2.5rem;
+            cursor: pointer;
+            color: white;
+            line-height: 1;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .close:hover {
+            color: #e8f5e8;
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        #modalContent {
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Loading Animation */
+        .loading-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(76, 175, 80, 0.9);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .meditation-circle {
+            width: 100px;
+            height: 100px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: meditate 2s linear infinite;
+            margin-bottom: 2rem;
+        }
+
+        @keyframes meditate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .breathing-dots {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .breathing-dot {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            animation: breathe 2s ease-in-out infinite;
+        }
+
+        .breathing-dot:nth-child(1) { animation-delay: 0s; }
+        .breathing-dot:nth-child(2) { animation-delay: 0.5s; }
+        .breathing-dot:nth-child(3) { animation-delay: 1s; }
+
+        @keyframes breathe {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 1;
+            }
+        }
+
+        .loading-text {
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            animation: textFade 2s ease-in-out infinite;
+        }
+
+        @keyframes textFade {
+            0%, 100% {
+                opacity: 0.7;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Enhanced Stats Bar */
+        .stats-bar {
+            background: rgba(255,255,255,0.95);
+            padding: 3rem 0;
+            border-bottom: 1px solid rgba(76, 175, 80, 0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="25" cy="25" r="1" fill="rgba(76,175,80,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(76,175,80,0.1)"/></svg>') repeat;
+            animation: statsFloat 15s infinite linear;
+        }
+
+        @keyframes statsFloat {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-30px); }
+        }
+
+        .stats-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-item {
+            color: #2e7d32;
+            transition: transform 0.3s ease;
+            animation: statAppear 0.8s ease-out both;
+        }
+
+        .stat-item:nth-child(1) { animation-delay: 0.1s; }
+        .stat-item:nth-child(2) { animation-delay: 0.2s; }
+        .stat-item:nth-child(3) { animation-delay: 0.3s; }
+        .stat-item:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes statAppear {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stat-item:hover {
+            transform: translateY(-8px) scale(1.05);
+        }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #4caf50;
+            display: block;
+            margin-bottom: 0.5rem;
+            animation: numberGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes numberGlow {
+            0%, 100% {
+                text-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(76, 175, 80, 0.6);
+            }
+        }
+
+        .stat-label {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            color: #558b2f;
+            font-weight: 500;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* Filters Section */
+        .filters-section {
+            background: rgba(255,255,255,0.95);
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-label {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #2e7d32;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .filter-select, .filter-input {
+            font-family: 'Poppins', sans-serif;
+            padding: 0.75rem;
+            border: 2px solid #e8f5e8;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: rgba(255,255,255,0.8);
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:focus, .filter-input:focus {
+            outline: none;
+            border-color: #4caf50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        .search-section {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            font-family: 'Poppins', sans-serif;
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid #e8f5e8;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: rgba(255,255,255,0.8);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #4caf50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        .search-btn {
+            font-family: 'Poppins', sans-serif;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+
+        /* Sessions Grid */
+        .sessions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .session-card {
+            background: rgba(255,255,255,0.95);
+            border: 1px solid rgba(76, 175, 80, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            backdrop-filter: blur(10px);
+            position: relative;
+            animation: cardFloat 0.6s ease-out both;
+        }
+
+        .session-card:nth-child(1) { animation-delay: 0.1s; }
+        .session-card:nth-child(2) { animation-delay: 0.2s; }
+        .session-card:nth-child(3) { animation-delay: 0.3s; }
+        .session-card:nth-child(4) { animation-delay: 0.4s; }
+        .session-card:nth-child(5) { animation-delay: 0.5s; }
+        .session-card:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes cardFloat {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .session-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .session-card:hover::before {
+            left: 100%;
+        }
+
+        .session-card:hover {
+            border-color: #4caf50;
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(76, 175, 80, 0.2);
+        }
+
+        .session-header {
+            background: linear-gradient(135deg, #f1f8e9 0%, #e8f5e8 100%);
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(76, 175, 80, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .session-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1" fill="rgba(76,175,80,0.1)"/><circle cx="80" cy="40" r="1" fill="rgba(76,175,80,0.1)"/><circle cx="40" cy="80" r="1" fill="rgba(76,175,80,0.1)"/></svg>') repeat;
+            animation: particleFloat 10s infinite linear;
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-20px); }
+        }
+
+        .session-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2e7d32;
+            position: relative;
+            z-index: 1;
+        }
+
+        .session-style {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            color: #4caf50;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        .session-body {
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .session-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #558b2f;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .session-description {
+            font-family: 'Poppins', sans-serif;
+            color: #558b2f;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .session-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f1f8e9 0%, #e8f5e8 100%);
+            color: #4caf50;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1px solid rgba(76, 175, 80, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tag::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.2), transparent);
+            transition: left 0.3s ease;
+        }
+
+        .tag:hover::before {
+            left: 100%;
+        }
+
+        .tag:hover {
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+
+        .session-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            font-family: 'Poppins', sans-serif;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(241, 248, 233, 0.8);
+            color: #4caf50;
+            border: 1px solid rgba(76, 175, 80, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(76, 175, 80, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.2);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+        }
+
+        .page-btn {
+            font-family: 'Poppins', sans-serif;
+            padding: 0.75rem 1rem;
+            border: 2px solid rgba(76, 175, 80, 0.2);
+            background: rgba(255,255,255,0.9);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .page-btn:hover {
+            background: rgba(76, 175, 80, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .page-btn.active {
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+            color: white;
+            border-color: #4caf50;
+        }
+
+        /* Calendar Layout */
+        .calendar-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            min-height: 500px;
+        }
+
+        .session-overview {
+            background: linear-gradient(135deg, #f1f8e9 0%, #e8f5e8 100%);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(76, 175, 80, 0.2);
+            height: fit-content;
+        }
+
+        .overview-item {
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: rgba(255,255,255,0.8);
+            border-radius: 12px;
+            border-left: 4px solid #4caf50;
+        }
+
+        .overview-item strong {
+            color: #2e7d32;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1rem;
+            height: 100%;
+        }
+
+        .calendar-day {
+            background: rgba(255,255,255,0.95);
+            border: 2px solid rgba(76, 175, 80, 0.2);
+            border-radius: 16px;
+            padding: 1rem;
+            min-height: 140px;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            overflow: hidden;
+            position: relative;
+            backdrop-filter: blur(10px);
+            animation: breatheIn 4s ease-in-out infinite;
+        }
+
+        .calendar-day:nth-child(odd) {
+            animation-delay: 0s;
+        }
+
+        .calendar-day:nth-child(even) {
+            animation-delay: 2s;
+        }
+
+        @keyframes breatheIn {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 4px 15px rgba(76, 175, 80, 0.1);
+            }
+            50% {
+                transform: scale(1.02);
+                box-shadow: 0 8px 25px rgba(76, 175, 80, 0.2);
+            }
+        }
+
+        .calendar-day:hover {
+            border-color: #4caf50;
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(76, 175, 80, 0.3);
+            animation: none;
+        }
+
+        .calendar-day.session {
+            border-left: 4px solid #4caf50;
+            background: linear-gradient(135deg, #f1f8e9 0%, #e8f5e8 100%);
+        }
+
+        .calendar-day.rest {
+            border-left: 4px solid #8bc34a;
+            background: linear-gradient(135deg, #f9fbe7 0%, #f0f4c3 100%);
+        }
+
+        .calendar-day::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(76, 175, 80, 0.05) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .calendar-day:hover::before {
+            opacity: 1;
+        }
+
+        .day-header {
+            font-weight: 600;
+            color: #2e7d32;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-align: center;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(76, 175, 80, 0.2);
+            position: relative;
+        }
+
+        .day-header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #4caf50, #8bc34a);
+            transition: width 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .calendar-day:hover .day-header::after {
+            width: 80%;
+        }
+
+        .day-type {
+            font-size: 0.75rem;
+            color: #558b2f;
+            margin-bottom: 0.75rem;
+            text-align: center;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+
+        .day-type::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(76, 175, 80, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        .calendar-day:hover .day-type::before {
+            width: 100px;
+            height: 100px;
+        }
+
+        .day-poses {
+            font-size: 0.7rem;
+            color: #558b2f;
+            overflow: hidden;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            position: relative;
+        }
+
+        .pose-item {
+            background: rgba(255,255,255,0.8);
+            padding: 0.5rem 0.6rem;
+            margin: 0;
+            border-radius: 8px;
+            border-left: 3px solid #4caf50;
+            font-size: 0.65rem;
+            line-height: 1.3;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pose-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.1), transparent);
+            transition: left 0.3s ease;
+        }
+
+        .pose-item:hover::before {
+            left: 100%;
+        }
+
+        .pose-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 3px 8px rgba(76, 175, 80, 0.2);
+        }
+
+        .pose-item strong {
+            font-size: 0.7rem;
+            display: block;
+            margin-bottom: 0.2rem;
+            color: #2e7d32;
+        }
+
+        .pose-item.more-poses {
+            background: rgba(241, 248, 233, 0.8);
+            color: #4caf50;
+            font-style: italic;
+            text-align: center;
+            border-left: 3px solid #4caf50;
+            font-weight: 500;
+        }
+
+        .rest-day-text {
+            background: rgba(249, 251, 231, 0.8);
+            color: #8bc34a;
+            padding: 0.6rem;
+            border-radius: 8px;
+            font-size: 0.65rem;
+            text-align: center;
+            font-style: italic;
+            border-left: 3px solid #8bc34a;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rest-day-text::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="30" cy="30" r="2" fill="rgba(139,195,74,0.2)"/><circle cx="70" cy="70" r="2" fill="rgba(139,195,74,0.2)"/></svg>') repeat;
+            animation: restParticles 8s infinite linear;
+        }
+
+        @keyframes restParticles {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-20px) rotate(360deg); }
+        }
+
+        .session-details {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 1px solid rgba(76, 175, 80, 0.2);
+        }
+
+        .session-details h3 {
+            color: #2e7d32;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .detail-section {
+            margin-bottom: 2rem;
+        }
+
+        .detail-section h4 {
+            color: #4caf50;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .detail-item {
+            background: rgba(241, 248, 233, 0.8);
+            padding: 1rem;
+            border-radius: 12px;
+            border-left: 3px solid #4caf50;
+        }
+
+        .detail-item strong {
+            color: #2e7d32;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .pose-detail {
+            background: rgba(241, 248, 233, 0.8);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 16px;
+            border-left: 4px solid #4caf50;
+        }
+
+        .pose-detail h5 {
+            color: #2e7d32;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .pose-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .pose-stat {
+            background: rgba(255,255,255,0.8);
+            padding: 0.75rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .pose-stat strong {
+            color: #4caf50;
+            display: block;
+            font-size: 0.9rem;
+        }
+
+        .pose-stat span {
+            color: #558b2f;
+            font-size: 0.8rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .main-container {
+                padding: 2rem 1rem;
+            }
+
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sessions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-section {
+                flex-direction: column;
+            }
+
+            .session-actions {
+                flex-direction: column;
+            }
+
+            .download-options {
+                flex-direction: column;
+            }
+
+            .calendar-container {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+
+            .calendar-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+
+            .calendar-day {
+                min-height: 120px;
+                padding: 0.75rem;
+            }
+
+            .day-header {
+                font-size: 0.8rem;
+                margin-bottom: 0.4rem;
+                padding-bottom: 0.4rem;
+            }
+
+            .day-type {
+                font-size: 0.7rem;
+                margin-bottom: 0.6rem;
+            }
+
+            .day-poses {
+                font-size: 0.65rem;
+                gap: 0.3rem;
+            }
+
+            .pose-item {
+                padding: 0.4rem 0.5rem;
+                font-size: 0.6rem;
+            }
+
+            .pose-item strong {
+                font-size: 0.65rem;
+            }
+
+            .rest-day-text {
+                font-size: 0.6rem;
+                padding: 0.4rem 0.5rem;
+            }
+
+            .session-details {
+                padding: 1rem;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pose-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .pose-detail {
+                padding: 1rem;
+            }
+
+            .modal-content {
+                width: 98%;
+                margin: 1% auto;
+            }
+
+            .modal-header {
+                padding: 1rem;
+            }
+
+            .modal-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .calendar-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .calendar-day {
+                min-height: 100px;
+                padding: 0.6rem;
+            }
+
+            .day-header {
+                font-size: 0.75rem;
+                margin-bottom: 0.3rem;
+                padding-bottom: 0.3rem;
+            }
+
+            .day-type {
+                font-size: 0.65rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .day-poses {
+                font-size: 0.6rem;
+                gap: 0.25rem;
+            }
+
+            .pose-item {
+                padding: 0.3rem 0.4rem;
+                font-size: 0.55rem;
+            }
+
+            .pose-item strong {
+                font-size: 0.6rem;
+            }
+
+            .rest-day-text {
+                font-size: 0.55rem;
+                padding: 0.3rem 0.4rem;
+            }
+
+            .pose-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background Elements -->
+    <div class="floating-elements">
+        <div class="floating-leaf"></div>
+        <div class="floating-leaf"></div>
+        <div class="floating-leaf"></div>
+        <div class="floating-leaf"></div>
+        <div class="floating-leaf"></div>
+        <div class="floating-leaf"></div>
+        <div class="floating-leaf"></div>
+        <div class="floating-leaf"></div>
+    </div>
+
+    <!-- Growing Trees -->
+    <div class="tree-container">
+        <div class="tree"></div>
+        <div class="tree"></div>
+        <div class="tree"></div>
+        <div class="tree"></div>
+        <div class="tree"></div>
+        <div class="tree"></div>
+        <div class="tree"></div>
+        <div class="tree"></div>
+        <div class="tree"></div>
+        <div class="tree"></div>
+    </div>
+
+    <!-- Energy Orbs -->
+    <div class="energy-orb"></div>
+    <div class="energy-orb"></div>
+    <div class="energy-orb"></div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <h1>Yoga & Flexibility Database</h1>
+            <p>10,000+ mindful sessions for flexibility, mindfulness, stress relief, and wellness</p>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stats-container">
+                <div class="stat-item">
+                    <span class="stat-number">10,000+</span>
+                    <span class="stat-label">Sessions</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">15+</span>
+                    <span class="stat-label">Yoga Styles</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">8</span>
+                    <span class="stat-label">Experience Levels</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">4</span>
+                    <span class="stat-label">Focus Areas</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Container -->
+        <div class="main-container">
+            <!-- Filters Section -->
+            <div class="filters-section">
+                <div class="search-section">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search yoga sessions...">
+                    <button onclick="searchSessions()" class="search-btn">Search</button>
+                </div>
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label class="filter-label">Yoga Style</label>
+                        <select id="styleFilter" class="filter-select" onchange="filterSessions()">
+                            <option value="">All Styles</option>
+                            <option value="Hatha">Hatha</option>
+                            <option value="Vinyasa">Vinyasa</option>
+                            <option value="Ashtanga">Ashtanga</option>
+                            <option value="Iyengar">Iyengar</option>
+                            <option value="Bikram">Bikram</option>
+                            <option value="Kundalini">Kundalini</option>
+                            <option value="Yin">Yin</option>
+                            <option value="Restorative">Restorative</option>
+                            <option value="Power">Power</option>
+                            <option value="Gentle">Gentle</option>
+                            <option value="Chair">Chair</option>
+                            <option value="Prenatal">Prenatal</option>
+                            <option value="Kids">Kids</option>
+                            <option value="Senior">Senior</option>
+                            <option value="Meditation">Meditation</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Experience Level</label>
+                        <select id="levelFilter" class="filter-select" onchange="filterSessions()">
+                            <option value="">All Levels</option>
+                            <option value="Beginner">Beginner</option>
+                            <option value="Beginner-Intermediate">Beginner-Intermediate</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Intermediate-Advanced">Intermediate-Advanced</option>
+                            <option value="Advanced">Advanced</option>
+                            <option value="Expert">Expert</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Focus Area</label>
+                        <select id="focusFilter" class="filter-select" onchange="filterSessions()">
+                            <option value="">All Focus Areas</option>
+                            <option value="Flexibility">Flexibility</option>
+                            <option value="Mindfulness">Mindfulness</option>
+                            <option value="Stress Relief">Stress Relief</option>
+                            <option value="Wellness">Wellness</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Duration</label>
+                        <select id="durationFilter" class="filter-select" onchange="filterSessions()">
+                            <option value="">All Durations</option>
+                            <option value="15 minutes">15 minutes</option>
+                            <option value="30 minutes">30 minutes</option>
+                            <option value="45 minutes">45 minutes</option>
+                            <option value="60 minutes">60 minutes</option>
+                            <option value="90 minutes">90 minutes</option>
+                            <option value="120 minutes">120 minutes</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sessions Grid -->
+            <div id="sessionsGrid" class="sessions-grid">
+                <!-- Sessions will be populated here -->
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination">
+                <!-- Pagination will be populated here -->
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div id="sessionModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="modalTitle">Yoga Session</h2>
+                    <span class="close" onclick="closeModal()">&times;</span>
+                </div>
+                <div id="modalContent">
+                    <!-- Modal content will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Animation -->
+        <div class="loading-container" id="loadingContainer">
+            <div class="meditation-circle"></div>
+            <div class="breathing-dots">
+                <div class="breathing-dot"></div>
+                <div class="breathing-dot"></div>
+                <div class="breathing-dot"></div>
+            </div>
+            <div class="loading-text">Loading your mindful journey...</div>
+        </div>
+    </div>
+
+    <script>
+        let allSessions = [];
+        let filteredSessions = [];
+        let currentPage = 1;
+        const sessionsPerPage = 12;
+
+        // Generate yoga session data
+        function generateSessions() {
+            const styles = [
+                'Hatha', 'Vinyasa', 'Ashtanga', 'Iyengar', 'Bikram', 'Kundalini', 
+                'Yin', 'Restorative', 'Power', 'Gentle', 'Chair', 'Prenatal', 
+                'Kids', 'Senior', 'Meditation'
+            ];
+            const levels = [
+                'Beginner', 'Beginner-Intermediate', 'Intermediate', 
+                'Intermediate-Advanced', 'Advanced', 'Expert'
+            ];
+            const focusAreas = ['Flexibility', 'Mindfulness', 'Stress Relief', 'Wellness'];
+            const durations = ['15 minutes', '30 minutes', '45 minutes', '60 minutes', '90 minutes', '120 minutes'];
+            const intensities = ['Gentle', 'Moderate', 'Dynamic', 'Intense'];
+            const benefits = [
+                'Improves Flexibility', 'Reduces Stress', 'Enhances Balance', 'Builds Strength',
+                'Calms Mind', 'Increases Energy', 'Promotes Healing', 'Boosts Immunity'
+            ];
+
+            for (let i = 1; i <= 10000; i++) {
+                const style = styles[Math.floor(Math.random() * styles.length)];
+                const level = levels[Math.floor(Math.random() * levels.length)];
+                const focus = focusAreas[Math.floor(Math.random() * focusAreas.length)];
+                const duration = durations[Math.floor(Math.random() * durations.length)];
+                const intensity = intensities[Math.floor(Math.random() * intensities.length)];
+                const benefit = benefits[Math.floor(Math.random() * benefits.length)];
+
+                const session = {
+                    id: i,
+                    title: `${style} ${focus} Session ${i}`,
+                    style: style,
+                    level: level,
+                    focus: focus,
+                    duration: duration,
+                    intensity: intensity,
+                    benefit: benefit,
+                    description: `A ${intensity.toLowerCase()} ${style.toLowerCase()} session focused on ${focus.toLowerCase()}. Perfect for ${level.toLowerCase()} practitioners. ${benefit.toLowerCase()}.`,
+                    weeklyPlan: generateWeeklyPlan(style, level, focus, duration)
+                };
+
+                allSessions.push(session);
+            }
+        }
+
+        function generateWeeklyPlan(style, level, focus, duration) {
+            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+            const plan = [];
+
+            days.forEach((day, index) => {
+                if (index === 2 || index === 5) { // Wednesday and Saturday are rest days
+                    plan.push({
+                        day: day,
+                        type: 'rest',
+                        description: 'Restorative practice or meditation day'
+                    });
+                } else {
+                    plan.push({
+                        day: day,
+                        type: 'workout',
+                        description: `${style} practice session`,
+                        poses: generatePoses(style, level, focus)
+                    });
+                }
+            });
+
+            return plan;
+        }
+
+        function generatePoses(style, level, focus) {
+            const poseLibrary = {
+                'Hatha': {
+                    'Flexibility': ['Mountain Pose', 'Forward Fold', 'Downward Dog', 'Cobra Pose', 'Child\'s Pose'],
+                    'Mindfulness': ['Lotus Pose', 'Seated Meditation', 'Tree Pose', 'Warrior I', 'Corpse Pose'],
+                    'Stress Relief': ['Cat-Cow Stretch', 'Child\'s Pose', 'Legs Up the Wall', 'Reclining Twist', 'Savasana'],
+                    'Wellness': ['Sun Salutation', 'Bridge Pose', 'Triangle Pose', 'Warrior II', 'Seated Forward Bend']
+                },
+                'Vinyasa': {
+                    'Flexibility': ['Sun Salutation A', 'Sun Salutation B', 'Warrior Flow', 'Triangle Flow', 'Twisting Flow'],
+                    'Mindfulness': ['Breathing Flow', 'Meditation in Motion', 'Mindful Movement', 'Present Moment Flow', 'Awareness Practice'],
+                    'Stress Relief': ['Gentle Flow', 'Restorative Flow', 'Calming Sequence', 'Peaceful Movement', 'Relaxation Flow'],
+                    'Wellness': ['Power Flow', 'Energy Flow', 'Vitality Sequence', 'Strength Flow', 'Balance Flow']
+                },
+                'Yin': {
+                    'Flexibility': ['Butterfly Pose', 'Dragon Pose', 'Saddle Pose', 'Banana Pose', 'Square Pose'],
+                    'Mindfulness': ['Meditation Pose', 'Mindful Holding', 'Present Awareness', 'Deep Breathing', 'Inner Focus'],
+                    'Stress Relief': ['Child\'s Pose', 'Legs Up the Wall', 'Reclining Twist', 'Happy Baby', 'Corpse Pose'],
+                    'Wellness': ['Gentle Stretches', 'Energy Meridians', 'Organ Health', 'Joint Mobility', 'Tissue Release']
+                },
+                'Restorative': {
+                    'Flexibility': ['Supported Bridge', 'Legs Up the Wall', 'Reclining Bound Angle', 'Supported Twist', 'Gentle Stretches'],
+                    'Mindfulness': ['Guided Meditation', 'Breath Awareness', 'Present Moment', 'Mindful Rest', 'Inner Peace'],
+                    'Stress Relief': ['Complete Relaxation', 'Stress Release', 'Nervous System Calm', 'Deep Rest', 'Healing Rest'],
+                    'Wellness': ['Immune Support', 'Energy Restoration', 'Vitality Boost', 'Holistic Healing', 'Wellness Practice']
+                },
+                'Power': {
+                    'Flexibility': ['Dynamic Stretches', 'Power Flow', 'Strength Poses', 'Advanced Asanas', 'Intense Stretches'],
+                    'Mindfulness': ['Focused Movement', 'Present Awareness', 'Mindful Power', 'Concentration Practice', 'Mental Strength'],
+                    'Stress Relief': ['Intense Release', 'Power Release', 'Stress Burn', 'Energy Channeling', 'Tension Release'],
+                    'Wellness': ['Full Body Workout', 'Energy Boost', 'Strength Building', 'Vitality Enhancement', 'Power Wellness']
+                }
+            };
+
+            const poseCount = level.includes('Beginner') ? 5 : level.includes('Intermediate') ? 7 : 10;
+            let poses = [];
+            
+            for (let i = 0; i < poseCount; i++) {
+                let poseList = (poseLibrary[style] && poseLibrary[style][focus]) || 
+                              poseLibrary['Hatha'][focus] || 
+                              ['Mountain Pose', 'Child\'s Pose', 'Downward Dog', 'Cobra Pose', 'Corpse Pose'];
+                
+                const poseName = poseList[i % poseList.length];
+                const holdTime = level.includes('Beginner') ? '30 seconds' : level.includes('Intermediate') ? '1 minute' : '2 minutes';
+                
+                poses.push({
+                    name: poseName,
+                    holdTime: holdTime,
+                    focus: focus,
+                    description: `${focus.toLowerCase()} focused ${poseName.toLowerCase()} for ${holdTime}`
+                });
+            }
+            
+            return poses;
+        }
+
+        // Filter and display sessions
+        function filterSessions() {
+            const styleFilter = document.getElementById('styleFilter').value;
+            const levelFilter = document.getElementById('levelFilter').value;
+            const focusFilter = document.getElementById('focusFilter').value;
+            const durationFilter = document.getElementById('durationFilter').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+            filteredSessions = allSessions.filter(session => {
+                const matchesStyle = !styleFilter || session.style === styleFilter;
+                const matchesLevel = !levelFilter || session.level === levelFilter;
+                const matchesFocus = !focusFilter || session.focus === focusFilter;
+                const matchesDuration = !durationFilter || session.duration === durationFilter;
+                const matchesSearch = !searchTerm || 
+                    session.title.toLowerCase().includes(searchTerm) ||
+                    session.description.toLowerCase().includes(searchTerm) ||
+                    session.style.toLowerCase().includes(searchTerm);
+
+                return matchesStyle && matchesLevel && matchesFocus && matchesDuration && matchesSearch;
+            });
+
+            currentPage = 1;
+            displaySessions();
+            displayPagination();
+        }
+
+        function searchSessions() {
+            filterSessions();
+        }
+
+        // Display sessions
+        function displaySessions() {
+            const grid = document.getElementById('sessionsGrid');
+            const startIndex = (currentPage - 1) * sessionsPerPage;
+            const endIndex = startIndex + sessionsPerPage;
+            const pageSessions = filteredSessions.slice(startIndex, endIndex);
+
+            grid.innerHTML = pageSessions.map(session => `
+                <div class="session-card" onclick="openSessionModal(${session.id})">
+                    <div class="session-header">
+                        <div class="session-title">${session.title}</div>
+                        <div class="session-style">${session.style}</div>
+                    </div>
+                    <div class="session-body">
+                        <div class="session-stats">
+                            <span>Level: ${session.level}</span>
+                            <span>Duration: ${session.duration}</span>
+                            <span>Focus: ${session.focus}</span>
+                        </div>
+                        <div class="session-description">${session.description}</div>
+                        <div class="session-tags">
+                            <span class="tag">${session.style}</span>
+                            <span class="tag">${session.intensity}</span>
+                            <span class="tag">${session.focus}</span>
+                            <span class="tag">${session.benefit}</span>
+                        </div>
+                        <div class="session-actions">
+                            <button class="btn btn-primary">View Routine</button>
+                            <button class="btn btn-secondary" onclick="event.stopPropagation(); downloadSession(${session.id})">Download</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Pagination
+        function displayPagination() {
+            const totalPages = Math.ceil(filteredSessions.length / sessionsPerPage);
+            const pagination = document.getElementById('pagination');
+
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+
+            let paginationHTML = '';
+            
+            if (currentPage > 1) {
+                paginationHTML += `<button class="page-btn" onclick="changePage(${currentPage - 1})">Previous</button>`;
+            }
+
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+                    paginationHTML += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+                } else if (i === currentPage - 3 || i === currentPage + 3) {
+                    paginationHTML += `<span>...</span>`;
+                }
+            }
+
+            if (currentPage < totalPages) {
+                paginationHTML += `<button class="page-btn" onclick="changePage(${currentPage + 1})">Next</button>`;
+            }
+
+            pagination.innerHTML = paginationHTML;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            displaySessions();
+            displayPagination();
+        }
+
+        // Modal functions
+        function openSessionModal(sessionId) {
+            showLoading();
+            
+            setTimeout(() => {
+                hideLoading();
+                const session = allSessions.find(s => s.id === sessionId);
+                if (!session) return;
+
+                document.getElementById('modalTitle').textContent = session.title;
+                
+                const modalContent = document.getElementById('modalContent');
+                modalContent.innerHTML = `
+                    <div class="calendar-container">
+                        <div class="session-overview">
+                            <h3>Session Overview</h3>
+                            <div class="overview-item">
+                                <strong>Style:</strong> ${session.style}
+                            </div>
+                            <div class="overview-item">
+                                <strong>Level:</strong> ${session.level}
+                            </div>
+                            <div class="overview-item">
+                                <strong>Focus:</strong> ${session.focus}
+                            </div>
+                            <div class="overview-item">
+                                <strong>Duration:</strong> ${session.duration}
+                            </div>
+                            <div class="overview-item">
+                                <strong>Intensity:</strong> ${session.intensity}
+                            </div>
+                            <div class="overview-item">
+                                <strong>Benefit:</strong> ${session.benefit}
+                            </div>
+                        </div>
+                        
+                        <div class="calendar-grid">
+                            ${session.weeklyPlan.map(day => `
+                                <div class="calendar-day ${day.type}" onclick="showDayDetails('${day.day}', ${sessionId})">
+                                    <div class="day-header">${day.day}</div>
+                                    <div class="day-type">${day.type === 'session' ? 'Practice' : 'Rest'}</div>
+                                    <div class="day-poses">
+                                        ${day.type === 'session' && day.poses ? 
+                                            day.poses.slice(0, 3).map(pose => `
+                                                <div class="pose-item">
+                                                    <strong>${pose.name}</strong>
+                                                    ${pose.duration} • ${pose.focus}
+                                                </div>
+                                            `).join('') : 
+                                            `<div class="rest-day-text">Mindful Rest<br>Meditation & reflection</div>`
+                                        }
+                                        ${day.type === 'session' && day.poses && day.poses.length > 3 ? 
+                                            `<div class="pose-item more-poses">+${day.poses.length - 3} more poses</div>` : ''
+                                        }
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="session-details">
+                        <h3>Complete Session Information</h3>
+                        
+                        <div class="detail-section">
+                            <h4>Equipment & Setup</h4>
+                            <div class="detail-grid">
+                                <div class="detail-item">
+                                    <strong>Required Equipment:</strong>
+                                    <span>${getYogaEquipment(session.style, session.level)}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <strong>Space Requirements:</strong>
+                                    <span>${getYogaSpace(session.style, session.level)}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <strong>Environment:</strong>
+                                    <span>${getYogaEnvironment(session.style, session.focus)}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <strong>Safety Considerations:</strong>
+                                    <span>${getYogaSafety(session.style, session.level)}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detail-section">
+                            <h4>Mindfulness & Preparation</h4>
+                            <div class="detail-grid">
+                                <div class="detail-item">
+                                    <strong>Pre-Session (10-15 min):</strong>
+                                    <span>${getPreSessionPrep(session.style, session.focus)}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <strong>Breathing Focus:</strong>
+                                    <span>${getBreathingFocus(session.style, session.focus)}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <strong>Post-Session (5-10 min):</strong>
+                                    <span>${getPostSessionPrep(session.style, session.focus)}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <strong>Hydration:</strong>
+                                    <span>${getYogaHydration(session.duration, session.intensity)}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detail-section">
+                            <h4>Weekly Practice Breakdown</h4>
+                            ${session.weeklyPlan.map((day, index) => `
+                                <div class="pose-detail">
+                                    <h5>${day.day} - ${day.type === 'session' ? 'Yoga Practice' : 'Rest Day'}</h5>
+                                    <p><strong>Focus:</strong> ${day.description}</p>
+                                    ${day.type === 'session' && day.poses ? `
+                                        <div class="pose-stats">
+                                            <div class="pose-stat">
+                                                <strong>Total Time</strong>
+                                                <span>${day.poses.reduce((total, pose) => total + parseInt(pose.duration), 0)} min</span>
+                                            </div>
+                                            <div class="pose-stat">
+                                                <strong>Poses</strong>
+                                                <span>${day.poses.length}</span>
+                                            </div>
+                                            <div class="pose-stat">
+                                                <strong>Intensity</strong>
+                                                <span>${day.poses[0]?.intensity || 'Moderate'}</span>
+                                            </div>
+                                            <div class="pose-stat">
+                                                <strong>Focus</strong>
+                                                <span>${day.poses[0]?.focus || session.focus}</span>
+                                            </div>
+                                        </div>
+                                        <div style="margin-top: 1rem;">
+                                            <strong>Pose Sequence:</strong>
+                                            <ol style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                                ${day.poses.map((pose, poseIndex) => `
+                                                    <li style="margin-bottom: 0.5rem;">
+                                                        <strong>${pose.name}</strong><br>
+                                                        <span style="font-size: 0.9rem; color: #558b2f;">
+                                                            ${pose.duration} min • ${pose.focus} • ${pose.intensity} intensity
+                                                        </span>
+                                                    </li>
+                                                `).join('')}
+                                            </ol>
+                                        </div>
+                                    ` : `
+                                        <div class="pose-stats">
+                                            <div class="pose-stat">
+                                                <strong>Rest Type</strong>
+                                                <span>Mindful Rest</span>
+                                            </div>
+                                            <div class="pose-stat">
+                                                <strong>Duration</strong>
+                                                <span>20-30 min</span>
+                                            </div>
+                                            <div class="pose-stat">
+                                                <strong>Intensity</strong>
+                                                <span>Very Gentle</span>
+                                            </div>
+                                            <div class="pose-stat">
+                                                <strong>Focus</strong>
+                                                <span>Meditation</span>
+                                            </div>
+                                        </div>
+                                        <p style="margin-top: 1rem;"><strong>Rest Activities:</strong> Gentle stretching, meditation, pranayama, or complete rest</p>
+                                    `}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="download-options">
+                        <button class="btn btn-primary" onclick="downloadSession(${session.id})">Download Complete Session</button>
+                        <button class="btn btn-secondary" onclick="downloadAllSessions()">Download All</button>
+                    </div>
+                `;
+
+                document.getElementById('sessionModal').style.display = 'block';
+            }, 1000);
+        }
+
+        // Helper functions for detailed yoga session information
+        function getYogaEquipment(style, level) {
+            const equipment = {
+                'Hatha': 'Yoga mat, comfortable clothing, quiet space',
+                'Vinyasa': 'Yoga mat, comfortable clothing, space for movement',
+                'Ashtanga': 'Yoga mat, comfortable clothing, towel for sweat',
+                'Iyengar': 'Yoga mat, props (blocks, straps, blankets)',
+                'Bikram': 'Yoga mat, towel, water bottle, warm room',
+                'Kundalini': 'Yoga mat, comfortable clothing, meditation cushion',
+                'Yin': 'Yoga mat, props (blocks, bolsters, blankets)',
+                'Restorative': 'Yoga mat, multiple props (bolsters, blankets, eye pillow)',
+                'Power': 'Yoga mat, comfortable clothing, space for movement',
+                'Gentle': 'Yoga mat, comfortable clothing, props if needed',
+                'Chair': 'Sturdy chair, comfortable clothing, optional mat',
+                'Prenatal': 'Yoga mat, props (bolsters, blocks), comfortable clothing',
+                'Kids': 'Yoga mat, comfortable clothing, fun props',
+                'Senior': 'Yoga mat, props (blocks, straps), comfortable clothing',
+                'Meditation': 'Meditation cushion or chair, quiet space, comfortable clothing',
+                'default': 'Yoga mat, comfortable clothing, quiet space'
+            };
+            return equipment[style] || equipment['default'];
+        }
+
+        function getYogaSpace(style, level) {
+            const space = {
+                'Hatha': 'Quiet space (6x6 feet minimum)',
+                'Vinyasa': 'Open space (8x8 feet minimum)',
+                'Ashtanga': 'Open space (8x8 feet minimum), well-ventilated',
+                'Iyengar': 'Space for props and movement (8x8 feet minimum)',
+                'Bikram': 'Warm room (105°F), space for movement',
+                'Kundalini': 'Quiet space (6x6 feet minimum)',
+                'Yin': 'Quiet space (6x6 feet minimum)',
+                'Restorative': 'Quiet space (6x6 feet minimum)',
+                'Power': 'Open space (8x8 feet minimum)',
+                'Gentle': 'Quiet space (6x6 feet minimum)',
+                'Chair': 'Space for chair and arm movements',
+                'Prenatal': 'Quiet space (6x6 feet minimum)',
+                'Kids': 'Open space (8x8 feet minimum)',
+                'Senior': 'Quiet space (6x6 feet minimum)',
+                'Meditation': 'Quiet space (4x4 feet minimum)',
+                'default': 'Quiet space (6x6 feet minimum)'
+            };
+            return space[style] || space['default'];
+        }
+
+        function getYogaEnvironment(style, focus) {
+            if (focus === 'Mindfulness') return 'Quiet, peaceful environment with minimal distractions';
+            if (focus === 'Stress Relief') return 'Calm, soothing environment with soft lighting';
+            if (focus === 'Wellness') return 'Clean, well-ventilated space with natural light';
+            return 'Comfortable, quiet environment suitable for practice';
+        }
+
+        function getYogaSafety(style, level) {
+            const safety = {
+                'Hatha': 'Listen to your body, avoid overstretching',
+                'Vinyasa': 'Maintain proper alignment, breathe steadily',
+                'Ashtanga': 'Build strength gradually, stay hydrated',
+                'Iyengar': 'Use props for support, focus on alignment',
+                'Bikram': 'Stay hydrated, listen to your body, avoid overheating',
+                'Kundalini': 'Practice under guidance if new, respect energy work',
+                'Yin': 'Hold poses gently, avoid deep stretching if injured',
+                'Restorative': 'Use props for comfort, focus on relaxation',
+                'Power': 'Warm up properly, maintain proper form',
+                'Gentle': 'Move slowly, respect your limits',
+                'Chair': 'Ensure chair is stable, maintain good posture',
+                'Prenatal': 'Avoid deep twists and inversions, consult healthcare provider',
+                'Kids': 'Make it fun, avoid forcing poses',
+                'Senior': 'Move slowly, use props for support',
+                'Meditation': 'Sit comfortably, don\'t force posture',
+                'default': 'Listen to your body, practice mindfully'
+            };
+            return safety[style] || safety['default'];
+        }
+
+        function getPreSessionPrep(style, focus) {
+            if (focus === 'Mindfulness') return 'Gentle breathing, centering meditation, setting intention';
+            if (focus === 'Stress Relief') return 'Deep breathing, gentle stretching, calming music';
+            if (focus === 'Wellness') return 'Light warm-up, hydration, comfortable clothing';
+            return 'Gentle warm-up, breathing exercises, setting intention';
+        }
+
+        function getBreathingFocus(style, focus) {
+            if (focus === 'Mindfulness') return 'Ujjayi breath, mindful breathing, breath awareness';
+            if (focus === 'Stress Relief') return 'Deep belly breathing, calming breath patterns';
+            if (focus === 'Wellness') return 'Natural breathing, breath-body connection';
+            return 'Steady, mindful breathing throughout practice';
+        }
+
+        function getPostSessionPrep(style, focus) {
+            if (focus === 'Mindfulness') return 'Savasana, gratitude meditation, gentle stretching';
+            if (focus === 'Stress Relief') return 'Relaxation poses, calming breath, gentle movement';
+            if (focus === 'Wellness') return 'Cool-down stretches, hydration, rest';
+            return 'Savasana, gentle stretching, mindful reflection';
+        }
+
+        function getYogaHydration(duration, intensity) {
+            if (duration.includes('90') || duration.includes('120')) return 'Drink water before and after, small sips during if needed';
+            if (intensity === 'Intense' || intensity === 'Dynamic') return 'Stay hydrated before and after, small sips during practice';
+            return 'Drink water before and after practice, stay hydrated throughout day';
+        }
+
+        // Download functions
+        function downloadSession(sessionId) {
+            const session = allSessions.find(s => s.id === sessionId);
+            if (!session) return;
+
+            const content = `
+Yoga & Flexibility Session Plan
+===============================
+
+Title: ${session.title}
+Style: ${session.style}
+Level: ${session.level}
+Focus: ${session.focus}
+Duration: ${session.duration}
+Intensity: ${session.intensity}
+Benefit: ${session.benefit}
+
+Description: ${session.description}
+
+7-DAY WEEKLY PLAN
+=================
+
+${session.weeklyPlan.map(day => `
+${day.day.toUpperCase()}
+Type: ${day.type === 'workout' ? 'Practice Day' : 'Rest Day'}
+Description: ${day.description}
+${day.type === 'workout' && day.poses ? `
+Poses:
+${day.poses.map(pose => `- ${pose.name}: ${pose.holdTime} (${pose.focus} focus)`).join('\n')}
+` : ''}
+`).join('\n')}
+
+Notes:
+- Always warm up before starting your practice
+- Listen to your body and modify poses as needed
+- Focus on your breath throughout the session
+- Consult with a healthcare provider before starting any new exercise program
+            `;
+
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${session.title.replace(/\s+/g, '_')}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function downloadAllSessions() {
+            const csvContent = [
+                ['ID', 'Title', 'Style', 'Level', 'Focus', 'Duration', 'Intensity', 'Benefit', 'Description'],
+                ...filteredSessions.map(session => [
+                    session.id,
+                    session.title,
+                    session.style,
+                    session.level,
+                    session.focus,
+                    session.duration,
+                    session.intensity,
+                    session.benefit,
+                    session.description
+                ])
+            ].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'yoga_sessions.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('sessionModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Initialize
+        generateSessions();
+        filteredSessions = allSessions;
+        
+        // Show loading animation
+        showLoading();
+        
+        // Hide loading after content is ready
+        setTimeout(() => {
+            hideLoading();
+            displaySessions();
+            displayPagination();
+        }, 2000);
+
+        // Loading functions
+        function showLoading() {
+            document.getElementById('loadingContainer').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingContainer').style.display = 'none';
+        }
+    </script>
+</body>
+</html> 

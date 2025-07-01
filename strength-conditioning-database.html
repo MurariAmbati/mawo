@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strength & Conditioning Database</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f7f6f3;
+            color: #37352f;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #37352f;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #787774;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            padding: 12px 16px;
+            border: 2px solid #e1e1e1;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #007aff;
+        }
+
+        .filter-select {
+            padding: 12px 16px;
+            border: 2px solid #e1e1e1;
+            border-radius: 6px;
+            font-size: 16px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #007aff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0056cc;
+        }
+
+        .btn-secondary {
+            background: #f1f1f1;
+            color: #37352f;
+            border: 1px solid #e1e1e1;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e5e5;
+        }
+
+        .database {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .database-header {
+            background: #f8f9fa;
+            padding: 16px 20px;
+            border-bottom: 1px solid #e1e1e1;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+            gap: 15px;
+            font-weight: 600;
+            color: #37352f;
+        }
+
+        .database-row {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f1f1f1;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+            gap: 15px;
+            transition: background-color 0.2s;
+        }
+
+        .database-row:hover {
+            background-color: #f8f9fa;
+        }
+
+        .database-row:last-child {
+            border-bottom: none;
+        }
+
+        .cell {
+            display: flex;
+            align-items: center;
+            min-height: 24px;
+        }
+
+        .title {
+            font-weight: 500;
+            color: #007aff;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .title:hover {
+            color: #0056cc;
+            text-decoration: underline;
+        }
+
+        .description {
+            color: #787774;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .tag-beginner { background: #e8f5e8; color: #2d5a2d; }
+        .tag-intermediate { background: #fff3cd; color: #856404; }
+        .tag-advanced { background: #f8d7da; color: #721c24; }
+        .tag-accessible { background: #e3f2fd; color: #1565c0; }
+        .tag-adaptive { background: #f3e5f5; color: #7b1fa2; }
+        .tag-complete-beginner { background: #e8f5e8; color: #2d5a2d; }
+        .tag-early-intermediate { background: #e8f5e8; color: #2d5a2d; }
+        .tag-advanced-intermediate { background: #fff3cd; color: #856404; }
+        .tag-elite { background: #f8d7da; color: #721c24; }
+        .tag-professional { background: #f8d7da; color: #721c24; }
+
+        .domain-tag {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .plan-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .plan-btn:hover {
+            background: #218838;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 1000px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e1e1e1;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #37352f;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close:hover {
+            color: #37352f;
+        }
+
+        .workout-plan {
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .day-header {
+            font-weight: 600;
+            color: #007aff;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .exercise-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .exercise-item {
+            background: white;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            border-left: 4px solid #007aff;
+        }
+
+        .exercise-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .exercise-details {
+            font-size: 14px;
+            color: #787774;
+        }
+
+        .plan-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 20px;
+        }
+
+        .page-btn {
+            padding: 8px 12px;
+            border: 1px solid #e1e1e1;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .page-btn:hover {
+            background: #f8f9fa;
+        }
+
+        .page-btn.active {
+            background: #007aff;
+            color: white;
+            border-color: #007aff;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #007aff;
+        }
+
+        .stat-label {
+            color: #787774;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .difficulty-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .difficulty-1-3 { background: #28a745; }
+        .difficulty-4-6 { background: #ffc107; color: #333; }
+        .difficulty-7-8 { background: #fd7e14; }
+        .difficulty-9-10 { background: #dc3545; }
+
+        @media (max-width: 768px) {
+            .database-header,
+            .database-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .search-box {
+                min-width: auto;
+            }
+            
+            .stats {
+                flex-direction: column;
+            }
+            
+            .stat-card {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fitprep-header" style="position:sticky;top:0;width:100%;background:linear-gradient(90deg,#1565c0 0%,#2196f3 100%);padding:1.1rem 0;z-index:1000;text-align:left;box-shadow:0 2px 10px rgba(33,150,243,0.08);">
+        <a href="landing.html" class="fitprep-back-btn" style="color:#fff;font-weight:700;font-size:1.1rem;text-decoration:none;margin-left:2rem;transition:color 0.2s;">&larr; Back to FitPrep Home</a>
+    </div>
+    <div class="container">
+        <div class="header">
+            <h1>🏋️‍♂️ Strength & Conditioning Database</h1>
+            <p>100,000+ comprehensive strength training routines across Olympic Weightlifting, Powerlifting, CrossFit, Bodybuilding, and Strongman - Highly specific to age groups and accessible for disabled individuals</p>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalRoutines">100,000</div>
+                    <div class="stat-label">Total Routines</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="filteredRoutines">100,000</div>
+                    <div class="stat-label">Showing</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Domains</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">18</div>
+                    <div class="stat-label">Age Ranges</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">16</div>
+                    <div class="stat-label">Accessibility Types</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">Experience Levels</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <input type="text" class="search-box" id="searchBox" placeholder="Search routines by name, domain, or tags...">
+            <select class="filter-select" id="domainFilter">
+                <option value="">All Domains</option>
+                <option value="Olympic Weightlifting">Olympic Weightlifting</option>
+                <option value="Powerlifting">Powerlifting</option>
+                <option value="CrossFit">CrossFit</option>
+                <option value="Bodybuilding">Bodybuilding</option>
+                <option value="Strongman">Strongman</option>
+            </select>
+            <select class="filter-select" id="levelFilter">
+                <option value="">All Levels</option>
+                <option value="Complete Beginner">Complete Beginner</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Early Intermediate">Early Intermediate</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced Intermediate">Advanced Intermediate</option>
+                <option value="Advanced">Advanced</option>
+                <option value="Elite">Elite</option>
+                <option value="Professional">Professional</option>
+            </select>
+            <select class="filter-select" id="goalFilter">
+                <option value="">All Goals</option>
+                <option value="Hypertrophy">Hypertrophy</option>
+                <option value="Peak Strength">Peak Strength</option>
+                <option value="Explosiveness">Explosiveness</option>
+                <option value="Endurance">Endurance</option>
+                <option value="Competition Prep">Competition Prep</option>
+                <option value="Muscle Building">Muscle Building</option>
+                <option value="Fat Loss">Fat Loss</option>
+                <option value="Athletic Performance">Athletic Performance</option>
+                <option value="Functional Strength">Functional Strength</option>
+                <option value="Injury Prevention">Injury Prevention</option>
+                <option value="Post-Rehabilitation">Post-Rehabilitation</option>
+                <option value="Competition Preparation">Competition Preparation</option>
+                <option value="Peak Performance">Peak Performance</option>
+                <option value="Maintenance">Maintenance</option>
+                <option value="Recovery">Recovery</option>
+                <option value="Skill Development">Skill Development</option>
+                <option value="Balance & Stability">Balance & Stability</option>
+            </select>
+            <button class="btn btn-primary" onclick="downloadCSV()">Download CSV</button>
+            <button class="btn btn-secondary" onclick="downloadJSON()">Download JSON</button>
+        </div>
+
+        <div class="database">
+            <div class="database-header">
+                <div>Routine Name</div>
+                <div>Domain</div>
+                <div>Goal</div>
+                <div>Level</div>
+                <div>Age Range</div>
+                <div>Accessibility</div>
+                <div>Difficulty</div>
+                <div>Duration</div>
+                <div>Plan</div>
+            </div>
+            <div id="routineRows"></div>
+        </div>
+
+        <!-- Modal for routine details -->
+        <div id="routineModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="modalTitle"></h2>
+                    <span class="close" onclick="closeModal()">&times;</span>
+                </div>
+                <div id="modalContent"></div>
+                <div class="plan-actions">
+                    <button class="btn btn-primary" onclick="downloadRoutine()">Download Routine</button>
+                    <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+    <script>
+        // Generate 100,000+ strength & conditioning routines
+        const routineTemplates = {
+            'Olympic Weightlifting': {
+                base: 'Olympic Weightlifting',
+                variations: ['Snatch Focus', 'Clean & Jerk Focus', 'Classical', 'Competition Prep', 'Technique Mastery', 'Power Development', 'Speed Focus', 'Strength Building', 'Recovery', 'Peak Performance', 'Youth Development', 'Master Athlete', 'Adaptive', 'Rehabilitation', 'Elite Competition', 'Technical Mastery', 'Power Endurance', 'Speed Strength', 'Recovery Focus', 'Peak Power']
+            },
+            'Powerlifting': {
+                base: 'Powerlifting',
+                variations: ['Squat Focus', 'Bench Focus', 'Deadlift Focus', 'Competition Prep', 'Strength Building', 'Volume Training', 'Intensity Focus', 'Recovery', 'Peak Strength', 'Accessory Work', 'Raw Powerlifting', 'Equipped Powerlifting', 'Youth Powerlifting', 'Master Powerlifting', 'Adaptive Powerlifting', 'Rehabilitation', 'Strength Endurance', 'Maximal Strength', 'Technical Mastery', 'Competition Peak']
+            },
+            'CrossFit': {
+                base: 'CrossFit',
+                variations: ['MetCon Focus', 'Strength Bias', 'Gymnastics Focus', 'Endurance', 'Competition Prep', 'Skill Development', 'Power Output', 'Recovery', 'Performance', 'Functional Fitness', 'Scaled CrossFit', 'RX CrossFit', 'Elite CrossFit', 'Youth CrossFit', 'Adaptive CrossFit', 'Rehabilitation', 'Endurance Focus', 'Strength Focus', 'Skill Development', 'Competition Ready']
+            },
+            'Bodybuilding': {
+                base: 'Bodybuilding',
+                variations: ['Hypertrophy Focus', 'Strength Building', 'Muscle Definition', 'Mass Building', 'Cutting Phase', 'Bulking Phase', 'Recovery', 'Symmetry Focus', 'Weak Point Training', 'Competition Prep', 'Natural Bodybuilding', 'Classic Physique', 'Men\'s Physique', 'Women\'s Physique', 'Adaptive Bodybuilding', 'Rehabilitation', 'Muscle Endurance', 'Strength Hypertrophy', 'Definition Focus', 'Mass Building']
+            },
+            'Strongman': {
+                base: 'Strongman',
+                variations: ['Event Training', 'Strength Building', 'Endurance Focus', 'Competition Prep', 'Grip Strength', 'Core Development', 'Power Output', 'Recovery', 'Technique Work', 'Conditioning', 'Lightweight Strongman', 'Heavyweight Strongman', 'Master Strongman', 'Adaptive Strongman', 'Rehabilitation', 'Grip Focus', 'Core Strength', 'Power Development', 'Event Mastery', 'Competition Peak']
+            }
+        };
+
+        const domains = ['Olympic Weightlifting', 'Powerlifting', 'CrossFit', 'Bodybuilding', 'Strongman'];
+        const goals = [
+            'Hypertrophy', 'Peak Strength', 'Explosiveness', 'Endurance', 'Competition Prep', 'Technique', 'Recovery',
+            'Muscle Building', 'Fat Loss', 'Athletic Performance', 'Functional Strength', 'Injury Prevention', 'Post-Rehabilitation',
+            'Competition Preparation', 'Peak Performance', 'Maintenance', 'Recovery', 'Skill Development', 'Balance & Stability',
+            'Power Development', 'Speed Strength', 'Strength Endurance', 'Muscle Endurance', 'Maximal Strength', 'Technical Mastery'
+        ];
+        const levels = [
+            'Complete Beginner', 'Beginner', 'Early Intermediate', 'Intermediate', 'Advanced Intermediate', 'Advanced', 'Elite', 'Professional'
+        ];
+        const trainingSplits = [
+            'Full Body', 'Push/Pull/Legs', 'Upper/Lower', 'Event Day', 'Body Part Split', 'Movement Pattern',
+            '1 Day', '2 Day', '3 Day', '4 Day', '5 Day', '6 Day', 'Upper Body Focus', 'Lower Body Focus', 'Core Focus', 'Cardio Focus'
+        ];
+        const intensitySchemes = [
+            '%1RM', 'RPE Scale', 'AMRAP', 'EMOM', 'Tabata', 'Percentage Based', 'Auto-Regulated',
+            'Pyramid', 'Reverse Pyramid', 'Drop Sets', 'Supersets', 'Circuit Training', 'Interval Training',
+            'Time Under Tension', 'Rest-Pause', 'Forced Reps', 'Negative Reps', 'Isometric Holds'
+        ];
+        const progressionModels = [
+            'Linear', 'Conjugate', 'Wave Loading', 'Auto-Regulated', 'Block Periodization', 'Undulating', 'Step Loading',
+            'Daily Undulating', 'Weekly Undulating', 'Monthly Undulating', 'Reverse Linear', 'Step Loading', 'Wave Loading',
+            'Pyramid Loading', 'Reverse Pyramid', 'Constant Load', 'Variable Load', 'Accommodating Resistance'
+        ];
+        const equipment = [
+            'Barbell', 'Dumbbells', 'Kettlebells', 'Yoke', 'Atlas Stones', 'Log', 'Farmer\'s Walk', 'Sandbags', 'Rings', 'Rope',
+            'Resistance Bands', 'Cable Machines', 'Smith Machine', 'Free Weights', 'Olympic Equipment', 'Strongman Equipment',
+            'CrossFit Equipment', 'Rehabilitation Equipment', 'Adaptive Equipment', 'Minimal Equipment', 'Home Gym', 'Commercial Gym'
+        ];
+        const ageRanges = [
+            'Children (8-12)', 'Youth (13-15)', 'Teen (16-18)', 'Young Adult (19-25)', 'Adult (26-30)', 'Adult (31-35)',
+            'Adult (36-40)', 'Adult (41-45)', 'Adult (46-50)', 'Adult (51-55)', 'Adult (56-60)', 'Senior (61-65)',
+            'Senior (66-70)', 'Senior (71-75)', 'Senior (76-80)', 'Senior (81-85)', 'Senior (86-90)', 'Senior (91+)'
+        ];
+        const disabilityTypes = [
+            'None', 'Mobility Impairment', 'Visual Impairment', 'Hearing Impairment', 'Cognitive Disability',
+            'Upper Limb Amputation', 'Lower Limb Amputation', 'Spinal Cord Injury', 'Cerebral Palsy', 'Multiple Sclerosis',
+            'Parkinson\'s Disease', 'Stroke Recovery', 'Arthritis', 'Chronic Pain', 'Balance Issues', 'Coordination Issues'
+        ];
+
+        // Comprehensive exercise libraries for each domain with age and disability considerations
+        const exerciseLibrary = {
+            'Olympic Weightlifting': {
+                main: [
+                    'Snatch', 'Clean & Jerk', 'Power Snatch', 'Power Clean', 'Hang Snatch', 'Hang Clean', 
+                    'Muscle Snatch', 'Muscle Clean', 'Split Jerk', 'Push Jerk', 'Squat Jerk', 'Drop Snatch'
+                ],
+                accessory: [
+                    'Overhead Squat', 'Front Squat', 'Back Squat', 'Push Press', 'Jerk Balance', 'Snatch Balance', 
+                    'Pull-Ups', 'Deadlifts', 'Romanian Deadlift', 'Good Mornings', 'Box Jumps', 'Medicine Ball Throws'
+                ],
+                assistance: [
+                    'Romanian Deadlift', 'Good Mornings', 'Box Jumps', 'Medicine Ball Throws', 'Pull-Ups', 'Dips',
+                    'Lat Pulldowns', 'Rows', 'Core Work', 'Mobility Drills', 'Stability Work', 'Balance Training'
+                ],
+                adaptive: [
+                    'Seated Press', 'Assisted Pull-Ups', 'Resistance Band Rows', 'Wall Push-Ups', 'Chair Squats',
+                    'Standing Balance Work', 'Grip Strengthening', 'Range of Motion Exercises', 'Stability Ball Work'
+                ],
+                youth: [
+                    'PVC Pipe Snatch', 'PVC Pipe Clean', 'Bodyweight Squats', 'Push-Ups', 'Planks', 'Jumping Jacks',
+                    'Agility Ladder', 'Medicine Ball Throws', 'Balance Exercises', 'Coordination Drills'
+                ],
+                senior: [
+                    'Chair Squats', 'Wall Push-Ups', 'Resistance Band Rows', 'Standing Balance', 'Gentle Stretching',
+                    'Walking', 'Light Dumbbell Work', 'Stability Exercises', 'Range of Motion Work'
+                ]
+            },
+            'Powerlifting': {
+                main: [
+                    'Squat', 'Bench Press', 'Deadlift', 'Overhead Press', 'Incline Bench', 'Sumo Deadlift', 
+                    'Conventional Deadlift', 'Box Squat', 'Pause Squat', 'Pause Bench', 'Pause Deadlift'
+                ],
+                accessory: [
+                    'Front Squat', 'Romanian Deadlift', 'Good Mornings', 'Dumbbell Press', 'Pull-Ups', 'Rows', 
+                    'Dips', 'Lat Pulldowns', 'Face Pulls', 'Tricep Extensions', 'Bicep Curls', 'Leg Press'
+                ],
+                assistance: [
+                    'Leg Press', 'Lunges', 'Lat Pulldowns', 'Face Pulls', 'Tricep Extensions', 'Bicep Curls',
+                    'Core Work', 'Grip Training', 'Mobility Work', 'Recovery Work', 'Stability Training'
+                ],
+                adaptive: [
+                    'Assisted Squats', 'Seated Press', 'Assisted Deadlift', 'Resistance Band Work', 'Wall Squats',
+                    'Chair Exercises', 'Standing Balance', 'Grip Strengthening', 'Range of Motion Work'
+                ],
+                youth: [
+                    'Bodyweight Squats', 'Push-Ups', 'Planks', 'Walking Lunges', 'Jumping Jacks', 'Burpees',
+                    'Agility Work', 'Coordination Drills', 'Balance Exercises', 'Core Work'
+                ],
+                senior: [
+                    'Chair Squats', 'Wall Push-Ups', 'Resistance Band Rows', 'Standing Balance', 'Gentle Stretching',
+                    'Walking', 'Light Dumbbell Work', 'Stability Exercises', 'Range of Motion Work'
+                ]
+            },
+            'CrossFit': {
+                main: [
+                    'Thrusters', 'Wall Balls', 'Burpees', 'Box Jumps', 'Pull-Ups', 'Push-Ups', 'Air Squats', 
+                    'Snatches', 'Clean & Jerk', 'Deadlifts', 'Running', 'Rowing', 'Double-Unders', 'Muscle-Ups'
+                ],
+                accessory: [
+                    'Deadlifts', 'Squats', 'Presses', 'Rowing', 'Running', 'Double-Unders', 'Muscle-Ups',
+                    'Handstand Push-Ups', 'Ring Dips', 'Toes to Bar', 'Kettlebell Swings', 'Box Jumps'
+                ],
+                assistance: [
+                    'Gymnastics Skills', 'Olympic Lifts', 'Endurance Work', 'Strength Training', 'Mobility Work',
+                    'Core Work', 'Stability Training', 'Balance Work', 'Coordination Drills', 'Recovery Work'
+                ],
+                adaptive: [
+                    'Assisted Pull-Ups', 'Wall Push-Ups', 'Chair Squats', 'Resistance Band Work', 'Seated Press',
+                    'Standing Balance', 'Walking', 'Light Cardio', 'Range of Motion Work', 'Stability Exercises'
+                ],
+                youth: [
+                    'Bodyweight Squats', 'Push-Ups', 'Planks', 'Jumping Jacks', 'Burpees', 'Agility Ladder',
+                    'Medicine Ball Throws', 'Balance Exercises', 'Coordination Drills', 'Core Work'
+                ],
+                senior: [
+                    'Chair Squats', 'Wall Push-Ups', 'Resistance Band Rows', 'Standing Balance', 'Gentle Stretching',
+                    'Walking', 'Light Dumbbell Work', 'Stability Exercises', 'Range of Motion Work'
+                ]
+            },
+            'Bodybuilding': {
+                main: [
+                    'Bench Press', 'Squat', 'Deadlift', 'Overhead Press', 'Barbell Rows', 'Pull-Ups', 'Dips',
+                    'Incline Bench', 'Decline Bench', 'Front Squat', 'Romanian Deadlift', 'Sumo Deadlift'
+                ],
+                accessory: [
+                    'Dumbbell Press', 'Leg Press', 'Lat Pulldowns', 'Cable Rows', 'Lateral Raises', 'Bicep Curls', 
+                    'Tricep Extensions', 'Leg Extensions', 'Leg Curls', 'Calf Raises', 'Face Pulls', 'Shrugs'
+                ],
+                assistance: [
+                    'Leg Extensions', 'Leg Curls', 'Calf Raises', 'Face Pulls', 'Shrugs', 'Forearm Work',
+                    'Core Work', 'Mobility Work', 'Stretching', 'Recovery Work', 'Stability Training'
+                ],
+                adaptive: [
+                    'Assisted Pull-Ups', 'Seated Press', 'Resistance Band Rows', 'Wall Push-Ups', 'Chair Squats',
+                    'Standing Balance', 'Grip Strengthening', 'Range of Motion Work', 'Stability Ball Work'
+                ],
+                youth: [
+                    'Bodyweight Squats', 'Push-Ups', 'Planks', 'Walking Lunges', 'Jumping Jacks', 'Burpees',
+                    'Agility Work', 'Coordination Drills', 'Balance Exercises', 'Core Work'
+                ],
+                senior: [
+                    'Chair Squats', 'Wall Push-Ups', 'Resistance Band Rows', 'Standing Balance', 'Gentle Stretching',
+                    'Walking', 'Light Dumbbell Work', 'Stability Exercises', 'Range of Motion Work'
+                ]
+            },
+            'Strongman': {
+                main: [
+                    'Atlas Stone Lifts', 'Yoke Walk', 'Farmer\'s Walk', 'Log Press', 'Car Deadlift', 'Tire Flip', 
+                    'Sandbag Carry', 'Axle Deadlift', 'Circus Dumbbell', 'Natural Stone Lifts', 'Truck Pull'
+                ],
+                accessory: [
+                    'Deadlifts', 'Squats', 'Presses', 'Rows', 'Pull-Ups', 'Dips', 'Grip Work', 'Core Work',
+                    'Conditioning', 'Mobility', 'Recovery Work', 'Stability Training', 'Balance Work'
+                ],
+                assistance: [
+                    'Grip Training', 'Core Work', 'Conditioning', 'Mobility', 'Recovery Work', 'Stability Training',
+                    'Balance Work', 'Coordination Drills', 'Endurance Work', 'Strength Training'
+                ],
+                adaptive: [
+                    'Assisted Deadlifts', 'Seated Press', 'Resistance Band Work', 'Wall Squats', 'Chair Exercises',
+                    'Standing Balance', 'Grip Strengthening', 'Range of Motion Work', 'Stability Exercises'
+                ],
+                youth: [
+                    'Bodyweight Squats', 'Push-Ups', 'Planks', 'Walking Lunges', 'Jumping Jacks', 'Burpees',
+                    'Agility Work', 'Coordination Drills', 'Balance Exercises', 'Core Work'
+                ],
+                senior: [
+                    'Chair Squats', 'Wall Push-Ups', 'Resistance Band Rows', 'Standing Balance', 'Gentle Stretching',
+                    'Walking', 'Light Dumbbell Work', 'Stability Exercises', 'Range of Motion Work'
+                ]
+            }
+        };
+
+        function generateRoutines() {
+            const routines = [];
+            let id = 1;
+
+            for (let domainIndex = 0; domainIndex < domains.length; domainIndex++) {
+                const domain = domains[domainIndex];
+                const template = routineTemplates[domain];
+                
+                for (let i = 0; i < 20000; i++) { // 20,000 routines per domain = 100,000 total
+                    const variation = template.variations[i % template.variations.length];
+                    const goal = goals[Math.floor(Math.random() * goals.length)];
+                    const level = levels[Math.floor(Math.random() * levels.length)];
+                    const split = trainingSplits[Math.floor(Math.random() * trainingSplits.length)];
+                    const intensity = intensitySchemes[Math.floor(Math.random() * intensitySchemes.length)];
+                    const progression = progressionModels[Math.floor(Math.random() * progressionModels.length)];
+                    const equipmentList = getRandomEquipment(domain);
+                    const ageRange = ageRanges[Math.floor(Math.random() * ageRanges.length)];
+                    const disabilityType = disabilityTypes[Math.floor(Math.random() * disabilityTypes.length)];
+                    const difficulty = getDifficultyScore(level, domain, ageRange, disabilityType);
+                    const duration = getDuration(level, domain, ageRange, disabilityType);
+                    const weeklySchedule = generateWeeklySchedule(domain, split, level, ageRange, disabilityType);
+                    const exercises = generateExercises(domain, level, ageRange, disabilityType);
+                    const dailyPlans = generateDailyPlans(domain, split, level, ageRange, disabilityType, exercises);
+                    
+                    const routineName = `${variation} ${template.base} ${i + 1}`;
+                    const tags = generateTags(domain, goal, level, intensity, ageRange, disabilityType);
+                    
+                    routines.push({
+                        id: id++,
+                        name: routineName,
+                        domain: domain,
+                        goal: goal,
+                        level: level,
+                        difficulty: difficulty,
+                        duration: duration,
+                        split: split,
+                        intensity: intensity,
+                        progression: progression,
+                        equipment: equipmentList,
+                        ageRange: ageRange,
+                        disabilityType: disabilityType,
+                        weeklySchedule: weeklySchedule,
+                        exercises: exercises,
+                        dailyPlans: dailyPlans,
+                        tags: tags,
+                        notes: generateNotes(domain, level, intensity, ageRange, disabilityType)
+                    });
+                }
+            }
+
+            return routines;
+        }
+
+        function getRandomEquipment(domain) {
+            const baseEquipment = ['Barbell', 'Dumbbells'];
+            const domainSpecific = {
+                'Olympic Weightlifting': ['Weightlifting Platform', 'Bumper Plates'],
+                'Powerlifting': ['Power Rack', 'Bench'],
+                'CrossFit': ['Kettlebells', 'Rings', 'Rope', 'Box'],
+                'Bodybuilding': ['Cable Machine', 'Leg Press', 'Lat Pulldown'],
+                'Strongman': ['Yoke', 'Atlas Stones', 'Log', 'Farmer\'s Walk', 'Sandbags']
+            };
+            
+            return [...baseEquipment, ...domainSpecific[domain]].slice(0, 5);
+        }
+
+        function getDifficultyScore(level, domain, ageRange, disabilityType) {
+            const baseScores = { 
+                'Complete Beginner': 1, 'Beginner': 2, 'Early Intermediate': 3, 'Intermediate': 4, 
+                'Advanced Intermediate': 5, 'Advanced': 6, 'Elite': 7, 'Professional': 8 
+            };
+            const domainModifiers = {
+                'Olympic Weightlifting': 1,
+                'Powerlifting': 0,
+                'CrossFit': 1,
+                'Bodybuilding': -1,
+                'Strongman': 2
+            };
+            
+            let score = baseScores[level] + domainModifiers[domain];
+            
+            // Age adjustments
+            if (ageRange.includes('Children') || ageRange.includes('Youth')) score -= 2;
+            if (ageRange.includes('Senior')) score -= 1;
+            
+            // Disability adjustments
+            if (disabilityType !== 'None') score -= 2;
+            if (disabilityType.includes('Mobility') || disabilityType.includes('Amputation')) score -= 1;
+            
+            return Math.min(10, Math.max(1, score));
+        }
+
+        function getDuration(level, domain, ageRange, disabilityType) {
+            const baseDurations = { 
+                'Complete Beginner': 30, 'Beginner': 45, 'Early Intermediate': 50, 'Intermediate': 60, 
+                'Advanced Intermediate': 70, 'Advanced': 80, 'Elite': 90, 'Professional': 120 
+            };
+            const domainModifiers = {
+                'Olympic Weightlifting': 15,
+                'Powerlifting': 0,
+                'CrossFit': 30,
+                'Bodybuilding': 15,
+                'Strongman': 20
+            };
+            
+            let duration = baseDurations[level] + domainModifiers[domain];
+            
+            // Age adjustments
+            if (ageRange.includes('Children') || ageRange.includes('Youth')) duration -= 15;
+            if (ageRange.includes('Senior')) duration -= 10;
+            
+            // Disability adjustments
+            if (disabilityType !== 'None') duration -= 15;
+            
+            return Math.max(15, duration);
+        }
+
+        function generateWeeklySchedule(domain, split, level, ageRange, disabilityType) {
+            const schedules = {
+                'Full Body': ['Full Body', 'Full Body', 'Full Body'],
+                'Push/Pull/Legs': ['Push', 'Pull', 'Legs', 'Push', 'Pull', 'Legs'],
+                'Upper/Lower': ['Upper', 'Lower', 'Upper', 'Lower', 'Upper'],
+                'Event Day': ['Event Training', 'Strength', 'Event Training', 'Strength', 'Event Training'],
+                'Body Part Split': ['Chest/Triceps', 'Back/Biceps', 'Legs', 'Shoulders', 'Arms'],
+                'Movement Pattern': ['Squat', 'Hinge', 'Push', 'Pull', 'Carry'],
+                '1 Day': ['Full Body'],
+                '2 Day': ['Full Body', 'Full Body'],
+                '3 Day': ['Full Body', 'Full Body', 'Full Body'],
+                '4 Day': ['Upper', 'Lower', 'Upper', 'Lower'],
+                '5 Day': ['Push', 'Pull', 'Legs', 'Upper', 'Lower'],
+                '6 Day': ['Push', 'Pull', 'Legs', 'Push', 'Pull', 'Legs'],
+                'Upper Body Focus': ['Upper', 'Upper', 'Upper', 'Upper'],
+                'Lower Body Focus': ['Lower', 'Lower', 'Lower', 'Lower'],
+                'Core Focus': ['Core', 'Core', 'Core', 'Core'],
+                'Cardio Focus': ['Cardio', 'Cardio', 'Cardio', 'Cardio']
+            };
+            
+            const baseSchedule = schedules[split] || schedules['Full Body'];
+            let frequency;
+            
+            // Determine frequency based on level, age, and disability
+            if (level.includes('Complete Beginner') || level.includes('Beginner')) {
+                frequency = ageRange.includes('Children') || ageRange.includes('Youth') ? 2 : 3;
+            } else if (level.includes('Intermediate')) {
+                frequency = ageRange.includes('Senior') || disabilityType !== 'None' ? 3 : 4;
+            } else {
+                frequency = ageRange.includes('Senior') || disabilityType !== 'None' ? 4 : 5;
+            }
+            
+            // Special cases for 1-2 day splits
+            if (split === '1 Day') frequency = 1;
+            if (split === '2 Day') frequency = 2;
+            
+            return baseSchedule.slice(0, frequency);
+        }
+
+        function generateExercises(domain, level, ageRange, disabilityType) {
+            const exercises = exerciseLibrary[domain];
+            let exerciseCount;
+            
+            // Determine exercise count based on level, age, and disability
+            if (level.includes('Complete Beginner') || level.includes('Beginner')) {
+                exerciseCount = ageRange.includes('Children') || ageRange.includes('Youth') ? 3 : 4;
+            } else if (level.includes('Intermediate')) {
+                exerciseCount = ageRange.includes('Senior') || disabilityType !== 'None' ? 4 : 6;
+            } else {
+                exerciseCount = ageRange.includes('Senior') || disabilityType !== 'None' ? 5 : 8;
+            }
+            
+            let selectedExercises = [];
+            
+            // Select exercises based on age and disability
+            if (ageRange.includes('Children') || ageRange.includes('Youth')) {
+                selectedExercises = exercises.youth || exercises.main;
+            } else if (ageRange.includes('Senior')) {
+                selectedExercises = exercises.senior || exercises.accessory;
+            } else if (disabilityType !== 'None') {
+                selectedExercises = exercises.adaptive || exercises.accessory;
+            } else {
+                const mainExercises = exercises.main.slice(0, Math.ceil(exerciseCount / 2));
+                const accessoryExercises = exercises.accessory.slice(0, Math.floor(exerciseCount / 2));
+                selectedExercises = [...mainExercises, ...accessoryExercises];
+            }
+            
+            return selectedExercises.slice(0, exerciseCount);
+        }
+
+        function generateDailyPlans(domain, split, level, ageRange, disabilityType, exercises) {
+            const weeklySchedule = generateWeeklySchedule(domain, split, level, ageRange, disabilityType);
+            const dailyPlans = {};
+            
+            weeklySchedule.forEach((dayType, index) => {
+                const dayNumber = index + 1;
+                dailyPlans[`Day ${dayNumber}`] = {
+                    focus: dayType,
+                    warmup: generateWarmup(domain, ageRange, disabilityType),
+                    mainExercises: generateMainExercises(domain, dayType, level, ageRange, disabilityType, exercises),
+                    cooldown: generateCooldown(domain, ageRange, disabilityType),
+                    rest: generateRestPeriods(level, ageRange, disabilityType),
+                    notes: generateDayNotes(domain, dayType, level, ageRange, disabilityType)
+                };
+            });
+            
+            return dailyPlans;
+        }
+
+        function generateWarmup(domain, ageRange, disabilityType) {
+            const warmups = {
+                general: ['Light Cardio (5-10 min)', 'Dynamic Stretching', 'Joint Mobility', 'Light Movement Prep'],
+                youth: ['Jumping Jacks', 'High Knees', 'Butt Kicks', 'Arm Circles', 'Light Stretching'],
+                senior: ['Gentle Walking', 'Range of Motion Exercises', 'Light Stretching', 'Balance Work'],
+                adaptive: ['Seated Warmup', 'Range of Motion', 'Light Stretching', 'Stability Work']
+            };
+            
+            if (ageRange.includes('Children') || ageRange.includes('Youth')) return warmups.youth;
+            if (ageRange.includes('Senior')) return warmups.senior;
+            if (disabilityType !== 'None') return warmups.adaptive;
+            return warmups.general;
+        }
+
+        function generateMainExercises(domain, dayType, level, ageRange, disabilityType, exercises) {
+            const exerciseCount = level.includes('Beginner') ? 3 : level.includes('Intermediate') ? 4 : 6;
+            const selectedExercises = exercises.slice(0, exerciseCount);
+            
+            return selectedExercises.map(exercise => ({
+                name: exercise,
+                sets: getSets(level, ageRange, disabilityType),
+                reps: getReps(level, ageRange, disabilityType),
+                rest: getRest(level, ageRange, disabilityType),
+                intensity: getIntensity(level, ageRange, disabilityType)
+            }));
+        }
+
+        function generateCooldown(domain, ageRange, disabilityType) {
+            const cooldowns = {
+                general: ['Static Stretching', 'Light Walking', 'Deep Breathing', 'Mobility Work'],
+                youth: ['Light Stretching', 'Cool Down Walk', 'Deep Breathing'],
+                senior: ['Gentle Stretching', 'Slow Walking', 'Deep Breathing', 'Balance Work'],
+                adaptive: ['Seated Stretching', 'Range of Motion', 'Deep Breathing', 'Stability Work']
+            };
+            
+            if (ageRange.includes('Children') || ageRange.includes('Youth')) return cooldowns.youth;
+            if (ageRange.includes('Senior')) return cooldowns.senior;
+            if (disabilityType !== 'None') return cooldowns.adaptive;
+            return cooldowns.general;
+        }
+
+        function generateRestPeriods(level, ageRange, disabilityType) {
+            const baseRest = level.includes('Beginner') ? 90 : level.includes('Intermediate') ? 120 : 180;
+            let rest = baseRest;
+            
+            if (ageRange.includes('Children') || ageRange.includes('Youth')) rest += 30;
+            if (ageRange.includes('Senior')) rest += 60;
+            if (disabilityType !== 'None') rest += 45;
+            
+            return `${rest} seconds between sets`;
+        }
+
+        function generateDayNotes(domain, dayType, level, ageRange, disabilityType) {
+            const notes = [];
+            
+            if (ageRange.includes('Children') || ageRange.includes('Youth')) {
+                notes.push('Focus on form and technique over weight');
+                notes.push('Keep sessions fun and engaging');
+                notes.push('Emphasize coordination and balance');
+            }
+            
+            if (ageRange.includes('Senior')) {
+                notes.push('Focus on stability and balance');
+                notes.push('Listen to your body and rest as needed');
+                notes.push('Emphasize functional movements');
+            }
+            
+            if (disabilityType !== 'None') {
+                notes.push('Work with a qualified trainer for modifications');
+                notes.push('Focus on achievable movements');
+                notes.push('Emphasize safety and proper form');
+            }
+            
+            return notes.join('. ');
+        }
+
+        function getSets(level, ageRange, disabilityType) {
+            if (level.includes('Complete Beginner') || level.includes('Beginner')) return 2;
+            if (level.includes('Intermediate')) return 3;
+            return 4;
+        }
+
+        function getReps(level, ageRange, disabilityType) {
+            if (level.includes('Complete Beginner') || level.includes('Beginner')) return '8-12';
+            if (level.includes('Intermediate')) return '6-10';
+            return '4-8';
+        }
+
+        function getRest(level, ageRange, disabilityType) {
+            if (level.includes('Complete Beginner') || level.includes('Beginner')) return '90-120s';
+            if (level.includes('Intermediate')) return '120-180s';
+            return '180-240s';
+        }
+
+        function getIntensity(level, ageRange, disabilityType) {
+            if (level.includes('Complete Beginner') || level.includes('Beginner')) return '60-70% 1RM';
+            if (level.includes('Intermediate')) return '70-80% 1RM';
+            return '80-90% 1RM';
+        }
+
+        function generateTags(domain, goal, level, intensity, ageRange, disabilityType) {
+            const tags = [goal.toLowerCase(), level.toLowerCase(), domain.toLowerCase()];
+            
+            if (intensity.includes('AMRAP')) tags.push('high volume');
+            if (intensity.includes('RPE')) tags.push('auto-regulated');
+            if (goal === 'Competition Prep') tags.push('competition prep');
+            if (goal === 'Hypertrophy') tags.push('mass gain');
+            if (goal === 'Explosiveness') tags.push('speed focus');
+            
+            // Add age-specific tags
+            if (ageRange.includes('Children') || ageRange.includes('Youth')) tags.push('youth', 'beginner-friendly');
+            if (ageRange.includes('Senior')) tags.push('senior', 'low-impact');
+            if (disabilityType !== 'None') tags.push('adaptive', 'inclusive');
+            
+            return tags.slice(0, 8);
+        }
+
+        function generateNotes(domain, level, intensity, ageRange, disabilityType) {
+            const notes = [];
+            
+            if (level.includes('Advanced') || level.includes('Elite') || level.includes('Professional')) {
+                notes.push('Advanced techniques: supersets, drop sets, rest-pause');
+            }
+            
+            if (intensity.includes('RPE')) {
+                notes.push('Auto-regulated intensity based on RPE scale');
+            }
+            
+            if (domain === 'Olympic Weightlifting') {
+                notes.push('Focus on technique and bar path');
+            }
+            
+            if (ageRange.includes('Children') || ageRange.includes('Youth')) {
+                notes.push('Youth-focused programming with emphasis on technique and safety');
+                notes.push('Progressive overload with age-appropriate intensity');
+            }
+            
+            if (ageRange.includes('Senior')) {
+                notes.push('Senior-appropriate programming with focus on functional movements');
+                notes.push('Emphasis on stability, balance, and injury prevention');
+            }
+            
+            if (disabilityType !== 'None') {
+                notes.push('Adaptive programming designed for accessibility');
+                notes.push('Work with qualified trainers for proper modifications');
+                notes.push('Focus on achievable movements and safety');
+            }
+            
+            return notes.join('. ');
+        }
+
+        let allRoutines = generateRoutines();
+        let filteredRoutines = [...allRoutines];
+        let currentPage = 1;
+        const routinesPerPage = 20;
+        let currentRoutine = null;
+
+        function renderRoutines() {
+            const startIndex = (currentPage - 1) * routinesPerPage;
+            const endIndex = startIndex + routinesPerPage;
+            const pageRoutines = filteredRoutines.slice(startIndex, endIndex);
+
+            const routineRows = document.getElementById('routineRows');
+            routineRows.innerHTML = '';
+
+            pageRoutines.forEach(routine => {
+                const row = document.createElement('div');
+                row.className = 'database-row';
+                row.innerHTML = `
+                    <div class="cell title" onclick="showRoutinePlan(${routine.id})">${routine.name}</div>
+                    <div class="cell"><span class="tag domain-tag">${routine.domain}</span></div>
+                    <div class="cell">${routine.goal}</div>
+                    <div class="cell"><span class="tag tag-${routine.level.toLowerCase().replace(' ', '-')}">${routine.level}</span></div>
+                    <div class="cell">${routine.ageRange}</div>
+                    <div class="cell"><span class="tag ${routine.disabilityType === 'None' ? 'tag-accessible' : 'tag-adaptive'}">${routine.disabilityType === 'None' ? 'Standard' : 'Adaptive'}</span></div>
+                    <div class="cell"><span class="difficulty-badge difficulty-${getDifficultyClass(routine.difficulty)}">${routine.difficulty}/10</span></div>
+                    <div class="cell">${routine.duration} min</div>
+                    <div class="cell"><button class="plan-btn" onclick="showRoutinePlan(${routine.id})">View Plan</button></div>
+                `;
+                routineRows.appendChild(row);
+            });
+
+            renderPagination();
+            updateStats();
+        }
+
+        function getDifficultyClass(difficulty) {
+            if (difficulty <= 3) return '1-3';
+            if (difficulty <= 6) return '4-6';
+            if (difficulty <= 8) return '7-8';
+            return '9-10';
+        }
+
+        function renderPagination() {
+            const totalPages = Math.ceil(filteredRoutines.length / routinesPerPage);
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            if (totalPages <= 1) return;
+
+            if (currentPage > 1) {
+                const prevBtn = document.createElement('button');
+                prevBtn.className = 'page-btn';
+                prevBtn.textContent = '←';
+                prevBtn.onclick = () => {
+                    currentPage--;
+                    renderRoutines();
+                };
+                pagination.appendChild(prevBtn);
+            }
+
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+                    const pageBtn = document.createElement('button');
+                    pageBtn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+                    pageBtn.textContent = i;
+                    pageBtn.onclick = () => {
+                        currentPage = i;
+                        renderRoutines();
+                    };
+                    pagination.appendChild(pageBtn);
+                } else if (i === currentPage - 3 || i === currentPage + 3) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.textContent = '...';
+                    ellipsis.style.padding = '8px 12px';
+                    pagination.appendChild(ellipsis);
+                }
+            }
+
+            if (currentPage < totalPages) {
+                const nextBtn = document.createElement('button');
+                nextBtn.className = 'page-btn';
+                nextBtn.textContent = '→';
+                nextBtn.onclick = () => {
+                    currentPage++;
+                    renderRoutines();
+                };
+                pagination.appendChild(nextBtn);
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('filteredRoutines').textContent = filteredRoutines.length;
+        }
+
+        function filterRoutines() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            const domainFilter = document.getElementById('domainFilter').value;
+            const levelFilter = document.getElementById('levelFilter').value;
+            const goalFilter = document.getElementById('goalFilter').value;
+
+            filteredRoutines = allRoutines.filter(routine => {
+                const matchesSearch = routine.name.toLowerCase().includes(searchTerm) ||
+                                    routine.domain.toLowerCase().includes(searchTerm) ||
+                                    routine.ageRange.toLowerCase().includes(searchTerm) ||
+                                    routine.disabilityType.toLowerCase().includes(searchTerm) ||
+                                    routine.tags.some(tag => tag.includes(searchTerm));
+                const matchesDomain = !domainFilter || routine.domain === domainFilter;
+                const matchesLevel = !levelFilter || routine.level === levelFilter;
+                const matchesGoal = !goalFilter || routine.goal === goalFilter;
+
+                return matchesSearch && matchesDomain && matchesLevel && matchesGoal;
+            });
+
+            currentPage = 1;
+            renderRoutines();
+        }
+
+        function showRoutinePlan(routineId) {
+            const routine = allRoutines.find(r => r.id === routineId);
+            if (!routine) return;
+
+            currentRoutine = routine;
+            const modal = document.getElementById('routineModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+
+            modalTitle.textContent = routine.name;
+            modalContent.innerHTML = generateRoutinePlanHTML(routine);
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('routineModal');
+            modal.style.display = 'none';
+            currentRoutine = null;
+        }
+
+        function generateRoutinePlanHTML(routine) {
+            let planHTML = `
+                <div style="margin-bottom: 20px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
+                    <h3 style="margin: 0 0 10px 0; color: #1565c0;">Routine Overview</h3>
+                    <p style="margin: 0; color: #1976d2;"><strong>Domain:</strong> ${routine.domain}</p>
+                    <p style="margin: 5px 0 0 0; color: #1976d2;"><strong>Goal:</strong> ${routine.goal}</p>
+                    <p style="margin: 5px 0 0 0; color: #1976d2;"><strong>Level:</strong> ${routine.level}</p>
+                    <p style="margin: 5px 0 0 0; color: #1976d2;"><strong>Age Range:</strong> ${routine.ageRange}</p>
+                    <p style="margin: 5px 0 0 0; color: #1976d2;"><strong>Accessibility:</strong> ${routine.disabilityType}</p>
+                    <p style="margin: 5px 0 0 0; color: #1976d2;"><strong>Difficulty:</strong> ${routine.difficulty}/10</p>
+                    <p style="margin: 5px 0 0 0; color: #1976d2;"><strong>Duration:</strong> ${routine.duration} minutes</p>
+                    <p style="margin: 5px 0 0 0; color: #1976d2;"><strong>Split:</strong> ${routine.split}</p>
+                    <p style="margin: 5px 0 0 0; color: #1976d2;"><strong>Intensity:</strong> ${routine.intensity}</p>
+                    <p style="margin: 5px 0 0 0; color: #1976d2;"><strong>Progression:</strong> ${routine.progression}</p>
+                    <p style="margin: 5px 0 0 0; color: #1976d2;"><strong>Equipment:</strong> ${routine.equipment.join(', ')}</p>
+                    <p style="margin: 5px 0 0 0; color: #1976d2;"><strong>Tags:</strong> ${routine.tags.join(', ')}</p>
+                </div>
+            `;
+
+            // Daily Plans
+            if (routine.dailyPlans) {
+                planHTML += `<div class="workout-plan"><div class="day-header">Daily Workout Plans</div>`;
+                
+                Object.entries(routine.dailyPlans).forEach(([day, plan]) => {
+                    planHTML += `
+                        <div style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 6px;">
+                            <h4 style="margin: 0 0 15px 0; color: #007aff;">${day}: ${plan.focus}</h4>
+                            
+                            <div style="margin-bottom: 15px;">
+                                <h5 style="margin: 0 0 10px 0; color: #333;">Warmup (10-15 minutes)</h5>
+                                <ul style="margin: 0; padding-left: 20px;">
+                                    ${plan.warmup.map(item => `<li style="margin-bottom: 5px; color: #666;">${item}</li>`).join('')}
+                                </ul>
+                            </div>
+                            
+                            <div style="margin-bottom: 15px;">
+                                <h5 style="margin: 0 0 10px 0; color: #333;">Main Exercises</h5>
+                                <ul style="margin: 0; padding-left: 20px;">
+                                    ${plan.mainExercises.map(exercise => `
+                                        <li style="margin-bottom: 10px; color: #666;">
+                                            <div style="font-weight: 500; color: #333;">${exercise.name}</div>
+                                            <div style="font-size: 14px; color: #888;">
+                                                Sets: ${exercise.sets} | Reps: ${exercise.reps} | Rest: ${exercise.rest} | Intensity: ${exercise.intensity}
+                                            </div>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                            
+                            <div style="margin-bottom: 15px;">
+                                <h5 style="margin: 0 0 10px 0; color: #333;">Cooldown (5-10 minutes)</h5>
+                                <ul style="margin: 0; padding-left: 20px;">
+                                    ${plan.cooldown.map(item => `<li style="margin-bottom: 5px; color: #666;">${item}</li>`).join('')}
+                                </ul>
+                            </div>
+                            
+                            <div style="margin-bottom: 15px;">
+                                <h5 style="margin: 0 0 10px 0; color: #333;">Rest Periods</h5>
+                                <p style="margin: 0; color: #666;">${plan.rest}</p>
+                            </div>
+                            
+                            ${plan.notes ? `
+                                <div>
+                                    <h5 style="margin: 0 0 10px 0; color: #333;">Notes</h5>
+                                    <p style="margin: 0; color: #666;">${plan.notes}</p>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+                
+                planHTML += `</div>`;
+            }
+
+            // Notes
+            if (routine.notes) {
+                planHTML += `
+                    <div class="workout-plan">
+                        <div class="day-header">General Notes & Techniques</div>
+                        <p style="margin: 0; color: #666;">${routine.notes}</p>
+                    </div>
+                `;
+            }
+
+            return planHTML;
+        }
+
+        function getExerciseDetails(exercise, level, domain) {
+            const baseDetails = {
+                'Snatch': '3-5 sets x 1-3 reps, 80-95% 1RM, 3-5 min rest',
+                'Clean & Jerk': '3-5 sets x 1-3 reps, 80-95% 1RM, 3-5 min rest',
+                'Squat': '4-6 sets x 3-8 reps, 75-90% 1RM, 2-4 min rest',
+                'Bench Press': '4-6 sets x 3-8 reps, 75-90% 1RM, 2-4 min rest',
+                'Deadlift': '4-6 sets x 3-8 reps, 75-90% 1RM, 3-5 min rest',
+                'Thrusters': '3-5 sets x 8-15 reps, AMRAP or timed sets',
+                'Pull-Ups': '3-5 sets x 5-15 reps, bodyweight or weighted',
+                'Atlas Stone Lifts': '3-5 sets x 3-8 reps, focus on technique'
+            };
+
+            return baseDetails[exercise] || '3-5 sets x 8-12 reps, moderate intensity, 1-2 min rest';
+        }
+
+        function downloadCSV() {
+            const headers = ['Name', 'Domain', 'Goal', 'Level', 'Difficulty', 'Duration', 'Split', 'Intensity', 'Progression', 'Equipment', 'Age Range', 'Tags'];
+            const csvContent = [
+                headers.join(','),
+                ...filteredRoutines.map(routine => [
+                    `"${routine.name}"`,
+                    routine.domain,
+                    routine.goal,
+                    routine.level,
+                    routine.difficulty,
+                    routine.duration,
+                    routine.split,
+                    routine.intensity,
+                    routine.progression,
+                    `"${routine.equipment.join('; ')}"`,
+                    routine.ageRange,
+                    `"${routine.tags.join('; ')}"`
+                ].join(','))
+            ].join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'strength_conditioning_routines.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function downloadJSON() {
+            const jsonContent = JSON.stringify(filteredRoutines, null, 2);
+            const blob = new Blob([jsonContent], { type: 'application/json' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'strength_conditioning_routines.json';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function downloadRoutine() {
+            if (!currentRoutine) return;
+
+            let routineText = `${currentRoutine.name}\n`;
+            routineText += `Domain: ${currentRoutine.domain}\n`;
+            routineText += `Goal: ${currentRoutine.goal}\n`;
+            routineText += `Level: ${currentRoutine.level}\n`;
+            routineText += `Age Range: ${currentRoutine.ageRange}\n`;
+            routineText += `Accessibility: ${currentRoutine.disabilityType}\n`;
+            routineText += `Difficulty: ${currentRoutine.difficulty}/10\n`;
+            routineText += `Duration: ${currentRoutine.duration} minutes\n`;
+            routineText += `Split: ${currentRoutine.split}\n`;
+            routineText += `Intensity: ${currentRoutine.intensity}\n`;
+            routineText += `Progression: ${currentRoutine.progression}\n`;
+            routineText += `Equipment: ${currentRoutine.equipment.join(', ')}\n`;
+            routineText += `Tags: ${currentRoutine.tags.join(', ')}\n\n`;
+
+            if (currentRoutine.dailyPlans) {
+                routineText += `DAILY WORKOUT PLANS\n`;
+                routineText += '='.repeat(30) + '\n\n';
+                
+                Object.entries(currentRoutine.dailyPlans).forEach(([day, plan]) => {
+                    routineText += `${day}: ${plan.focus}\n`;
+                    routineText += '-'.repeat(20) + '\n';
+                    
+                    routineText += `Warmup (10-15 minutes):\n`;
+                    plan.warmup.forEach(item => {
+                        routineText += `  • ${item}\n`;
+                    });
+                    routineText += '\n';
+                    
+                    routineText += `Main Exercises:\n`;
+                    plan.mainExercises.forEach(exercise => {
+                        routineText += `  • ${exercise.name}\n`;
+                        routineText += `    Sets: ${exercise.sets} | Reps: ${exercise.reps} | Rest: ${exercise.rest} | Intensity: ${exercise.intensity}\n`;
+                    });
+                    routineText += '\n';
+                    
+                    routineText += `Cooldown (5-10 minutes):\n`;
+                    plan.cooldown.forEach(item => {
+                        routineText += `  • ${item}\n`;
+                    });
+                    routineText += '\n';
+                    
+                    routineText += `Rest Periods: ${plan.rest}\n`;
+                    routineText += '\n';
+                    
+                    if (plan.notes) {
+                        routineText += `Notes: ${plan.notes}\n`;
+                        routineText += '\n';
+                    }
+                    
+                    routineText += '\n';
+                });
+            }
+
+            if (currentRoutine.notes) {
+                routineText += `GENERAL NOTES & TECHNIQUES\n`;
+                routineText += '='.repeat(30) + '\n';
+                routineText += currentRoutine.notes + '\n';
+            }
+
+            const blob = new Blob([routineText], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${currentRoutine.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_routine.txt`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Event listeners
+        document.getElementById('searchBox').addEventListener('input', filterRoutines);
+        document.getElementById('domainFilter').addEventListener('change', filterRoutines);
+        document.getElementById('levelFilter').addEventListener('change', filterRoutines);
+        document.getElementById('goalFilter').addEventListener('change', filterRoutines);
+
+        // Modal event listeners
+        window.onclick = function(event) {
+            const modal = document.getElementById('routineModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Initial render
+        renderRoutines();
+    </script>
+</body>
+</html> 

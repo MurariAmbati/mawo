@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combat Sports & Martial Arts Database | 50,000+ Routines</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #232526 0%, #414345 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+        .header {
+            background: linear-gradient(135deg, #232526 0%, #414345 100%);
+            padding: 4rem 0 2rem 0;
+            text-align: center;
+            border-bottom: 1px solid #333;
+            color: #fff;
+        }
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin: 0;
+            color: #fff;
+            letter-spacing: -0.02em;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .header p {
+            font-size: 1.25rem;
+            margin: 1rem 0 0 0;
+            color: #bbb;
+            font-weight: 400;
+        }
+        .stats-bar {
+            background: #232526;
+            padding: 3rem 0;
+            border-bottom: 1px solid #333;
+        }
+        .stats-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            text-align: center;
+        }
+        .stat-item { color: #e0e0e0; transition: transform 0.3s; }
+        .stat-item:hover { transform: translateY(-5px); }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fff;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .stat-label { font-size: 1rem; color: #aaa; font-weight: 500; }
+        .main-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        .filters-section {
+            background: #181818;
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            padding: 2.5rem 0 2rem 0;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid #222;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+        }
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .filter-group { display: flex; flex-direction: column; }
+        .filter-label {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #e0e0e0;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .filter-select, .filter-input {
+            padding: 0.75rem;
+            border: 1px solid #222;
+            border-radius: 6px;
+            font-size: 1rem;
+            background: #232526;
+            color: #e0e0e0;
+            transition: all 0.3s;
+        }
+        .filter-select:focus, .filter-input:focus {
+            outline: none;
+            border-color: #fff;
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.05);
+        }
+        .search-section { display: flex; gap: 1rem; margin-bottom: 2rem; max-width: 1100px; margin-left: auto; margin-right: auto; }
+        .search-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #222;
+            border-radius: 6px;
+            font-size: 1rem;
+            background: #232526;
+            color: #e0e0e0;
+            transition: all 0.3s;
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: #fff;
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.05);
+        }
+        .search-btn {
+            padding: 0.75rem 1.5rem;
+            background: #111;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255,255,255,0.05);
+        }
+        .workouts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        .workout-card {
+            background: #232526;
+            border: 1px solid #333;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .workout-card:hover {
+            border-color: #fff;
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(255,255,255,0.05);
+        }
+        .workout-header {
+            background: #292929;
+            padding: 1.5rem;
+            border-bottom: 1px solid #333;
+        }
+        .workout-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+        .workout-category {
+            font-size: 0.9rem;
+            color: #bbb;
+            font-weight: 500;
+        }
+        .workout-body { padding: 1.5rem; }
+        .workout-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        .workout-description {
+            color: #aaa;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        .workout-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .tag {
+            background: #292929;
+            color: #fff;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1px solid #333;
+            transition: all 0.3s;
+        }
+        .tag:hover {
+            background: #fff;
+            color: #232526;
+        }
+        .workout-actions { display: flex; gap: 0.5rem; }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .btn-primary {
+            background: #fff;
+            color: #232526;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255,255,255,0.1);
+        }
+        .btn-secondary {
+            background: #292929;
+            color: #fff;
+            border: 1px solid #333;
+        }
+        .btn-secondary:hover {
+            background: #333;
+            transform: translateY(-2px);
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+        }
+        .page-btn {
+            padding: 0.75rem 1rem;
+            border: 1px solid #333;
+            background: #232526;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            color: #fff;
+        }
+        .page-btn:hover {
+            background: #292929;
+            transform: translateY(-2px);
+        }
+        .page-btn.active {
+            background: #fff;
+            color: #232526;
+            border-color: #fff;
+        }
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: #232526;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 16px;
+            width: 95%;
+            max-width: 1400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid #333;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            background: #111;
+            color: white;
+            padding: 2rem;
+            border-radius: 16px 16px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: white;
+            margin: 0;
+        }
+
+        .close {
+            font-size: 2.5rem;
+            cursor: pointer;
+            color: white;
+            line-height: 1;
+            transition: all 0.3s ease;
+        }
+
+        .close:hover {
+            color: #aaa;
+            transform: scale(1.1);
+        }
+
+        #modalContent {
+            padding: 2rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .main-container {
+                padding: 2rem 1rem;
+            }
+
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .workouts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-section {
+                flex-direction: column;
+            }
+
+            .workout-actions {
+                flex-direction: column;
+            }
+
+            .modal-content {
+                width: 98%;
+                margin: 1% auto;
+            }
+
+            .modal-header {
+                padding: 1rem;
+            }
+
+            .modal-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fitprep-header" style="position:sticky;top:0;width:100%;background:linear-gradient(90deg,#1565c0 0%,#2196f3 100%);padding:1.1rem 0;z-index:1000;text-align:left;box-shadow:0 2px 10px rgba(33,150,243,0.08);">
+        <a href="landing.html" class="fitprep-back-btn" style="color:#fff;font-weight:700;font-size:1.1rem;text-decoration:none;margin-left:2rem;transition:color 0.2s;">&larr; Back to FitPrep Home</a>
+    </div>
+    <div class="header">
+        <h1>Combat Sports & Martial Arts Database</h1>
+        <p>50,000+ routines for Boxing, Kickboxing, Karate, Taekwondo, Judo, BJJ, Wrestling, MMA, Muay Thai, Krav Maga</p>
+    </div>
+    <div class="stats-bar">
+        <div class="stats-container">
+            <div class="stat-item"><span class="stat-number">50,000+</span><span class="stat-label">Routines</span></div>
+            <div class="stat-item"><span class="stat-number">10</span><span class="stat-label">Sports</span></div>
+            <div class="stat-item"><span class="stat-number">6</span><span class="stat-label">Experience Levels</span></div>
+            <div class="stat-item"><span class="stat-number">7</span><span class="stat-label">Days/Week</span></div>
+        </div>
+    </div>
+    <div class="main-container">
+        <div class="filters-section">
+            <div class="search-section">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search routines...">
+                <button onclick="searchRoutines()" class="search-btn">Search</button>
+            </div>
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label class="filter-label">Sport</label>
+                    <select id="sportFilter" class="filter-select" onchange="filterRoutines()">
+                        <option value="">All Sports</option>
+                        <option value="Boxing">Boxing</option>
+                        <option value="Kickboxing">Kickboxing</option>
+                        <option value="Karate">Karate</option>
+                        <option value="Taekwondo">Taekwondo</option>
+                        <option value="Judo">Judo</option>
+                        <option value="BJJ">Brazilian Jiu-Jitsu (BJJ)</option>
+                        <option value="Wrestling">Wrestling</option>
+                        <option value="MMA">Mixed Martial Arts (MMA)</option>
+                        <option value="Muay Thai">Muay Thai</option>
+                        <option value="Krav Maga">Krav Maga</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Experience Level</label>
+                    <select id="levelFilter" class="filter-select" onchange="filterRoutines()">
+                        <option value="">All Levels</option>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Novice">Novice</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                        <option value="Elite">Elite</option>
+                        <option value="Pro">Pro</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Age Group</label>
+                    <select id="ageFilter" class="filter-select" onchange="filterRoutines()">
+                        <option value="">All Ages</option>
+                        <option value="Youth (8-15)">Youth (8-15)</option>
+                        <option value="Teens (16-19)">Teens (16-19)</option>
+                        <option value="Adults (20-35)">Adults (20-35)</option>
+                        <option value="Adults (36-50)">Adults (36-50)</option>
+                        <option value="Masters (51+)">Masters (51+)</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Duration</label>
+                    <select id="durationFilter" class="filter-select" onchange="filterRoutines()">
+                        <option value="">All Durations</option>
+                        <option value="30-45 min">30-45 min</option>
+                        <option value="45-60 min">45-60 min</option>
+                        <option value="60-90 min">60-90 min</option>
+                        <option value="90+ min">90+ min</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Intensity</label>
+                    <select id="intensityFilter" class="filter-select" onchange="filterRoutines()">
+                        <option value="">All Intensities</option>
+                        <option value="Low">Low</option>
+                        <option value="Moderate">Moderate</option>
+                        <option value="High">High</option>
+                        <option value="Extreme">Extreme</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="workoutsGrid" class="workouts-grid"></div>
+        <div class="pagination" id="pagination"></div>
+    </div>
+    <!-- Modal -->
+    <div id="workoutModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Training Plan</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div id="modalContent">
+                <!-- Modal content will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allWorkouts = [];
+        let filteredWorkouts = [];
+        let currentPage = 1;
+        const workoutsPerPage = 12;
+
+        // Generate workout data
+        function generateWorkouts() {
+            const sports = ['Boxing', 'Kickboxing', 'Karate', 'Taekwondo', 'Judo', 'BJJ', 'Wrestling', 'MMA', 'Muay Thai', 'Krav Maga'];
+            const levels = ['Beginner', 'Novice', 'Intermediate', 'Advanced', 'Elite', 'Pro'];
+            const ageGroups = ['Youth (8-15)', 'Teens (16-19)', 'Adults (20-35)', 'Adults (36-50)', 'Masters (51+)'];
+            const durations = ['30-45 min', '45-60 min', '60-90 min', '90+ min'];
+            const intensities = ['Low', 'Moderate', 'High', 'Extreme'];
+            const goals = ['Self Defense', 'Fitness', 'Competition', 'Weight Loss', 'Stress Relief', 'Confidence Building', 'Discipline', 'Flexibility', 'Strength', 'Endurance'];
+            const disabilities = ['None', 'Visual Impairment', 'Hearing Impairment', 'Mobility Impairment', 'Cognitive Impairment', 'Amputee', 'Wheelchair User', 'Chronic Illness'];
+            const locations = ['Gym', 'Dojo', 'Home', 'Outdoor', 'Ring', 'Mat', 'Studio'];
+
+            for (let i = 1; i <= 50000; i++) {
+                const sport = sports[Math.floor(Math.random() * sports.length)];
+                const level = levels[Math.floor(Math.random() * levels.length)];
+                const ageGroup = ageGroups[Math.floor(Math.random() * ageGroups.length)];
+                const duration = durations[Math.floor(Math.random() * durations.length)];
+                const intensity = intensities[Math.floor(Math.random() * intensities.length)];
+                const goal = goals[Math.floor(Math.random() * goals.length)];
+                const disability = disabilities[Math.floor(Math.random() * disabilities.length)];
+                const location = locations[Math.floor(Math.random() * locations.length)];
+
+                // Estimate calories burnt based on intensity and duration
+                const baseMET = intensity === 'Low' ? 6 : intensity === 'Moderate' ? 10 : intensity === 'High' ? 15 : 20;
+                const hours = parseFloat(duration.split('-')[0]) / 60 || 0.75;
+                const weight = ageGroup.includes('Youth') ? 40 : ageGroup.includes('Teens') ? 60 : ageGroup.includes('Masters') ? 70 : 75;
+                const calories = Math.round(baseMET * weight * hours);
+
+                const workout = {
+                    id: i,
+                    title: `${sport} ${level} Training ${i}`,
+                    sport: sport,
+                    level: level,
+                    ageGroup: ageGroup,
+                    duration: duration,
+                    intensity: intensity,
+                    goal: goal,
+                    disability: disability,
+                    location: location,
+                    calories: calories,
+                    description: `A ${intensity.toLowerCase()} intensity ${sport.toLowerCase()} training program for ${level.toLowerCase()} ${ageGroup.toLowerCase()}${disability !== 'None' ? ' (adapted for ' + disability.toLowerCase() + ')' : ''}. Estimated calories burnt: ${calories}. Location: ${location}. Perfect for ${goal.toLowerCase()}.`,
+                    weeklyPlan: generateWeeklyPlan(sport, level, intensity, ageGroup, disability, location)
+                };
+
+                allWorkouts.push(workout);
+            }
+        }
+
+        function generateWeeklyPlan(sport, level, intensity, ageGroup, disability, location) {
+            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+            const plan = [];
+
+            days.forEach((day, index) => {
+                if (index === 2 || index === 5) { // Wednesday and Saturday are rest days
+                    plan.push({
+                        day: day,
+                        type: 'rest',
+                        description: disability !== 'None' ? 'Accessible recovery or rest day' : 'Active recovery or complete rest day'
+                    });
+                } else {
+                    plan.push({
+                        day: day,
+                        type: 'workout',
+                        description: `${sport} training session (${location})`,
+                        exercises: generateExercises(sport, level, intensity, ageGroup, disability, location)
+                    });
+                }
+            });
+
+            return plan;
+        }
+
+        function generateExercises(sport, level, intensity, ageGroup, disability, location) {
+            const exerciseLibrary = {
+                'Boxing': {
+                    'Youth (8-15)': [
+                        'Double Jab to Cross (1-2 Combination)', 'Slip and Counter Drill', 'Bobbing and Weaving', 
+                        'Straight Right to Body', 'Left Hook to Head', 'Defensive Shell Position', 'Footwork Ladder Drills',
+                        'Shadow Boxing with Mirror', 'Focus Mitt Work', 'Speed Bag Basics', 'Heavy Bag Combinations',
+                        'Duck and Weave Drill', 'Counter Punching Practice', 'Ring Movement Patterns', 'Defense and Counter'
+                    ],
+                    'Teens (16-19)': [
+                        'Jab-Cross-Hook Combination (1-2-3)', 'Double Jab to Body', 'Uppercut to Body', 'Slip and Counter Right',
+                        'Bobbing and Weaving with Counters', 'Straight Right to Head', 'Left Hook to Body', 'Right Hook to Head',
+                        'Defensive Shell with Movement', 'Footwork Circle Drills', 'Shadow Boxing with Footwork', 'Focus Mitt Combinations',
+                        'Speed Bag Rhythm Training', 'Heavy Bag Power Shots', 'Duck and Weave with Counters', 'Counter Punching Drills'
+                    ],
+                    'Adults (20-35)': [
+                        'Jab-Cross-Hook-Uppercut (1-2-3-4)', 'Double Jab to Head and Body', 'Slip and Counter Combinations',
+                        'Bobbing and Weaving with Power Shots', 'Straight Right to Head and Body', 'Left Hook to Head and Body',
+                        'Right Hook to Head and Body', 'Uppercut to Head and Body', 'Defensive Shell with Counters',
+                        'Advanced Footwork Patterns', 'Shadow Boxing with Combinations', 'Focus Mitt Advanced Work',
+                        'Speed Bag Advanced Patterns', 'Heavy Bag Power Combinations', 'Duck and Weave with Power',
+                        'Advanced Counter Punching', 'Ring Generalship Drills', 'Sparring Preparation Work'
+                    ],
+                    'Adults (36-50)': [
+                        'Jab-Cross-Hook Combination', 'Double Jab Variations', 'Slip and Counter Right', 'Bobbing and Weaving',
+                        'Straight Right to Body', 'Left Hook to Head', 'Right Hook to Body', 'Uppercut to Body',
+                        'Defensive Shell Position', 'Footwork Movement', 'Shadow Boxing Basics', 'Focus Mitt Work',
+                        'Speed Bag Training', 'Heavy Bag Combinations', 'Duck and Weave Drill', 'Counter Punching'
+                    ],
+                    'Masters (51+)': [
+                        'Single Jab Practice', 'Straight Right to Body', 'Left Hook to Body', 'Defensive Shell',
+                        'Footwork Basics', 'Shadow Boxing Light', 'Focus Mitt Light Work', 'Heavy Bag Light Shots',
+                        'Duck and Weave Light', 'Counter Punching Light', 'Movement Drills', 'Balance Work'
+                    ],
+                    'Wheelchair User': [
+                        'Seated Jab Practice', 'Seated Cross Practice', 'Seated Hook Practice', 'Seated Uppercut',
+                        'Seated Defensive Shell', 'Seated Shadow Boxing', 'Seated Focus Mitt Work', 'Seated Heavy Bag',
+                        'Seated Counter Punching', 'Upper Body Cardio', 'Wheelchair Movement Drills', 'Adaptive Boxing'
+                    ],
+                    'Visual Impairment': [
+                        'Audio-Guided Shadow Boxing', 'Tactile Focus Mitt Work', 'Audio-Guided Heavy Bag', 'Seated Boxing',
+                        'Balance Work with Guide', 'Gentle Movement Drills', 'Audio-Guided Footwork', 'Stretching Exercises'
+                    ],
+                    'default': [
+                        'Jab-Cross-Hook Combination', 'Double Jab to Body', 'Slip and Counter Right', 'Bobbing and Weaving',
+                        'Straight Right to Head', 'Left Hook to Body', 'Right Hook to Head', 'Uppercut to Body',
+                        'Defensive Shell with Movement', 'Footwork Circle Drills', 'Shadow Boxing with Combinations',
+                        'Focus Mitt Work', 'Speed Bag Training', 'Heavy Bag Power Shots', 'Duck and Weave with Counters'
+                    ]
+                },
+                'Kickboxing': {
+                    'Youth (8-15)': [
+                        'Front Kick to Body', 'Roundhouse Kick to Body', 'Jab-Cross Combination', 'Side Kick to Body',
+                        'Knee Strike to Body', 'Push Kick to Body', 'Hook Kick to Body', 'Footwork Ladder Drills',
+                        'Shadow Kickboxing', 'Focus Mitt Work', 'Heavy Bag Basics', 'Balance Beam Work',
+                        'Kick Combinations', 'Punch Combinations', 'Defense Drills', 'Movement Patterns'
+                    ],
+                    'Teens (16-19)': [
+                        'Roundhouse Kick to Head', 'Front Kick to Head', 'Jab-Cross-Hook Combination', 'Side Kick to Head',
+                        'Knee Strike to Body', 'Elbow Strike to Body', 'Push Kick to Head', 'Hook Kick to Head',
+                        'Footwork Circle Drills', 'Shadow Kickboxing with Combinations', 'Focus Mitt Advanced Work',
+                        'Heavy Bag Power Shots', 'Balance Work', 'Kick-Punch Combinations', 'Defense and Counter',
+                        'Movement and Footwork', 'Sparring Preparation'
+                    ],
+                    'Adults (20-35)': [
+                        'Advanced Roundhouse Kick Combinations', 'Front Kick to Head and Body', 'Jab-Cross-Hook-Uppercut',
+                        'Side Kick to Head and Body', 'Knee Strike to Head and Body', 'Elbow Strike to Head and Body',
+                        'Push Kick to Head and Body', 'Hook Kick to Head and Body', 'Advanced Footwork Patterns',
+                        'Shadow Kickboxing Advanced', 'Focus Mitt Complex Work', 'Heavy Bag Power Combinations',
+                        'Balance and Agility Work', 'Advanced Kick-Punch Combinations', 'Defense and Counter Advanced',
+                        'Movement and Footwork Advanced', 'Sparring Work', 'Competition Preparation'
+                    ],
+                    'Adults (36-50)': [
+                        'Roundhouse Kick to Body', 'Front Kick to Body', 'Jab-Cross-Hook Combination', 'Side Kick to Body',
+                        'Knee Strike to Body', 'Elbow Strike to Body', 'Push Kick to Body', 'Hook Kick to Body',
+                        'Footwork Movement', 'Shadow Kickboxing Basics', 'Focus Mitt Work', 'Heavy Bag Combinations',
+                        'Balance Work', 'Kick-Punch Combinations', 'Defense Drills', 'Movement Patterns'
+                    ],
+                    'Masters (51+)': [
+                        'Light Front Kick to Body', 'Light Roundhouse Kick to Body', 'Jab-Cross Combination', 'Light Side Kick',
+                        'Light Knee Strike', 'Light Elbow Strike', 'Light Push Kick', 'Footwork Basics',
+                        'Shadow Kickboxing Light', 'Focus Mitt Light Work', 'Heavy Bag Light Shots', 'Balance Work',
+                        'Light Kick-Punch Combinations', 'Defense Basics', 'Movement Drills', 'Stretching'
+                    ],
+                    'Wheelchair User': [
+                        'Seated Front Kick', 'Seated Roundhouse Kick', 'Seated Jab-Cross', 'Seated Side Kick',
+                        'Seated Knee Strike', 'Seated Elbow Strike', 'Seated Push Kick', 'Seated Hook Kick',
+                        'Seated Shadow Kickboxing', 'Seated Focus Mitt Work', 'Seated Heavy Bag', 'Upper Body Cardio',
+                        'Wheelchair Movement Drills', 'Adaptive Kickboxing', 'Seated Defense Drills'
+                    ],
+                    'Visual Impairment': [
+                        'Audio-Guided Shadow Kickboxing', 'Tactile Focus Mitt Work', 'Audio-Guided Heavy Bag', 'Seated Kickboxing',
+                        'Balance Work with Guide', 'Gentle Movement Drills', 'Audio-Guided Footwork', 'Stretching Exercises'
+                    ],
+                    'default': [
+                        'Roundhouse Kick to Head and Body', 'Front Kick to Head and Body', 'Jab-Cross-Hook Combination',
+                        'Side Kick to Head and Body', 'Knee Strike to Head and Body', 'Elbow Strike to Head and Body',
+                        'Push Kick to Head and Body', 'Hook Kick to Head and Body', 'Footwork Circle Drills',
+                        'Shadow Kickboxing with Combinations', 'Focus Mitt Work', 'Heavy Bag Power Shots'
+                    ]
+                },
+                'Karate': {
+                    'Youth (8-15)': [
+                        'Heian Shodan Kata', 'Front Stance (Zenkutsu Dachi)', 'Back Stance (Kokutsu Dachi)', 'Horse Stance (Kiba Dachi)',
+                        'Straight Punch (Choku Zuki)', 'Front Kick (Mae Geri)', 'Roundhouse Kick (Mawashi Geri)', 'Side Kick (Yoko Geri)',
+                        'Down Block (Gedan Barai)', 'Middle Block (Chudan Uke)', 'Upper Block (Age Uke)', 'Kata Basics',
+                        'Kumite Basics', 'Focus Mitt Work', 'Heavy Bag Basics', 'Balance Work', 'Movement Drills'
+                    ],
+                    'Teens (16-19)': [
+                        'Heian Nidan Kata', 'Heian Sandan Kata', 'Front Stance Variations', 'Back Stance Variations',
+                        'Horse Stance Variations', 'Straight Punch Combinations', 'Front Kick to Head and Body', 'Roundhouse Kick to Head and Body',
+                        'Side Kick to Head and Body', 'Down Block with Counter', 'Middle Block with Counter', 'Upper Block with Counter',
+                        'Kata Practice', 'Kumite Drills', 'Focus Mitt Advanced Work', 'Heavy Bag Power Shots', 'Strength Training',
+                        'Balance and Agility Work', 'Movement and Footwork', 'Sparring Preparation'
+                    ],
+                    'Adults (20-35)': [
+                        'Heian Yondan Kata', 'Heian Godan Kata', 'Advanced Stance Work', 'Straight Punch Advanced Combinations',
+                        'Front Kick Advanced Techniques', 'Roundhouse Kick Advanced Techniques', 'Side Kick Advanced Techniques',
+                        'Down Block Advanced Applications', 'Middle Block Advanced Applications', 'Upper Block Advanced Applications',
+                        'Advanced Kata Practice', 'Advanced Kumite Training', 'Focus Mitt Complex Work', 'Heavy Bag Power Combinations',
+                        'Advanced Strength Training', 'Advanced Balance and Agility', 'Advanced Movement and Footwork', 'Sparring Work',
+                        'Competition Preparation', 'Bunkai (Kata Applications)'
+                    ],
+                    'Adults (36-50)': [
+                        'Heian Shodan Kata', 'Heian Nidan Kata', 'Front Stance Work', 'Back Stance Work', 'Horse Stance Work',
+                        'Straight Punch Combinations', 'Front Kick to Body', 'Roundhouse Kick to Body', 'Side Kick to Body',
+                        'Down Block with Counter', 'Middle Block with Counter', 'Upper Block with Counter', 'Kata Practice',
+                        'Kumite Drills', 'Focus Mitt Work', 'Heavy Bag Combinations', 'Strength Training', 'Balance Work',
+                        'Movement and Footwork'
+                    ],
+                    'Masters (51+)': [
+                        'Heian Shodan Kata Light', 'Front Stance Basics', 'Back Stance Basics', 'Horse Stance Basics',
+                        'Straight Punch Light', 'Front Kick Light', 'Roundhouse Kick Light', 'Side Kick Light',
+                        'Down Block Light', 'Middle Block Light', 'Upper Block Light', 'Kata Practice Light',
+                        'Kumite Light', 'Focus Mitt Light Work', 'Heavy Bag Light Shots', 'Strength Work Light',
+                        'Balance Work', 'Movement Drills', 'Stretching'
+                    ],
+                    'Wheelchair User': [
+                        'Seated Heian Shodan Kata', 'Seated Front Stance', 'Seated Back Stance', 'Seated Horse Stance',
+                        'Seated Straight Punch', 'Seated Front Kick', 'Seated Roundhouse Kick', 'Seated Side Kick',
+                        'Seated Down Block', 'Seated Middle Block', 'Seated Upper Block', 'Seated Kata Practice',
+                        'Seated Kumite', 'Seated Focus Mitt Work', 'Seated Heavy Bag', 'Upper Body Cardio',
+                        'Wheelchair Movement Drills', 'Adaptive Karate'
+                    ],
+                    'Visual Impairment': [
+                        'Audio-Guided Heian Shodan Kata', 'Tactile Stance Work', 'Audio-Guided Punch Practice', 'Audio-Guided Kick Practice',
+                        'Tactile Block Practice', 'Audio-Guided Kata Practice', 'Audio-Guided Kumite', 'Seated Karate',
+                        'Balance Work with Guide', 'Gentle Movement Drills', 'Audio-Guided Footwork', 'Stretching Exercises'
+                    ],
+                    'default': [
+                        'Heian Shodan Kata', 'Front Stance (Zenkutsu Dachi)', 'Back Stance (Kokutsu Dachi)', 'Horse Stance (Kiba Dachi)',
+                        'Straight Punch (Choku Zuki)', 'Front Kick (Mae Geri)', 'Roundhouse Kick (Mawashi Geri)', 'Side Kick (Yoko Geri)',
+                        'Down Block (Gedan Barai)', 'Middle Block (Chudan Uke)', 'Upper Block (Age Uke)', 'Kata Practice',
+                        'Kumite Drills', 'Focus Mitt Work', 'Heavy Bag Work', 'Strength Training'
+                    ]
+                },
+                'Taekwondo': {
+                    'Youth (8-15)': ['Basic Kicks', 'Poomse Basics', 'Balance Drills', 'Fun Games', 'Stretching'],
+                    'Teens (16-19)': ['Advanced Kicks', 'Poomse Practice', 'Sparring Drills', 'Kick Combinations', 'Strength Work'],
+                    'Adults (20-35)': ['Advanced Poomse', 'Sparring Training', 'Kick Drills', 'Strength Training', 'Competition Prep'],
+                    'Adults (36-50)': ['Poomse Practice', 'Sparring Drills', 'Kick Work', 'Strength Training', 'Defense'],
+                    'Masters (51+)': ['Basic Poomse', 'Light Sparring', 'Kick Practice', 'Strength Work', 'Stretching'],
+                    'Wheelchair User': ['Seated Poomse', 'Upper Body Work', 'Wheelchair Sports', 'Adaptive Training', 'Arm Drive'],
+                    'Visual Impairment': ['Audio-Guided Poomse', 'Seated Work', 'Balance Work', 'Gentle Movement', 'Stretching'],
+                    'default': ['Poomse Practice', 'Kick Combinations', 'Sparring Drills', 'Strength Training', 'Flexibility Work']
+                },
+                'Judo': {
+                    'Youth (8-15)': ['Ukemi (Falling)', 'Basic Throws', 'Fun Games', 'Balance Work', 'Stretching'],
+                    'Teens (16-19)': ['Advanced Throws', 'Ground Work', 'Randori Practice', 'Strength Training', 'Technique Work'],
+                    'Adults (20-35)': ['Advanced Techniques', 'Randori Training', 'Ground Work', 'Strength Training', 'Competition Prep'],
+                    'Adults (36-50)': ['Throw Practice', 'Ground Work', 'Randori Drills', 'Strength Training', 'Technique Work'],
+                    'Masters (51+)': ['Basic Throws', 'Light Ground Work', 'Technique Practice', 'Strength Work', 'Stretching'],
+                    'Wheelchair User': ['Adaptive Judo', 'Upper Body Work', 'Wheelchair Sports', 'Seated Training', 'Arm Drive'],
+                    'Visual Impairment': ['Audio-Guided Judo', 'Seated Work', 'Balance Work', 'Gentle Movement', 'Stretching'],
+                    'default': ['Throw Practice', 'Ground Work', 'Randori Drills', 'Strength Training', 'Ukemi Practice']
+                },
+                'BJJ': {
+                    'Youth (8-15)': ['Basic Positions', 'Fun Games', 'Balance Work', 'Gentle Rolling', 'Stretching'],
+                    'Teens (16-19)': ['Position Work', 'Submission Drills', 'Light Rolling', 'Strength Training', 'Technique Practice'],
+                    'Adults (20-35)': ['Advanced Techniques', 'Rolling Practice', 'Submission Work', 'Strength Training', 'Competition Prep'],
+                    'Adults (36-50)': ['Position Work', 'Submission Drills', 'Rolling Practice', 'Strength Training', 'Technique Work'],
+                    'Masters (51+)': ['Basic Positions', 'Light Rolling', 'Technique Practice', 'Strength Work', 'Stretching'],
+                    'Wheelchair User': ['Adaptive BJJ', 'Upper Body Work', 'Wheelchair Sports', 'Seated Training', 'Arm Drive'],
+                    'Visual Impairment': ['Audio-Guided BJJ', 'Seated Work', 'Balance Work', 'Gentle Movement', 'Stretching'],
+                    'default': ['Position Work', 'Submission Drills', 'Rolling Practice', 'Strength Training', 'Technique Work']
+                },
+                'Wrestling': {
+                    'Youth (8-15)': ['Basic Takedowns', 'Fun Games', 'Balance Work', 'Stretching', 'Movement Drills'],
+                    'Teens (16-19)': ['Takedown Practice', 'Ground Work', 'Light Sparring', 'Strength Training', 'Technique Work'],
+                    'Adults (20-35)': ['Advanced Takedowns', 'Ground Work', 'Sparring Practice', 'Strength Training', 'Competition Prep'],
+                    'Adults (36-50)': ['Takedown Drills', 'Ground Work', 'Sparring Practice', 'Strength Training', 'Technique Work'],
+                    'Masters (51+)': ['Basic Takedowns', 'Light Ground Work', 'Technique Practice', 'Strength Work', 'Stretching'],
+                    'Wheelchair User': ['Adaptive Wrestling', 'Upper Body Work', 'Wheelchair Sports', 'Seated Training', 'Arm Drive'],
+                    'Visual Impairment': ['Audio-Guided Wrestling', 'Seated Work', 'Balance Work', 'Gentle Movement', 'Stretching'],
+                    'default': ['Takedown Practice', 'Ground Work', 'Sparring Drills', 'Strength Training', 'Technique Work']
+                },
+                'MMA': {
+                    'Youth (8-15)': ['Basic Strikes', 'Fun Games', 'Balance Work', 'Movement Drills', 'Stretching'],
+                    'Teens (16-19)': ['Strike Combinations', 'Ground Work', 'Light Sparring', 'Strength Training', 'Technique Work'],
+                    'Adults (20-35)': ['Advanced Combinations', 'Ground Work', 'Sparring Practice', 'Strength Training', 'Competition Prep'],
+                    'Adults (36-50)': ['Strike Work', 'Ground Work', 'Sparring Practice', 'Strength Training', 'Technique Work'],
+                    'Masters (51+)': ['Basic Strikes', 'Light Ground Work', 'Technique Practice', 'Strength Work', 'Stretching'],
+                    'Wheelchair User': ['Adaptive MMA', 'Upper Body Work', 'Wheelchair Sports', 'Seated Training', 'Arm Drive'],
+                    'Visual Impairment': ['Audio-Guided MMA', 'Seated Work', 'Balance Work', 'Gentle Movement', 'Stretching'],
+                    'default': ['Strike Combinations', 'Ground Work', 'Sparring Drills', 'Strength Training', 'Technique Work']
+                },
+                'Muay Thai': {
+                    'Youth (8-15)': ['Basic Kicks', 'Punch Practice', 'Fun Games', 'Balance Work', 'Stretching'],
+                    'Teens (16-19)': ['Kick Combinations', 'Punch Work', 'Knee Strikes', 'Strength Training', 'Technique Work'],
+                    'Adults (20-35)': ['Advanced Kicks', 'Punch Combinations', 'Knee/Elbow Strikes', 'Strength Training', 'Sparring'],
+                    'Adults (36-50)': ['Kick Work', 'Punch Combinations', 'Knee Strikes', 'Strength Training', 'Technique Work'],
+                    'Masters (51+)': ['Basic Kicks', 'Punch Work', 'Light Knee Strikes', 'Strength Work', 'Stretching'],
+                    'Wheelchair User': ['Seated Kicks', 'Upper Body Work', 'Wheelchair Sports', 'Adaptive Training', 'Arm Drive'],
+                    'Visual Impairment': ['Audio-Guided Training', 'Seated Work', 'Balance Work', 'Gentle Movement', 'Stretching'],
+                    'default': ['Kick Combinations', 'Punch Work', 'Knee Strikes', 'Strength Training', 'Technique Work']
+                },
+                'Krav Maga': {
+                    'Youth (8-15)': ['Basic Defense', 'Fun Games', 'Balance Work', 'Movement Drills', 'Stretching'],
+                    'Teens (16-19)': ['Defense Techniques', 'Strike Work', 'Light Sparring', 'Strength Training', 'Technique Work'],
+                    'Adults (20-35)': ['Advanced Defense', 'Strike Combinations', 'Sparring Practice', 'Strength Training', 'Self Defense'],
+                    'Adults (36-50)': ['Defense Work', 'Strike Practice', 'Sparring Drills', 'Strength Training', 'Technique Work'],
+                    'Masters (51+)': ['Basic Defense', 'Light Strike Work', 'Technique Practice', 'Strength Work', 'Stretching'],
+                    'Wheelchair User': ['Adaptive Defense', 'Upper Body Work', 'Wheelchair Sports', 'Seated Training', 'Arm Drive'],
+                    'Visual Impairment': ['Audio-Guided Training', 'Seated Work', 'Balance Work', 'Gentle Movement', 'Stretching'],
+                    'default': ['Defense Techniques', 'Strike Work', 'Sparring Drills', 'Strength Training', 'Self Defense']
+                }
+            };
+
+            const exerciseCount = level === 'Beginner' ? 3 : level === 'Novice' ? 3 : level === 'Intermediate' ? 4 : level === 'Advanced' ? 5 : level === 'Elite' ? 6 : 7;
+            let exercises = [];
+            
+            for (let i = 0; i < exerciseCount; i++) {
+                let exList = (exerciseLibrary[sport] && (
+                    exerciseLibrary[sport][disability] || 
+                    exerciseLibrary[sport][ageGroup] || 
+                    exerciseLibrary[sport]['default']
+                )) || exerciseLibrary['Boxing']['default'];
+                
+                const name = exList[i % exList.length];
+                const durationMin = intensity === 'Low' ? 10 : intensity === 'Moderate' ? 15 : intensity === 'High' ? 20 : 25;
+                const sets = level === 'Beginner' ? 2 : level === 'Novice' ? 2 : level === 'Intermediate' ? 3 : level === 'Advanced' ? 4 : level === 'Elite' ? 5 : 6;
+                const reps = intensity === 'Low' ? 8 : intensity === 'Moderate' ? 12 : intensity === 'High' ? 15 : 20;
+                
+                exercises.push({
+                    name: name,
+                    duration: `${durationMin + Math.floor(Math.random() * 10)} minutes`,
+                    sets: sets,
+                    reps: reps,
+                    intensity: intensity,
+                    description: `${intensity} intensity ${name.toLowerCase()} (${location}) - ${sets} sets of ${reps} reps`
+                });
+            }
+            
+            return exercises;
+        }
+
+        // Filter and display routines
+        function filterRoutines() {
+            const sportFilter = document.getElementById('sportFilter').value;
+            const levelFilter = document.getElementById('levelFilter').value;
+            const ageFilter = document.getElementById('ageFilter').value;
+            const durationFilter = document.getElementById('durationFilter').value;
+            const intensityFilter = document.getElementById('intensityFilter').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+            filteredWorkouts = allWorkouts.filter(workout => {
+                const matchesSport = !sportFilter || workout.sport === sportFilter;
+                const matchesLevel = !levelFilter || workout.level === levelFilter;
+                const matchesAge = !ageFilter || workout.ageGroup === ageFilter;
+                const matchesDuration = !durationFilter || workout.duration === durationFilter;
+                const matchesIntensity = !intensityFilter || workout.intensity === intensityFilter;
+                const matchesSearch = !searchTerm || 
+                    workout.title.toLowerCase().includes(searchTerm) ||
+                    workout.description.toLowerCase().includes(searchTerm) ||
+                    workout.sport.toLowerCase().includes(searchTerm);
+
+                return matchesSport && matchesLevel && matchesAge && matchesDuration && matchesIntensity && matchesSearch;
+            });
+
+            currentPage = 1;
+            displayWorkouts();
+            displayPagination();
+        }
+
+        function searchRoutines() {
+            filterRoutines();
+        }
+
+        // Display workouts
+        function displayWorkouts() {
+            const grid = document.getElementById('workoutsGrid');
+            const startIndex = (currentPage - 1) * workoutsPerPage;
+            const endIndex = startIndex + workoutsPerPage;
+            const pageWorkouts = filteredWorkouts.slice(startIndex, endIndex);
+
+            grid.innerHTML = pageWorkouts.map(workout => `
+                <div class="workout-card" onclick="openWorkoutModal(${workout.id})">
+                    <div class="workout-header">
+                        <div class="workout-title">${workout.title}</div>
+                        <div class="workout-category">${workout.sport}</div>
+                    </div>
+                    <div class="workout-body">
+                        <div class="workout-stats">
+                            <span>Level: ${workout.level}</span>
+                            <span>Duration: ${workout.duration}</span>
+                            <span>Calories: ${workout.calories}</span>
+                        </div>
+                        <div class="workout-description">${workout.description}</div>
+                        <div class="workout-tags">
+                            <span class="tag">${workout.ageGroup}</span>
+                            <span class="tag">${workout.intensity}</span>
+                            <span class="tag">${workout.goal}</span>
+                            <span class="tag">${workout.location}</span>
+                            ${workout.disability !== 'None' ? `<span class="tag">${workout.disability}</span>` : ''}
+                        </div>
+                        <div class="workout-actions">
+                            <button class="btn btn-primary">View Plan</button>
+                            <button class="btn btn-secondary" onclick="event.stopPropagation(); downloadWorkout(${workout.id})">Download</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Pagination
+        function displayPagination() {
+            const totalPages = Math.ceil(filteredWorkouts.length / workoutsPerPage);
+            const pagination = document.getElementById('pagination');
+
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+
+            let paginationHTML = '';
+            
+            if (currentPage > 1) {
+                paginationHTML += `<button class="page-btn" onclick="changePage(${currentPage - 1})">Previous</button>`;
+            }
+
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+                    paginationHTML += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+                } else if (i === currentPage - 3 || i === currentPage + 3) {
+                    paginationHTML += `<span>...</span>`;
+                }
+            }
+
+            if (currentPage < totalPages) {
+                paginationHTML += `<button class="page-btn" onclick="changePage(${currentPage + 1})">Next</button>`;
+            }
+
+            pagination.innerHTML = paginationHTML;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            displayWorkouts();
+            displayPagination();
+        }
+
+        // Modal functions
+        function openWorkoutModal(workoutId) {
+            const workout = allWorkouts.find(w => w.id === workoutId);
+            if (!workout) return;
+
+            document.getElementById('modalTitle').textContent = workout.title;
+            
+            const modalContent = document.getElementById('modalContent');
+            modalContent.innerHTML = `
+                <div style="color: #fff; padding: 2rem;">
+                    <h3 style="color: #fff; margin-bottom: 1rem;">${workout.sport} Training Overview</h3>
+                    <div style="background: #292929; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <p><strong>Level:</strong> ${workout.level}</p>
+                        <p><strong>Age Group:</strong> ${workout.ageGroup}</p>
+                        <p><strong>Duration:</strong> ${workout.duration}</p>
+                        <p><strong>Intensity:</strong> ${workout.intensity}</p>
+                        <p><strong>Goal:</strong> ${workout.goal}</p>
+                        <p><strong>Location:</strong> ${workout.location}</p>
+                        <p><strong>Calories:</strong> ${workout.calories} kcal</p>
+                        ${workout.disability !== 'None' ? `<p><strong>Accessibility:</strong> ${workout.disability}</p>` : ''}
+                    </div>
+                    
+                    <h4 style="color: #fff; margin: 2rem 0 1rem 0;">Weekly Training Plan</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        ${workout.weeklyPlan.map(day => `
+                            <div style="background: #292929; padding: 1rem; border-radius: 8px; border-left: 4px solid ${day.type === 'workout' ? '#28a745' : '#6c757d'};">
+                                <h5 style="color: #fff; margin-bottom: 0.5rem;">${day.day}</h5>
+                                <p style="color: #aaa; font-size: 0.9rem;">${day.type === 'workout' ? 'Training Day' : 'Rest Day'}</p>
+                                <p style="color: #aaa; font-size: 0.8rem;">${day.description}</p>
+                                ${day.type === 'workout' && day.exercises ? `
+                                    <div style="margin-top: 0.5rem;">
+                                        <p style="color: #fff; font-size: 0.8rem;"><strong>Exercises:</strong></p>
+                                        <ul style="color: #aaa; font-size: 0.7rem; padding-left: 1rem;">
+                                            ${day.exercises.slice(0, 3).map(exercise => `<li>${exercise.name}</li>`).join('')}
+                                            ${day.exercises.length > 3 ? `<li>+${day.exercises.length - 3} more</li>` : ''}
+                                        </ul>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <h4 style="color: #fff; margin: 2rem 0 1rem 0;">Additional Information</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                        
+                        <!-- Equipment Section -->
+                        <div style="background: #292929; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #007bff;">
+                            <h5 style="color: #fff; margin-bottom: 1rem;">Required Equipment</h5>
+                            <div style="color: #aaa; font-size: 0.9rem;">
+                                ${getEquipmentNeeded(workout.sport, workout.level, workout.location)}
+                            </div>
+                        </div>
+
+                        <!-- Nutrition Section -->
+                        <div style="background: #292929; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #28a745;">
+                            <h5 style="color: #fff; margin-bottom: 1rem;">Nutrition & Hydration</h5>
+                            <div style="color: #aaa; font-size: 0.9rem;">
+                                <p><strong>Pre-Workout (2-3 hours):</strong> ${getPreWorkoutNutrition(workout.intensity, workout.duration)}</p>
+                                <p><strong>During Training:</strong> ${getDuringWorkoutNutrition(workout.intensity, workout.duration)}</p>
+                                <p><strong>Post-Workout (30 min):</strong> ${getPostWorkoutNutrition(workout.intensity, workout.calories)}</p>
+                                <p><strong>Hydration:</strong> ${getHydrationPlan(workout.intensity, workout.duration)}</p>
+                            </div>
+                        </div>
+
+                        <!-- Safety Section -->
+                        <div style="background: #292929; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #dc3545;">
+                            <h5 style="color: #fff; margin-bottom: 1rem;">Safety Guidelines</h5>
+                            <div style="color: #aaa; font-size: 0.9rem;">
+                                <p><strong>Warm-up (15-20 min):</strong> ${getWarmupRoutine(workout.sport, workout.level)}</p>
+                                <p><strong>Cool-down (10-15 min):</strong> ${getCooldownRoutine(workout.sport, workout.level)}</p>
+                                <p><strong>Warning Signs:</strong> Stop if you experience chest pain, dizziness, or extreme fatigue</p>
+                                <p><strong>Medical Clearance:</strong> Consult healthcare provider before starting this program</p>
+                                <p><strong>Supervision:</strong> ${getSupervisionRequirements(workout.sport, workout.level)}</p>
+                            </div>
+                        </div>
+
+                        <!-- Progress Tracking -->
+                        <div style="background: #292929; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #ffc107;">
+                            <h5 style="color: #fff; margin-bottom: 1rem;">Progress Tracking</h5>
+                            <div style="color: #aaa; font-size: 0.9rem;">
+                                <p><strong>Weekly Goals:</strong> Complete ${workout.weeklyPlan.filter(d => d.type === 'workout').length} training sessions</p>
+                                <p><strong>Monthly Milestones:</strong> Increase technique complexity by 10% every 4 weeks</p>
+                                <p><strong>Performance Metrics:</strong> Track speed, power, accuracy, and endurance</p>
+                                <p><strong>Recovery Indicators:</strong> Monitor sleep quality and muscle soreness</p>
+                                <p><strong>Skill Development:</strong> ${getSkillDevelopment(workout.sport, workout.level)}</p>
+                            </div>
+                        </div>
+
+                        <!-- Training Tips -->
+                        <div style="background: #292929; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #6f42c1;">
+                            <h5 style="color: #fff; margin-bottom: 1rem;">Training Tips & Suggestions</h5>
+                            <div style="color: #aaa; font-size: 0.9rem;">
+                                ${getTrainingTips(workout.sport, workout.level, workout.intensity)}
+                            </div>
+                        </div>
+
+                        <!-- Recovery & Rest -->
+                        <div style="background: #292929; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #17a2b8;">
+                            <h5 style="color: #fff; margin-bottom: 1rem;">Recovery & Rest</h5>
+                            <div style="color: #aaa; font-size: 0.9rem;">
+                                <p><strong>Rest Days:</strong> Active recovery with light stretching and mobility work</p>
+                                <p><strong>Sleep:</strong> Aim for 7-9 hours of quality sleep for optimal recovery</p>
+                                <p><strong>Recovery Techniques:</strong> ${getRecoveryTechniques(workout.sport, workout.level)}</p>
+                                <p><strong>Injury Prevention:</strong> ${getInjuryPrevention(workout.sport, workout.level)}</p>
+                                <p><strong>Mental Recovery:</strong> Meditation, breathing exercises, and stress management</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 style="color: #fff; margin: 2rem 0 1rem 0;">Detailed Exercise Breakdown</h4>
+                    ${workout.weeklyPlan.map((day, index) => `
+                        <div style="background: #292929; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid ${day.type === 'workout' ? '#28a745' : '#6c757d'};">
+                            <h5 style="color: #fff; margin-bottom: 1rem;">${day.day} - ${day.type === 'workout' ? 'Training Session' : 'Recovery Day'}</h5>
+                            <p style="color: #aaa; margin-bottom: 1rem;"><strong>Focus:</strong> ${day.description}</p>
+                            ${day.type === 'workout' && day.exercises ? `
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                                    <div style="background: #333; padding: 0.75rem; border-radius: 6px; text-align: center;">
+                                        <strong style="color: #fff; display: block; font-size: 0.9rem;">Total Time</strong>
+                                        <span style="color: #aaa; font-size: 0.8rem;">${day.exercises.reduce((total, ex) => total + parseInt(ex.duration), 0)} min</span>
+                                    </div>
+                                    <div style="background: #333; padding: 0.75rem; border-radius: 6px; text-align: center;">
+                                        <strong style="color: #fff; display: block; font-size: 0.9rem;">Exercises</strong>
+                                        <span style="color: #aaa; font-size: 0.8rem;">${day.exercises.length}</span>
+                                    </div>
+                                    <div style="background: #333; padding: 0.75rem; border-radius: 6px; text-align: center;">
+                                        <strong style="color: #fff; display: block; font-size: 0.9rem;">Intensity</strong>
+                                        <span style="color: #aaa; font-size: 0.8rem;">${day.exercises[0]?.intensity || 'Moderate'}</span>
+                                    </div>
+                                    <div style="background: #333; padding: 0.75rem; border-radius: 6px; text-align: center;">
+                                        <strong style="color: #fff; display: block; font-size: 0.9rem;">Calories</strong>
+                                        <span style="color: #aaa; font-size: 0.8rem;">~${Math.round(workout.calories / 5)} kcal</span>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 1rem;">
+                                    <strong style="color: #fff;">Exercise Sequence:</strong>
+                                    <ol style="margin-top: 0.5rem; padding-left: 1.5rem; color: #aaa;">
+                                        ${day.exercises.map((exercise, exIndex) => `
+                                            <li style="margin-bottom: 0.75rem;">
+                                                <strong style="color: #fff;">${exercise.name}</strong><br>
+                                                <span style="font-size: 0.85rem; color: #aaa;">
+                                                    ${exercise.duration} • ${exercise.sets} sets • ${exercise.reps} reps • ${exercise.intensity} intensity
+                                                </span><br>
+                                                <span style="font-size: 0.8rem; color: #888; font-style: italic;">
+                                                    ${exercise.description}
+                                                </span>
+                                            </li>
+                                        `).join('')}
+                                    </ol>
+                                </div>
+                            ` : `
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                                    <div style="background: #333; padding: 0.75rem; border-radius: 6px; text-align: center;">
+                                        <strong style="color: #fff; display: block; font-size: 0.9rem;">Recovery Type</strong>
+                                        <span style="color: #aaa; font-size: 0.8rem;">Active Rest</span>
+                                    </div>
+                                    <div style="background: #333; padding: 0.75rem; border-radius: 6px; text-align: center;">
+                                        <strong style="color: #fff; display: block; font-size: 0.9rem;">Duration</strong>
+                                        <span style="color: #aaa; font-size: 0.8rem;">20-30 min</span>
+                                    </div>
+                                    <div style="background: #333; padding: 0.75rem; border-radius: 6px; text-align: center;">
+                                        <strong style="color: #fff; display: block; font-size: 0.9rem;">Intensity</strong>
+                                        <span style="color: #aaa; font-size: 0.8rem;">Very Low</span>
+                                    </div>
+                                    <div style="background: #333; padding: 0.75rem; border-radius: 6px; text-align: center;">
+                                        <strong style="color: #fff; display: block; font-size: 0.9rem;">Calories</strong>
+                                        <span style="color: #aaa; font-size: 0.8rem;">~50 kcal</span>
+                                    </div>
+                                </div>
+                                <p style="margin-top: 1rem; color: #aaa;"><strong style="color: #fff;">Recovery Activities:</strong> Light stretching, walking, yoga, or complete rest</p>
+                            `}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            document.getElementById('workoutModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('workoutModal').style.display = 'none';
+        }
+
+        // Download functions
+        function downloadWorkout(workoutId) {
+            const workout = allWorkouts.find(w => w.id === workoutId);
+            if (!workout) return;
+
+            const content = `
+Combat Sports Training Plan
+===========================
+
+Title: ${workout.title}
+Sport: ${workout.sport}
+Level: ${workout.level}
+Age Group: ${workout.ageGroup}
+Duration: ${workout.duration}
+Intensity: ${workout.intensity}
+Goal: ${workout.goal}
+
+Description: ${workout.description}
+
+7-DAY WEEKLY PLAN
+=================
+
+${workout.weeklyPlan.map(day => `
+${day.day.toUpperCase()}
+Type: ${day.type === 'workout' ? 'Training Day' : 'Rest Day'}
+Description: ${day.description}
+${day.type === 'workout' && day.exercises ? `
+Exercises:
+${day.exercises.map(exercise => `- ${exercise.name}: ${exercise.duration} (${exercise.intensity} intensity)`).join('\n')}
+` : ''}
+`).join('\n')}
+
+Notes:
+- Always warm up before starting your training
+- Stay hydrated throughout your session
+- Listen to your body and adjust intensity as needed
+- Consult with a healthcare provider before starting any new exercise program
+- Ensure proper supervision for combat sports training
+            `;
+
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${workout.title.replace(/\s+/g, '_')}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Helper functions for additional information
+        function getEquipmentNeeded(sport, level, location) {
+            const equipment = {
+                'Boxing': {
+                    'Beginner': 'Boxing gloves (12-16 oz), hand wraps, mouthguard, headgear (optional), heavy bag, speed bag, focus mitts, jump rope',
+                    'Novice': 'Boxing gloves (12-16 oz), hand wraps, mouthguard, headgear, heavy bag, speed bag, focus mitts, jump rope, timer',
+                    'Intermediate': 'Boxing gloves (10-16 oz), hand wraps, mouthguard, headgear, heavy bag, speed bag, focus mitts, jump rope, timer, resistance bands',
+                    'Advanced': 'Boxing gloves (8-16 oz), hand wraps, mouthguard, headgear, heavy bag, speed bag, focus mitts, jump rope, timer, resistance bands, medicine ball',
+                    'Elite': 'Boxing gloves (8-16 oz), hand wraps, mouthguard, headgear, heavy bag, speed bag, focus mitts, jump rope, timer, resistance bands, medicine ball, agility ladder',
+                    'Pro': 'Boxing gloves (8-16 oz), hand wraps, mouthguard, headgear, heavy bag, speed bag, focus mitts, jump rope, timer, resistance bands, medicine ball, agility ladder, sparring equipment'
+                },
+                'Kickboxing': {
+                    'Beginner': 'Boxing gloves (12-16 oz), hand wraps, mouthguard, shin guards, heavy bag, focus mitts, jump rope',
+                    'Novice': 'Boxing gloves (12-16 oz), hand wraps, mouthguard, shin guards, heavy bag, focus mitts, jump rope, timer',
+                    'Intermediate': 'Boxing gloves (10-16 oz), hand wraps, mouthguard, shin guards, heavy bag, focus mitts, jump rope, timer, resistance bands',
+                    'Advanced': 'Boxing gloves (8-16 oz), hand wraps, mouthguard, shin guards, heavy bag, focus mitts, jump rope, timer, resistance bands, medicine ball',
+                    'Elite': 'Boxing gloves (8-16 oz), hand wraps, mouthguard, shin guards, heavy bag, focus mitts, jump rope, timer, resistance bands, medicine ball, agility ladder',
+                    'Pro': 'Boxing gloves (8-16 oz), hand wraps, mouthguard, shin guards, heavy bag, focus mitts, jump rope, timer, resistance bands, medicine ball, agility ladder, sparring equipment'
+                },
+                'Karate': {
+                    'Beginner': 'Karate gi, belt, mouthguard, focus mitts, heavy bag, timer',
+                    'Novice': 'Karate gi, belt, mouthguard, focus mitts, heavy bag, timer, resistance bands',
+                    'Intermediate': 'Karate gi, belt, mouthguard, focus mitts, heavy bag, timer, resistance bands, medicine ball',
+                    'Advanced': 'Karate gi, belt, mouthguard, focus mitts, heavy bag, timer, resistance bands, medicine ball, agility ladder',
+                    'Elite': 'Karate gi, belt, mouthguard, focus mitts, heavy bag, timer, resistance bands, medicine ball, agility ladder, sparring equipment',
+                    'Pro': 'Karate gi, belt, mouthguard, focus mitts, heavy bag, timer, resistance bands, medicine ball, agility ladder, sparring equipment, competition gear'
+                },
+                'Taekwondo': {
+                    'Beginner': 'Dobok, belt, mouthguard, focus mitts, heavy bag, timer',
+                    'Novice': 'Dobok, belt, mouthguard, focus mitts, heavy bag, timer, resistance bands',
+                    'Intermediate': 'Dobok, belt, mouthguard, focus mitts, heavy bag, timer, resistance bands, medicine ball',
+                    'Advanced': 'Dobok, belt, mouthguard, focus mitts, heavy bag, timer, resistance bands, medicine ball, agility ladder',
+                    'Elite': 'Dobok, belt, mouthguard, focus mitts, heavy bag, timer, resistance bands, medicine ball, agility ladder, sparring equipment',
+                    'Pro': 'Dobok, belt, mouthguard, focus mitts, heavy bag, timer, resistance bands, medicine ball, agility ladder, sparring equipment, competition gear'
+                },
+                'Judo': {
+                    'Beginner': 'Judo gi, belt, mouthguard, timer',
+                    'Novice': 'Judo gi, belt, mouthguard, timer, resistance bands',
+                    'Intermediate': 'Judo gi, belt, mouthguard, timer, resistance bands, medicine ball',
+                    'Advanced': 'Judo gi, belt, mouthguard, timer, resistance bands, medicine ball, agility ladder',
+                    'Elite': 'Judo gi, belt, mouthguard, timer, resistance bands, medicine ball, agility ladder, sparring equipment',
+                    'Pro': 'Judo gi, belt, mouthguard, timer, resistance bands, medicine ball, agility ladder, sparring equipment, competition gear'
+                },
+                'BJJ': {
+                    'Beginner': 'BJJ gi, belt, mouthguard, timer',
+                    'Novice': 'BJJ gi, belt, mouthguard, timer, resistance bands',
+                    'Intermediate': 'BJJ gi, belt, mouthguard, timer, resistance bands, medicine ball',
+                    'Advanced': 'BJJ gi, belt, mouthguard, timer, resistance bands, medicine ball, agility ladder',
+                    'Elite': 'BJJ gi, belt, mouthguard, timer, resistance bands, medicine ball, agility ladder, sparring equipment',
+                    'Pro': 'BJJ gi, belt, mouthguard, timer, resistance bands, medicine ball, agility ladder, sparring equipment, competition gear'
+                },
+                'Wrestling': {
+                    'Beginner': 'Wrestling singlet, mouthguard, timer',
+                    'Novice': 'Wrestling singlet, mouthguard, timer, resistance bands',
+                    'Intermediate': 'Wrestling singlet, mouthguard, timer, resistance bands, medicine ball',
+                    'Advanced': 'Wrestling singlet, mouthguard, timer, resistance bands, medicine ball, agility ladder',
+                    'Elite': 'Wrestling singlet, mouthguard, timer, resistance bands, medicine ball, agility ladder, sparring equipment',
+                    'Pro': 'Wrestling singlet, mouthguard, timer, resistance bands, medicine ball, agility ladder, sparring equipment, competition gear'
+                },
+                'MMA': {
+                    'Beginner': 'MMA gloves, mouthguard, shin guards, heavy bag, focus mitts, timer',
+                    'Novice': 'MMA gloves, mouthguard, shin guards, heavy bag, focus mitts, timer, resistance bands',
+                    'Intermediate': 'MMA gloves, mouthguard, shin guards, heavy bag, focus mitts, timer, resistance bands, medicine ball',
+                    'Advanced': 'MMA gloves, mouthguard, shin guards, heavy bag, focus mitts, timer, resistance bands, medicine ball, agility ladder',
+                    'Elite': 'MMA gloves, mouthguard, shin guards, heavy bag, focus mitts, timer, resistance bands, medicine ball, agility ladder, sparring equipment',
+                    'Pro': 'MMA gloves, mouthguard, shin guards, heavy bag, focus mitts, timer, resistance bands, medicine ball, agility ladder, sparring equipment, competition gear'
+                },
+                'Muay Thai': {
+                    'Beginner': 'Boxing gloves (12-16 oz), hand wraps, mouthguard, shin guards, heavy bag, focus mitts, timer',
+                    'Novice': 'Boxing gloves (12-16 oz), hand wraps, mouthguard, shin guards, heavy bag, focus mitts, timer, resistance bands',
+                    'Intermediate': 'Boxing gloves (10-16 oz), hand wraps, mouthguard, shin guards, heavy bag, focus mitts, timer, resistance bands, medicine ball',
+                    'Advanced': 'Boxing gloves (8-16 oz), hand wraps, mouthguard, shin guards, heavy bag, focus mitts, timer, resistance bands, medicine ball, agility ladder',
+                    'Elite': 'Boxing gloves (8-16 oz), hand wraps, mouthguard, shin guards, heavy bag, focus mitts, timer, resistance bands, medicine ball, agility ladder, sparring equipment',
+                    'Pro': 'Boxing gloves (8-16 oz), hand wraps, mouthguard, shin guards, heavy bag, focus mitts, timer, resistance bands, medicine ball, agility ladder, sparring equipment, competition gear'
+                },
+                'Krav Maga': {
+                    'Beginner': 'Comfortable clothing, mouthguard, timer',
+                    'Novice': 'Comfortable clothing, mouthguard, timer, resistance bands',
+                    'Intermediate': 'Comfortable clothing, mouthguard, timer, resistance bands, medicine ball',
+                    'Advanced': 'Comfortable clothing, mouthguard, timer, resistance bands, medicine ball, agility ladder',
+                    'Elite': 'Comfortable clothing, mouthguard, timer, resistance bands, medicine ball, agility ladder, sparring equipment',
+                    'Pro': 'Comfortable clothing, mouthguard, timer, resistance bands, medicine ball, agility ladder, sparring equipment, competition gear'
+                }
+            };
+            return equipment[sport]?.[level] || 'Comfortable workout clothes, appropriate footwear, timer';
+        }
+
+        function getPreWorkoutNutrition(intensity, duration) {
+            if (intensity === 'Extreme') return 'Complex carbs + protein 3-4 hours before (oatmeal, eggs, banana)';
+            if (intensity === 'High') return 'Complex carbs + protein 2-3 hours before (rice, chicken, vegetables)';
+            if (intensity === 'Moderate') return 'Light meal or snack 1-2 hours before (toast, peanut butter, fruit)';
+            return 'Small snack 30-60 minutes before (banana, energy bar)';
+        }
+
+        function getDuringWorkoutNutrition(intensity, duration) {
+            if (duration.includes('90+')) return 'Electrolyte drink, energy gels for long sessions';
+            if (intensity === 'High' || intensity === 'Extreme') return 'Water, electrolyte replacement every 15-20 min';
+            return 'Water as needed, stay hydrated';
+        }
+
+        function getPostWorkoutNutrition(intensity, calories) {
+            if (intensity === 'High' || intensity === 'Extreme') return 'Protein + carbs within 30 minutes (protein shake, chicken, rice)';
+            if (intensity === 'Moderate') return 'Light snack with protein (yogurt, nuts, fruit)';
+            return 'Hydrate well, light snack if needed';
+        }
+
+        function getHydrationPlan(intensity, duration) {
+            if (intensity === 'Extreme') return '20-24 oz water 2-3 hours before, 8-10 oz every 10-15 min during';
+            if (intensity === 'High') return '16-20 oz water 2 hours before, 8-10 oz every 15 min during';
+            if (intensity === 'Moderate') return '16 oz water 1 hour before, 6-8 oz every 20 min during';
+            return '8-16 oz water before, drink to thirst during';
+        }
+
+        function getWarmupRoutine(sport, level) {
+            const warmups = {
+                'Boxing': '5-10 min jump rope, dynamic stretches, shadow boxing, light bag work',
+                'Kickboxing': '5-10 min jump rope, dynamic stretches, shadow kickboxing, light bag work',
+                'Karate': '5-10 min light cardio, dynamic stretches, kata basics, stance work',
+                'Taekwondo': '5-10 min light cardio, dynamic stretches, poomse basics, stance work',
+                'Judo': '5-10 min light cardio, dynamic stretches, ukemi practice, grip work',
+                'BJJ': '5-10 min light cardio, dynamic stretches, position work, mobility drills',
+                'Wrestling': '5-10 min light cardio, dynamic stretches, stance work, movement drills',
+                'MMA': '5-10 min light cardio, dynamic stretches, shadow work, light bag work',
+                'Muay Thai': '5-10 min jump rope, dynamic stretches, shadow muay thai, light bag work',
+                'Krav Maga': '5-10 min light cardio, dynamic stretches, movement drills, stance work'
+            };
+            return warmups[sport] || '5-10 min light cardio, dynamic stretching, joint mobility';
+        }
+
+        function getCooldownRoutine(sport, level) {
+            const cooldowns = {
+                'Boxing': '5-10 min light shadow boxing, static stretches, foam rolling, deep breathing',
+                'Kickboxing': '5-10 min light shadow kickboxing, static stretches, foam rolling, deep breathing',
+                'Karate': '5-10 min light kata, static stretches, meditation, deep breathing',
+                'Taekwondo': '5-10 min light poomse, static stretches, meditation, deep breathing',
+                'Judo': '5-10 min light ukemi, static stretches, foam rolling, deep breathing',
+                'BJJ': '5-10 min light position work, static stretches, foam rolling, deep breathing',
+                'Wrestling': '5-10 min light stance work, static stretches, foam rolling, deep breathing',
+                'MMA': '5-10 min light shadow work, static stretches, foam rolling, deep breathing',
+                'Muay Thai': '5-10 min light shadow muay thai, static stretches, foam rolling, deep breathing',
+                'Krav Maga': '5-10 min light movement drills, static stretches, foam rolling, deep breathing'
+            };
+            return cooldowns[sport] || '5-10 min light activity, static stretching, deep breathing';
+        }
+
+        function getSupervisionRequirements(sport, level) {
+            if (level === 'Beginner' || level === 'Novice') return 'Qualified instructor supervision recommended';
+            if (level === 'Intermediate') return 'Instructor supervision for sparring and advanced techniques';
+            if (level === 'Advanced') return 'Instructor supervision for sparring and competition prep';
+            return 'Self-directed training with periodic instructor check-ins';
+        }
+
+        function getSkillDevelopment(sport, level) {
+            const skills = {
+                'Boxing': {
+                    'Beginner': 'Basic punches, footwork, defense',
+                    'Novice': 'Combinations, counter-punching, ring movement',
+                    'Intermediate': 'Advanced combinations, timing, ring generalship',
+                    'Advanced': 'Complex combinations, strategy, sparring',
+                    'Elite': 'Competition techniques, advanced strategy, coaching',
+                    'Pro': 'Professional techniques, fight preparation, teaching'
+                },
+                'Kickboxing': {
+                    'Beginner': 'Basic kicks and punches, footwork',
+                    'Novice': 'Kick-punch combinations, defense',
+                    'Intermediate': 'Advanced combinations, timing, sparring',
+                    'Advanced': 'Complex combinations, strategy, competition',
+                    'Elite': 'Competition techniques, advanced strategy',
+                    'Pro': 'Professional techniques, fight preparation'
+                }
+            };
+            return skills[sport]?.[level] || 'Progressive skill development based on level';
+        }
+
+        function getTrainingTips(sport, level, intensity) {
+            const tips = {
+                'Boxing': {
+                    'Beginner': 'Focus on proper form, keep hands up, practice footwork daily, start slow and build speed',
+                    'Novice': 'Work on combinations, practice defense, improve timing, focus on accuracy over power',
+                    'Intermediate': 'Develop ring generalship, work on counter-punching, practice with different partners',
+                    'Advanced': 'Master advanced combinations, develop fight strategy, work on mental toughness',
+                    'Elite': 'Perfect technique, develop fight IQ, work on mental preparation',
+                    'Pro': 'Maintain peak condition, develop fight strategy, focus on recovery and preparation'
+                },
+                'Kickboxing': {
+                    'Beginner': 'Focus on proper form, keep guard up, practice kicks daily, start with low kicks',
+                    'Novice': 'Work on kick-punch combinations, practice defense, improve flexibility',
+                    'Intermediate': 'Develop timing, work on counter-attacks, practice with different partners',
+                    'Advanced': 'Master advanced combinations, develop fight strategy, work on mental toughness',
+                    'Elite': 'Perfect technique, develop fight IQ, work on mental preparation',
+                    'Pro': 'Maintain peak condition, develop fight strategy, focus on recovery and preparation'
+                }
+            };
+            return tips[sport]?.[level] || 'Focus on proper form, progressive overload, and consistent practice';
+        }
+
+        function getRecoveryTechniques(sport, level) {
+            const recovery = {
+                'Boxing': 'Foam rolling, stretching, ice/heat therapy, massage, compression gear',
+                'Kickboxing': 'Foam rolling, stretching, ice/heat therapy, massage, compression gear',
+                'Karate': 'Stretching, meditation, foam rolling, ice/heat therapy, massage',
+                'Taekwondo': 'Stretching, meditation, foam rolling, ice/heat therapy, massage',
+                'Judo': 'Foam rolling, stretching, ice/heat therapy, massage, compression gear',
+                'BJJ': 'Foam rolling, stretching, ice/heat therapy, massage, compression gear',
+                'Wrestling': 'Foam rolling, stretching, ice/heat therapy, massage, compression gear',
+                'MMA': 'Foam rolling, stretching, ice/heat therapy, massage, compression gear',
+                'Muay Thai': 'Foam rolling, stretching, ice/heat therapy, massage, compression gear',
+                'Krav Maga': 'Foam rolling, stretching, ice/heat therapy, massage, compression gear'
+            };
+            return recovery[sport] || 'Foam rolling, stretching, ice/heat therapy, massage';
+        }
+
+        function getInjuryPrevention(sport, level) {
+            const prevention = {
+                'Boxing': 'Proper hand wrapping, gradual intensity increase, rest days, proper technique',
+                'Kickboxing': 'Proper shin protection, gradual intensity increase, rest days, proper technique',
+                'Karate': 'Proper stretching, gradual intensity increase, rest days, proper technique',
+                'Taekwondo': 'Proper stretching, gradual intensity increase, rest days, proper technique',
+                'Judo': 'Proper falling technique, gradual intensity increase, rest days, proper technique',
+                'BJJ': 'Proper technique, gradual intensity increase, rest days, tap early',
+                'Wrestling': 'Proper technique, gradual intensity increase, rest days, proper form',
+                'MMA': 'Proper equipment, gradual intensity increase, rest days, proper technique',
+                'Muay Thai': 'Proper shin protection, gradual intensity increase, rest days, proper technique',
+                'Krav Maga': 'Proper technique, gradual intensity increase, rest days, controlled practice'
+            };
+            return prevention[sport] || 'Proper technique, gradual intensity increase, rest days, proper form';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('workoutModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Initialize
+        generateWorkouts();
+        filteredWorkouts = allWorkouts;
+        displayWorkouts();
+        displayPagination();
+    </script>
+</body>
+</html> 

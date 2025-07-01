@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sprinting Workouts Database</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f7f6f3;
+            color: #37352f;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #37352f;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #787774;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            padding: 12px 16px;
+            border: 2px solid #e1e1e1;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #007aff;
+        }
+
+        .filter-select {
+            padding: 12px 16px;
+            border: 2px solid #e1e1e1;
+            border-radius: 6px;
+            font-size: 16px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #007aff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0056cc;
+        }
+
+        .btn-secondary {
+            background: #f1f1f1;
+            color: #37352f;
+            border: 1px solid #e1e1e1;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e5e5;
+        }
+
+        .database {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .database-header {
+            background: #f8f9fa;
+            padding: 16px 20px;
+            border-bottom: 1px solid #e1e1e1;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+            gap: 20px;
+            font-weight: 600;
+            color: #37352f;
+        }
+
+        .database-row {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f1f1f1;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+            gap: 20px;
+            transition: background-color 0.2s;
+        }
+
+        .database-row:hover {
+            background-color: #f8f9fa;
+        }
+
+        .database-row:last-child {
+            border-bottom: none;
+        }
+
+        .cell {
+            display: flex;
+            align-items: center;
+            min-height: 24px;
+        }
+
+        .title {
+            font-weight: 500;
+            color: #007aff;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .title:hover {
+            color: #0056cc;
+            text-decoration: underline;
+        }
+
+        .description {
+            color: #787774;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .tag-beginner { background: #e8f5e8; color: #2d5a2d; }
+        .tag-intermediate { background: #fff3cd; color: #856404; }
+        .tag-advanced { background: #f8d7da; color: #721c24; }
+
+        .age-tag {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .plan-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .plan-btn:hover {
+            background: #218838;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e1e1e1;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #37352f;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close:hover {
+            color: #37352f;
+        }
+
+        .workout-plan {
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .day-header {
+            font-weight: 600;
+            color: #007aff;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .exercise-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .exercise-item {
+            background: white;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            border-left: 4px solid #007aff;
+        }
+
+        .exercise-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .exercise-details {
+            font-size: 14px;
+            color: #787774;
+        }
+
+        .plan-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 20px;
+        }
+
+        .page-btn {
+            padding: 8px 12px;
+            border: 1px solid #e1e1e1;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .page-btn:hover {
+            background: #f8f9fa;
+        }
+
+        .page-btn.active {
+            background: #007aff;
+            color: white;
+            border-color: #007aff;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #007aff;
+        }
+
+        .stat-label {
+            color: #787774;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .database-header,
+            .database-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .search-box {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fitprep-header" style="position:sticky;top:0;width:100%;background:linear-gradient(90deg,#1565c0 0%,#2196f3 100%);padding:1.1rem 0;z-index:1000;text-align:left;box-shadow:0 2px 10px rgba(33,150,243,0.08);">
+        <a href="landing.html" class="fitprep-back-btn" style="color:#fff;font-weight:700;font-size:1.1rem;text-decoration:none;margin-left:2rem;transition:color 0.2s;">&larr; Back to FitPrep Home</a>
+    </div>
+    <div class="container">
+        <div class="header">
+            <h1>🏃‍♂️ Sprinting Workouts Database</h1>
+            <p>1000+ comprehensive sprinting routines for all ages and abilities</p>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalWorkouts">1000</div>
+                    <div class="stat-label">Total Workouts</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="filteredWorkouts">1000</div>
+                    <div class="stat-label">Showing</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Age Groups</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Difficulty Levels</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <input type="text" class="search-box" id="searchBox" placeholder="Search workouts by title, description, or tags...">
+            <select class="filter-select" id="ageFilter">
+                <option value="">All Ages</option>
+                <option value="Children">Children (6-12)</option>
+                <option value="Teens">Teens (13-19)</option>
+                <option value="Adults">Adults (20-59)</option>
+                <option value="Seniors">Seniors (60+)</option>
+                <option value="All Ages">All Ages</option>
+            </select>
+            <select class="filter-select" id="levelFilter">
+                <option value="">All Levels</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+            </select>
+            <button class="btn btn-primary" onclick="downloadCSV()">Download CSV</button>
+            <button class="btn btn-secondary" onclick="downloadJSON()">Download JSON</button>
+        </div>
+
+        <div class="database">
+            <div class="database-header">
+                <div>Title</div>
+                <div>Description</div>
+                <div>Duration</div>
+                <div>Age Group</div>
+                <div>Level</div>
+                <div>Plan</div>
+            </div>
+            <div id="workoutRows"></div>
+        </div>
+
+        <!-- Modal for workout plan details -->
+        <div id="workoutModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="modalTitle"></h2>
+                    <span class="close" onclick="closeModal()">&times;</span>
+                </div>
+                <div id="modalContent"></div>
+                <div class="plan-actions">
+                    <button class="btn btn-primary" onclick="downloadPlan()">Download Plan</button>
+                    <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+    <script>
+        // Generate 1000 workout variations
+        const workoutTemplates = [
+            {
+                base: "Beginner Sprint Foundation",
+                variations: ["Basic", "Essential", "Foundation", "Starter", "Introductory", "Elementary", "Primary", "Fundamental", "Core", "Base"]
+            },
+            {
+                base: "Intermediate Speed Builder",
+                variations: ["Advanced", "Progressive", "Enhanced", "Improved", "Developed", "Refined", "Upgraded", "Optimized", "Strengthened", "Amplified"]
+            },
+            {
+                base: "Advanced Power Sprint",
+                variations: ["Elite", "Professional", "Expert", "Master", "Champion", "Competitive", "High-Performance", "Peak", "Maximum", "Ultimate"]
+            },
+            {
+                base: "Youth Sprint Development",
+                variations: ["Junior", "Young", "Teen", "Adolescent", "Youthful", "Growing", "Developing", "Learning", "Building", "Forming"]
+            },
+            {
+                base: "Senior Sprint Maintenance",
+                variations: ["Mature", "Elder", "Senior", "Aged", "Veteran", "Experienced", "Wise", "Seasoned", "Established", "Maintained"]
+            },
+            {
+                base: "Adaptive Sprint Training",
+                variations: ["Inclusive", "Accessible", "Adaptive", "Modified", "Accommodated", "Supported", "Assisted", "Guided", "Tailored", "Customized"]
+            },
+            {
+                base: "Sprint Endurance Builder",
+                variations: ["Stamina", "Endurance", "Durability", "Persistence", "Resilience", "Sustainability", "Longevity", "Continuity", "Persistence", "Lasting"]
+            },
+            {
+                base: "Sprint Agility Focus",
+                variations: ["Quick", "Nimble", "Flexible", "Agile", "Swift", "Rapid", "Fast", "Speedy", "Brisk", "Lively"]
+            },
+            {
+                base: "Sprint Strength Integration",
+                variations: ["Powerful", "Strong", "Robust", "Muscular", "Forceful", "Potent", "Dynamic", "Energetic", "Vigorous", "Intense"]
+            },
+            {
+                base: "Sprint Technique Mastery",
+                variations: ["Technical", "Precise", "Accurate", "Skilled", "Proficient", "Expert", "Masterful", "Polished", "Refined", "Perfect"]
+            }
+        ];
+
+        const ageGroups = ["Children", "Teens", "Adults", "Seniors", "All Ages"];
+        const levels = ["Beginner", "Intermediate", "Advanced"];
+        const durations = ["15 min", "20 min", "25 min", "30 min", "35 min", "40 min", "45 min", "60 min", "90 min"];
+        const focusAreas = ["Speed", "Endurance", "Agility", "Strength", "Technique", "Power", "Coordination", "Balance", "Flexibility", "Recovery"];
+        
+        // Exercise libraries for different focus areas
+        const exerciseLibrary = {
+            Speed: {
+                warmup: ["Dynamic stretching", "Light jogging", "High knees", "Butt kicks", "Arm circles"],
+                main: ["Sprint intervals", "Acceleration drills", "Flying sprints", "Resistance sprints", "Hill sprints"],
+                cooldown: ["Light jogging", "Static stretching", "Foam rolling"]
+            },
+            Endurance: {
+                warmup: ["Dynamic stretching", "Light jogging", "Mobility exercises"],
+                main: ["Long sprints", "Tempo runs", "Interval training", "Fartlek training", "Progressive sprints"],
+                cooldown: ["Light jogging", "Static stretching", "Recovery exercises"]
+            },
+            Agility: {
+                warmup: ["Dynamic stretching", "Light jogging", "Lateral movements"],
+                main: ["Cone drills", "Ladder drills", "Shuttle runs", "Zigzag sprints", "Reaction drills"],
+                cooldown: ["Light jogging", "Static stretching", "Mobility work"]
+            },
+            Strength: {
+                warmup: ["Dynamic stretching", "Light jogging", "Bodyweight exercises"],
+                main: ["Plyometric jumps", "Resistance sprints", "Hill sprints", "Strength intervals", "Power sprints"],
+                cooldown: ["Light jogging", "Static stretching", "Foam rolling"]
+            },
+            Technique: {
+                warmup: ["Dynamic stretching", "Light jogging", "Form drills"],
+                main: ["Sprint form practice", "Arm drive drills", "Leg action drills", "Posture work", "Stride length practice"],
+                cooldown: ["Light jogging", "Static stretching", "Form review"]
+            },
+            Power: {
+                warmup: ["Dynamic stretching", "Light jogging", "Explosive movements"],
+                main: ["Plyometric sprints", "Resistance training", "Explosive starts", "Power intervals", "Maximum effort sprints"],
+                cooldown: ["Light jogging", "Static stretching", "Recovery exercises"]
+            },
+            Coordination: {
+                warmup: ["Dynamic stretching", "Light jogging", "Coordination drills"],
+                main: ["Complex movement patterns", "Multi-directional sprints", "Balance sprints", "Coordination intervals", "Skill-based sprints"],
+                cooldown: ["Light jogging", "Static stretching", "Coordination practice"]
+            },
+            Balance: {
+                warmup: ["Dynamic stretching", "Light jogging", "Balance exercises"],
+                main: ["Single-leg sprints", "Balance beam sprints", "Stability sprints", "Balance intervals", "Core-focused sprints"],
+                cooldown: ["Light jogging", "Static stretching", "Balance work"]
+            },
+            Flexibility: {
+                warmup: ["Dynamic stretching", "Light jogging", "Mobility work"],
+                main: ["Flexibility-focused sprints", "Range of motion drills", "Mobility sprints", "Flexibility intervals", "Movement quality sprints"],
+                cooldown: ["Light jogging", "Static stretching", "Flexibility work"]
+            },
+            Recovery: {
+                warmup: ["Light walking", "Gentle stretching", "Mobility exercises"],
+                main: ["Recovery sprints", "Light intervals", "Active recovery", "Gentle sprints", "Recovery-focused training"],
+                cooldown: ["Light walking", "Static stretching", "Recovery exercises"]
+            }
+        };
+
+        let currentWorkoutPlan = null;
+
+        function generateWorkouts() {
+            const workouts = [];
+            let id = 1;
+
+            for (let i = 0; i < 100; i++) {
+                const template = workoutTemplates[i % workoutTemplates.length];
+                const variation = template.variations[i % template.variations.length];
+                
+                for (let j = 0; j < 10; j++) {
+                    const ageGroup = ageGroups[Math.floor(Math.random() * ageGroups.length)];
+                    const level = levels[Math.floor(Math.random() * levels.length)];
+                    const duration = durations[Math.floor(Math.random() * durations.length)];
+                    const focus = focusAreas[Math.floor(Math.random() * focusAreas.length)];
+                    
+                    const title = `${variation} ${template.base} ${j + 1}`;
+                    const description = `Comprehensive ${level.toLowerCase()} sprinting routine focusing on ${focus.toLowerCase()}. Designed for ${ageGroup.toLowerCase()} with progressive structure and safety considerations.`;
+                    
+                    workouts.push({
+                        id: id++,
+                        title: title,
+                        description: description,
+                        duration: duration,
+                        ageGroup: ageGroup,
+                        level: level,
+                        focus: focus
+                    });
+                }
+            }
+
+            return workouts;
+        }
+
+        let allWorkouts = generateWorkouts();
+        let filteredWorkouts = [...allWorkouts];
+        let currentPage = 1;
+        const workoutsPerPage = 20;
+
+        function renderWorkouts() {
+            const startIndex = (currentPage - 1) * workoutsPerPage;
+            const endIndex = startIndex + workoutsPerPage;
+            const pageWorkouts = filteredWorkouts.slice(startIndex, endIndex);
+
+            const workoutRows = document.getElementById('workoutRows');
+            workoutRows.innerHTML = '';
+
+            pageWorkouts.forEach(workout => {
+                const row = document.createElement('div');
+                row.className = 'database-row';
+                row.innerHTML = `
+                    <div class="cell title" onclick="showWorkoutPlan(${workout.id})">${workout.title}</div>
+                    <div class="cell description">${workout.description}</div>
+                    <div class="cell">${workout.duration}</div>
+                    <div class="cell"><span class="tag age-tag">${workout.ageGroup}</span></div>
+                    <div class="cell"><span class="tag tag-${workout.level.toLowerCase()}">${workout.level}</span></div>
+                    <div class="cell"><button class="plan-btn" onclick="showWorkoutPlan(${workout.id})">View Plan</button></div>
+                `;
+                workoutRows.appendChild(row);
+            });
+
+            renderPagination();
+            updateStats();
+        }
+
+        function renderPagination() {
+            const totalPages = Math.ceil(filteredWorkouts.length / workoutsPerPage);
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            if (totalPages <= 1) return;
+
+            // Previous button
+            if (currentPage > 1) {
+                const prevBtn = document.createElement('button');
+                prevBtn.className = 'page-btn';
+                prevBtn.textContent = '←';
+                prevBtn.onclick = () => {
+                    currentPage--;
+                    renderWorkouts();
+                };
+                pagination.appendChild(prevBtn);
+            }
+
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+                    const pageBtn = document.createElement('button');
+                    pageBtn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+                    pageBtn.textContent = i;
+                    pageBtn.onclick = () => {
+                        currentPage = i;
+                        renderWorkouts();
+                    };
+                    pagination.appendChild(pageBtn);
+                } else if (i === currentPage - 3 || i === currentPage + 3) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.textContent = '...';
+                    ellipsis.style.padding = '8px 12px';
+                    pagination.appendChild(ellipsis);
+                }
+            }
+
+            // Next button
+            if (currentPage < totalPages) {
+                const nextBtn = document.createElement('button');
+                nextBtn.className = 'page-btn';
+                nextBtn.textContent = '→';
+                nextBtn.onclick = () => {
+                    currentPage++;
+                    renderWorkouts();
+                };
+                pagination.appendChild(nextBtn);
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('filteredWorkouts').textContent = filteredWorkouts.length;
+        }
+
+        function filterWorkouts() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            const ageFilter = document.getElementById('ageFilter').value;
+            const levelFilter = document.getElementById('levelFilter').value;
+
+            filteredWorkouts = allWorkouts.filter(workout => {
+                const matchesSearch = workout.title.toLowerCase().includes(searchTerm) ||
+                                    workout.description.toLowerCase().includes(searchTerm) ||
+                                    workout.focus.toLowerCase().includes(searchTerm);
+                const matchesAge = !ageFilter || workout.ageGroup === ageFilter;
+                const matchesLevel = !levelFilter || workout.level === levelFilter;
+
+                return matchesSearch && matchesAge && matchesLevel;
+            });
+
+            currentPage = 1;
+            renderWorkouts();
+        }
+
+        function downloadCSV() {
+            const headers = ['Title', 'Description', 'Duration', 'Age Group', 'Level', 'Focus Area'];
+            const csvContent = [
+                headers.join(','),
+                ...filteredWorkouts.map(workout => [
+                    `"${workout.title}"`,
+                    `"${workout.description}"`,
+                    workout.duration,
+                    workout.ageGroup,
+                    workout.level,
+                    workout.focus
+                ].join(','))
+            ].join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sprinting_workouts.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function downloadJSON() {
+            const jsonContent = JSON.stringify(filteredWorkouts, null, 2);
+            const blob = new Blob([jsonContent], { type: 'application/json' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sprinting_workouts.json';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Event listeners
+        document.getElementById('searchBox').addEventListener('input', filterWorkouts);
+        document.getElementById('ageFilter').addEventListener('change', filterWorkouts);
+        document.getElementById('levelFilter').addEventListener('change', filterWorkouts);
+
+        // Modal event listeners
+        window.onclick = function(event) {
+            const modal = document.getElementById('workoutModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Workout plan functions
+        function showWorkoutPlan(workoutId) {
+            const workout = allWorkouts.find(w => w.id === workoutId);
+            if (!workout) return;
+
+            currentWorkoutPlan = workout;
+            const modal = document.getElementById('workoutModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+
+            modalTitle.textContent = workout.title;
+            modalContent.innerHTML = generateWorkoutPlanHTML(workout);
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('workoutModal');
+            modal.style.display = 'none';
+            currentWorkoutPlan = null;
+        }
+
+        function generateWorkoutPlanHTML(workout) {
+            const planLength = getPlanLength(workout);
+            const exercises = exerciseLibrary[workout.focus];
+            let planHTML = '';
+
+            planHTML += `
+                <div style="margin-bottom: 20px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
+                    <h3 style="margin: 0 0 10px 0; color: #1565c0;">Workout Overview</h3>
+                    <p style="margin: 0; color: #1976d2;"><strong>Focus:</strong> ${workout.focus}</p>
+                    <p style="margin: 5px 0 0 0; color: #1976d2;"><strong>Level:</strong> ${workout.level}</p>
+                    <p style="margin: 5px 0 0 0; color: #1976d2;"><strong>Duration:</strong> ${workout.duration}</p>
+                    <p style="margin: 5px 0 0 0; color: #1976d2;"><strong>Age Group:</strong> ${workout.ageGroup}</p>
+                </div>
+            `;
+
+            for (let day = 1; day <= planLength; day++) {
+                const dayExercises = generateDayExercises(workout, exercises, day);
+                planHTML += `
+                    <div class="workout-plan">
+                        <div class="day-header">Day ${day}</div>
+                        <ul class="exercise-list">
+                            ${dayExercises.map(exercise => `
+                                <li class="exercise-item">
+                                    <div class="exercise-name">${exercise.name}</div>
+                                    <div class="exercise-details">${exercise.details}</div>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            return planHTML;
+        }
+
+        function getPlanLength(workout) {
+            // Determine plan length based on workout characteristics
+            if (workout.level === 'Beginner') {
+                return workout.ageGroup === 'Children' ? 5 : 7;
+            } else if (workout.level === 'Intermediate') {
+                return workout.ageGroup === 'Seniors' ? 5 : 6;
+            } else {
+                return workout.ageGroup === 'Seniors' ? 4 : 5;
+            }
+        }
+
+        function generateDayExercises(workout, exercises, day) {
+            const dayExercises = [];
+            const isRestDay = isRestDayCheck(workout, day);
+            
+            if (isRestDay) {
+                return [{
+                    name: 'Rest Day / Active Recovery',
+                    details: 'Light stretching, walking, or gentle mobility work. Focus on recovery and preparation for next session.'
+                }];
+            }
+
+            // Add warmup exercises
+            exercises.warmup.forEach((exercise, index) => {
+                if (index < 3) { // Limit to 3 warmup exercises
+                    dayExercises.push({
+                        name: exercise,
+                        details: getExerciseDetails(exercise, workout, 'warmup')
+                    });
+                }
+            });
+
+            // Add main exercises
+            const mainExerciseCount = getMainExerciseCount(workout);
+            for (let i = 0; i < mainExerciseCount; i++) {
+                const exercise = exercises.main[i % exercises.main.length];
+                dayExercises.push({
+                    name: exercise,
+                    details: getExerciseDetails(exercise, workout, 'main')
+                });
+            }
+
+            // Add cooldown exercises
+            exercises.cooldown.forEach((exercise, index) => {
+                if (index < 2) { // Limit to 2 cooldown exercises
+                    dayExercises.push({
+                        name: exercise,
+                        details: getExerciseDetails(exercise, workout, 'cooldown')
+                    });
+                }
+            });
+
+            return dayExercises;
+        }
+
+        function isRestDayCheck(workout, day) {
+            const planLength = getPlanLength(workout);
+            if (workout.level === 'Beginner') {
+                return day === Math.ceil(planLength / 2) || day === planLength;
+            } else if (workout.level === 'Intermediate') {
+                return day === Math.ceil(planLength / 2);
+            } else {
+                return day === planLength;
+            }
+        }
+
+        function getMainExerciseCount(workout) {
+            if (workout.level === 'Beginner') {
+                return workout.ageGroup === 'Children' ? 2 : 3;
+            } else if (workout.level === 'Intermediate') {
+                return workout.ageGroup === 'Seniors' ? 3 : 4;
+            } else {
+                return workout.ageGroup === 'Seniors' ? 3 : 4;
+            }
+        }
+
+        function getExerciseDetails(exercise, workout, type) {
+            const baseDetails = {
+                warmup: {
+                    'Dynamic stretching': '5-10 minutes of dynamic movements to prepare muscles and joints',
+                    'Light jogging': '5 minutes of easy jogging to raise heart rate',
+                    'High knees': '2-3 sets of 20-30 seconds, focusing on form',
+                    'Butt kicks': '2-3 sets of 20-30 seconds, maintain good posture',
+                    'Arm circles': '10-15 circles forward and backward',
+                    'Lateral movements': 'Side-to-side movements for 2-3 minutes',
+                    'Mobility exercises': 'Joint mobility work for 5-8 minutes',
+                    'Bodyweight exercises': 'Light bodyweight movements for 5 minutes',
+                    'Form drills': 'Sprint form practice at 50% intensity',
+                    'Explosive movements': 'Light explosive movements for 3-5 minutes',
+                    'Coordination drills': 'Basic coordination exercises for 5 minutes',
+                    'Balance exercises': 'Simple balance work for 3-5 minutes',
+                    'Mobility work': 'Range of motion exercises for 5-8 minutes',
+                    'Light walking': '5-10 minutes of easy walking',
+                    'Gentle stretching': '5-8 minutes of gentle stretching'
+                },
+                main: {
+                    'Sprint intervals': '6-8 x 30m sprints with 2-3 minutes rest',
+                    'Acceleration drills': '4-6 x 20m acceleration runs',
+                    'Flying sprints': '4-6 x 30m flying sprints',
+                    'Resistance sprints': '4-6 x 20m with resistance bands or sled',
+                    'Hill sprints': '4-6 x 20m uphill sprints',
+                    'Long sprints': '3-4 x 100m sprints with 3-4 minutes rest',
+                    'Tempo runs': '4-6 x 200m at 70-80% effort',
+                    'Interval training': '6-8 x 100m intervals with 2-3 minutes rest',
+                    'Fartlek training': '20-30 minutes of varied pace running',
+                    'Progressive sprints': '4-6 sprints increasing in distance',
+                    'Cone drills': 'Various cone patterns for 10-15 minutes',
+                    'Ladder drills': 'Ladder agility work for 10-15 minutes',
+                    'Shuttle runs': '4-6 x 20m shuttle runs',
+                    'Zigzag sprints': '4-6 x 30m zigzag patterns',
+                    'Reaction drills': '10-15 minutes of reaction-based movements',
+                    'Plyometric jumps': '4-6 sets of various jump exercises',
+                    'Strength intervals': '4-6 x 30m with strength focus',
+                    'Power sprints': '4-6 x 20m maximum effort sprints',
+                    'Sprint form practice': '10-15 minutes of form-focused work',
+                    'Arm drive drills': '5-10 minutes of arm movement practice',
+                    'Leg action drills': '5-10 minutes of leg movement practice',
+                    'Posture work': '10-15 minutes of posture-focused training',
+                    'Stride length practice': '5-10 minutes of stride work',
+                    'Plyometric sprints': '4-6 x 20m with plyometric elements',
+                    'Resistance training': '4-6 x 30m with resistance',
+                    'Explosive starts': '6-8 x 10m explosive starts',
+                    'Power intervals': '4-6 x 30m power-focused intervals',
+                    'Maximum effort sprints': '4-6 x 20m at 100% effort',
+                    'Complex movement patterns': '10-15 minutes of complex movements',
+                    'Multi-directional sprints': '4-6 x 20m in various directions',
+                    'Balance sprints': '4-6 x 20m with balance focus',
+                    'Coordination intervals': '4-6 x 30m coordination work',
+                    'Skill-based sprints': '10-15 minutes of skill development',
+                    'Single-leg sprints': '4-6 x 15m single-leg work',
+                    'Balance beam sprints': '4-6 x 10m on balance beam',
+                    'Stability sprints': '4-6 x 20m stability-focused',
+                    'Balance intervals': '4-6 x 20m balance work',
+                    'Core-focused sprints': '4-6 x 20m with core engagement',
+                    'Flexibility-focused sprints': '4-6 x 20m flexibility work',
+                    'Range of motion drills': '10-15 minutes of ROM work',
+                    'Mobility sprints': '4-6 x 20m mobility-focused',
+                    'Flexibility intervals': '4-6 x 20m flexibility work',
+                    'Movement quality sprints': '4-6 x 20m quality-focused',
+                    'Recovery sprints': '4-6 x 20m at 60-70% effort',
+                    'Light intervals': '4-6 x 100m at 60-70% effort',
+                    'Active recovery': '20-30 minutes of light activity',
+                    'Gentle sprints': '4-6 x 20m at 50-60% effort',
+                    'Recovery-focused training': '15-20 minutes of recovery work'
+                },
+                cooldown: {
+                    'Light jogging': '5-10 minutes of easy jogging',
+                    'Static stretching': '10-15 minutes of static stretches',
+                    'Foam rolling': '5-10 minutes of foam rolling',
+                    'Recovery exercises': '5-10 minutes of recovery work',
+                    'Mobility work': '5-10 minutes of mobility exercises',
+                    'Form review': '5 minutes of form analysis',
+                    'Recovery exercises': '5-10 minutes of recovery work',
+                    'Coordination practice': '5 minutes of coordination work',
+                    'Balance work': '5 minutes of balance exercises',
+                    'Flexibility work': '10-15 minutes of flexibility work',
+                    'Recovery exercises': '5-10 minutes of recovery work'
+                }
+            };
+
+            return baseDetails[type][exercise] || 'Focus on proper form and technique';
+        }
+
+        function downloadPlan() {
+            if (!currentWorkoutPlan) return;
+
+            const planLength = getPlanLength(currentWorkoutPlan);
+            const exercises = exerciseLibrary[currentWorkoutPlan.focus];
+            
+            let planText = `${currentWorkoutPlan.title}\n`;
+            planText += `Focus: ${currentWorkoutPlan.focus}\n`;
+            planText += `Level: ${currentWorkoutPlan.level}\n`;
+            planText += `Duration: ${currentWorkoutPlan.duration}\n`;
+            planText += `Age Group: ${currentWorkoutPlan.ageGroup}\n`;
+            planText += `Plan Length: ${planLength} days\n\n`;
+
+            for (let day = 1; day <= planLength; day++) {
+                planText += `DAY ${day}\n`;
+                planText += '='.repeat(20) + '\n';
+                
+                const dayExercises = generateDayExercises(currentWorkoutPlan, exercises, day);
+                dayExercises.forEach(exercise => {
+                    planText += `• ${exercise.name}\n`;
+                    planText += `  ${exercise.details}\n\n`;
+                });
+                planText += '\n';
+            }
+
+            const blob = new Blob([planText], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${currentWorkoutPlan.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_plan.txt`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Initial render
+        renderWorkouts();
+    </script>
+</body>
+</html> 
